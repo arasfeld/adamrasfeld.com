@@ -9,17 +9,103 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const contactSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email address'),
+  email: z.email('Invalid email address'),
   subject: z.string().min(1, 'Subject is required'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  website: z.string().optional(), // Honeypot field
 });
+
+// Helper to detect long sequences of characters without spaces (often a sign of bot spam)
+const hasLongContinuousStrings = (str: string) => {
+  return /[^\s]{20,}/.test(str);
+};
+
+// Common spammy TLDs and keywords
+const SPAMMY_TLDS = [
+  '.ru',
+  '.xyz',
+  '.top',
+  '.click',
+  '.monster',
+  '.icu',
+  '.gdn',
+  '.biz',
+];
+const SPAMMY_KEYWORDS = [
+  'crypto',
+  'bitcoin',
+  'pills',
+  'casino',
+  'viagra',
+  'seo ranking',
+  'marketing agency',
+];
 
 export async function POST(request: NextRequest) {
   try {
+    const userAgent = request.headers.get('user-agent') || '';
     const body = await request.json();
 
     // Validate the request body
     const validatedData = contactSchema.parse(body);
+
+    // 1. Honeypot check
+    if (validatedData.website) {
+      console.warn('Bot detected: Honeypot field filled');
+      return NextResponse.json(
+        { message: 'Email sent successfully' },
+        { status: 200 }
+      );
+    }
+
+    // 2. Gibberish check
+    if (
+      hasLongContinuousStrings(validatedData.firstName) ||
+      hasLongContinuousStrings(validatedData.lastName) ||
+      hasLongContinuousStrings(validatedData.subject) ||
+      hasLongContinuousStrings(validatedData.message)
+    ) {
+      console.warn('Bot detected: Gibberish strings');
+      return NextResponse.json(
+        { message: 'Email sent successfully' },
+        { status: 200 }
+      );
+    }
+
+    // 3. Spammy TLD check
+    const emailLower = validatedData.email.toLowerCase();
+    if (SPAMMY_TLDS.some(tld => emailLower.endsWith(tld))) {
+      console.warn(`Bot detected: Spammy TLD (${emailLower})`);
+      return NextResponse.json(
+        { message: 'Email sent successfully' },
+        { status: 200 }
+      );
+    }
+
+    // 4. Spammy Keyword check
+    const contentLower =
+      `${validatedData.subject} ${validatedData.message}`.toLowerCase();
+    if (SPAMMY_KEYWORDS.some(keyword => contentLower.includes(keyword))) {
+      console.warn('Bot detected: Spammy keywords');
+      return NextResponse.json(
+        { message: 'Email sent successfully' },
+        { status: 200 }
+      );
+    }
+
+    // 5. Basic User-Agent check (Headless browsers often have very generic UAs)
+    if (
+      !userAgent ||
+      userAgent.includes('headless') ||
+      userAgent === 'axios' ||
+      userAgent === 'node-fetch'
+    ) {
+      console.warn(`Bot detected: Suspect User-Agent (${userAgent})`);
+      return NextResponse.json(
+        { message: 'Email sent successfully' },
+        { status: 200 }
+      );
+    }
 
     // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY) {

@@ -21,6 +21,7 @@ const contactFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   subject: z.string().min(1, 'Subject is required'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  website: z.string().optional(), // Honeypot field
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -39,6 +40,9 @@ export function ContactForm({ className }: ContactFormProps) {
     formState: { errors, isValid, isDirty },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      website: '',
+    },
   });
 
   const onSubmit = async (data: ContactFormData) => {
@@ -165,6 +169,17 @@ export function ContactForm({ className }: ContactFormProps) {
                 {errors.message.message}
               </TypographyP>
             )}
+          </div>
+
+          {/* Honeypot field */}
+          <div className="hidden" aria-hidden="true">
+            <Input
+              id="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              {...register('website')}
+            />
           </div>
 
           <Button
