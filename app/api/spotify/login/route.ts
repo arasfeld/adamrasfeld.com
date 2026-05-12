@@ -1,7 +1,7 @@
 // https://developer.spotify.com/documentation/web-api/tutorials/code-flow#request-user-authorization
 
-import { redirect } from 'next/navigation';
 import { randomBytes } from 'node:crypto';
+import { redirect } from 'next/navigation';
 
 const SCOPES = [
   'user-read-currently-playing',
@@ -28,5 +28,5 @@ export function GET() {
     state,
   });
 
-  redirect('https://accounts.spotify.com/authorize?' + params.toString());
+  redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
 }

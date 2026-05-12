@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -134,8 +134,8 @@
   }
   html {
     font-feature-settings:
-      'liga' 0,
-      'calt' 0;
+      "liga" 0,
+      "calt" 0;
   }
   body {
     @apply bg-background text-foreground font-mono;

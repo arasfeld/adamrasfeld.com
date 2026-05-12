@@ -54,7 +54,7 @@ export default function Portfolio() {
       />
       <div className="mx-auto w-full max-w-5xl px-6 py-20 md:px-12">
         {/* Hero */}
-        <div className="mb-12 ar-fade-up [animation-delay:0.1s]">
+        <div className="ar-fade-up mb-12 [animation-delay:0.1s]">
           <Comment className="mb-2.5">portfolio</Comment>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
@@ -67,7 +67,7 @@ export default function Portfolio() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 ar-fade-up [animation-delay:0.25s]">
+        <div className="ar-fade-up grid grid-cols-1 gap-4 [animation-delay:0.25s] sm:grid-cols-2 lg:grid-cols-3">
           {PROJECTS.map(project => (
             <ProjectCard key={project.id} project={project} />
           ))}

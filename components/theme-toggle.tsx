@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
@@ -20,21 +20,16 @@ export function ThemeToggle() {
   const isDark = mounted && resolvedTheme === 'dark';
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="hidden sm:inline font-mono text-[10px] tracking-wide text-muted-foreground">
-        Atom One
+    <Button
+      variant="outline"
+      size="icon-sm"
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+    >
+      <span aria-hidden="true" className="text-base leading-none">
+        {mounted ? (isDark ? '◐' : '◑') : '◐'}
       </span>
-      <Button
-        variant="outline"
-        size="icon-sm"
-        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-        title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-        onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      >
-        <span aria-hidden="true" className="text-base leading-none">
-          {mounted ? (isDark ? '◐' : '◑') : '◐'}
-        </span>
-      </Button>
-    </div>
+    </Button>
   );
 }

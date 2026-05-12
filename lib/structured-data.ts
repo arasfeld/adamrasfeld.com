@@ -1,11 +1,11 @@
 import type {
-  WithContext,
-  Person,
-  WebSite,
-  WebPage,
+  AboutPage,
   CollectionPage,
   ContactPage,
-  AboutPage,
+  Person,
+  WebPage,
+  WebSite,
+  WithContext,
 } from 'schema-dts';
 
 /**

@@ -1,7 +1,7 @@
 'use client';
 
-import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { ArtistRow } from '@/components/music/artist-row';
 import { NowPlayingBar } from '@/components/music/now-playing-bar';
@@ -20,9 +20,9 @@ import {
   useTopTracks,
 } from '@/lib/spotify-hooks';
 import {
-  Artist as SpotifyArtist,
+  type Artist as SpotifyArtist,
+  type Track as SpotifyTrack,
   TimeRange,
-  Track as SpotifyTrack,
 } from '@/types';
 
 type Range = 'short' | 'medium' | 'long';
@@ -68,7 +68,7 @@ function MusicContent() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <div className="mx-auto w-full max-w-5xl px-6 pt-20 pb-10 md:px-12 ar-fade-up [animation-delay:0.1s]">
+      <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-20 pb-10 [animation-delay:0.1s] md:px-12">
         <Comment className="mb-2.5">music</Comment>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
@@ -76,7 +76,7 @@ function MusicContent() {
           </DisplayHeading>
           <div className="flex items-center gap-2 pb-1">
             <div className="relative h-2 w-2">
-              <span className="absolute inset-0 rounded-full bg-syntax-green ar-ping" />
+              <span className="ar-ping absolute inset-0 rounded-full bg-syntax-green" />
               <span className="absolute inset-0 rounded-full bg-syntax-green" />
             </div>
             <span className="font-mono text-[10px] text-muted-foreground">
@@ -92,7 +92,7 @@ function MusicContent() {
       )}
 
       {/* Top tracks + artists */}
-      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-16 gap-y-12 px-6 py-12 md:grid-cols-2 md:px-12 ar-fade-up [animation-delay:0.3s]">
+      <div className="ar-fade-up mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-16 gap-y-12 px-6 py-12 [animation-delay:0.3s] md:grid-cols-2 md:px-12">
         <section>
           <SectionLabel
             comment="top tracks"
@@ -113,7 +113,7 @@ function MusicContent() {
           ) : tracks?.length > 0 ? (
             tracks.map((track: SpotifyTrack, i: number) => (
               <TrackRow
-                key={`${tracksRange}-${track.id}-${i}`}
+                key={`${tracksRange}-${track.id}`}
                 track={track}
                 rank={i + 1}
               />
@@ -145,7 +145,7 @@ function MusicContent() {
           ) : artists?.length > 0 ? (
             artists.map((artist: SpotifyArtist, i: number) => (
               <ArtistRow
-                key={`${artistsRange}-${artist.id}-${i}`}
+                key={`${artistsRange}-${artist.id}`}
                 artist={artist}
                 rank={i + 1}
               />
@@ -159,7 +159,7 @@ function MusicContent() {
       </div>
 
       {/* Recently played */}
-      <div className="mx-auto w-full max-w-5xl border-t border-border px-6 pb-20 pt-12 md:px-12 ar-fade-up [animation-delay:0.5s]">
+      <div className="ar-fade-up mx-auto w-full max-w-5xl border-border border-t px-6 pt-12 pb-20 [animation-delay:0.5s] md:px-12">
         <SectionLabel
           comment="history"
           heading="Recently Played"
@@ -173,13 +173,15 @@ function MusicContent() {
               loading...
             </p>
           ) : recentTracks?.length > 0 ? (
-            recentTracks.map((track: SpotifyTrack, i: number) => (
-              <TrackRow
-                key={`recent-${track.id}-${i}`}
-                track={track}
-                rank={i + 1}
-              />
-            ))
+            recentTracks.map(
+              (track: SpotifyTrack & { played_at: string }, i: number) => (
+                <TrackRow
+                  key={`recent-${track.played_at}`}
+                  track={track}
+                  rank={i + 1}
+                />
+              )
+            )
           ) : (
             <p className="font-mono text-[11px] text-muted-foreground">
               no recent listens

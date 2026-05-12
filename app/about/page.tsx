@@ -11,8 +11,8 @@ import {
   EDUCATION,
   JOURNEY,
   SKILL_GROUPS,
-  VALUES,
   skillCategoryColor,
+  VALUES,
 } from '@/lib/about-data';
 import { aboutStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 import { cn } from '@/lib/utils';
@@ -47,9 +47,9 @@ const SYNTAX_TEXT_CLASS: Record<string, string> = {
 
 const BACKGROUND_PARAGRAPHS: string[] = [
   `My path in software started at Miami University where I earned a B.S. in Computer Science. First job out of school was at RoviSys — enterprise automation, WinForms to WPF migrations, AutoCAD SDK integrations. Good foundation in writing systems that run in environments where "it crashed" has real consequences.`,
-  `Kroger Digital was where I got a taste of scale. Consumer-facing e-commerce means your bug affects a few million people. I consolidated a fragmented repo structure into a Lerna monorepo, drove test coverage past 90%, and rebuilt auth flows to WCAG standards — learned a lot about what it means to care about quality.`,
-  `At Divisions Maintenance Group I went deep on mobile for the first time — React Native, a native module to get gRPC working on iOS and Android, and a Kafka migration from a service-bus system. At Upstart as SE IV I led the decomposition of a Rails monolith into Kafka-backed microservices, defined data ownership across teams, and built keyset-paginated reporting APIs.`,
-  `Currently at Seamless.AI working on sales-engagement platforms and Chrome extensions. I built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack is React + Node, the challenges are product engineering at a real-world SaaS scale.`,
+  'Kroger Digital was where I got a taste of scale. Consumer-facing e-commerce means your bug affects a few million people. I consolidated a fragmented repo structure into a Lerna monorepo, drove test coverage past 90%, and rebuilt auth flows to WCAG standards — learned a lot about what it means to care about quality.',
+  'At Divisions Maintenance Group I went deep on mobile for the first time — React Native, a native module to get gRPC working on iOS and Android, and a Kafka migration from a service-bus system. At Upstart as SE IV I led the decomposition of a Rails monolith into Kafka-backed microservices, defined data ownership across teams, and built keyset-paginated reporting APIs.',
+  'Currently at Seamless.AI working on sales-engagement platforms and Chrome extensions. I built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack is React + Node, the challenges are product engineering at a real-world SaaS scale.',
 ];
 
 export default function About() {
@@ -65,28 +65,28 @@ export default function About() {
       />
       <div className="mx-auto w-full max-w-5xl px-6 py-20 md:px-12">
         {/* Page title */}
-        <div className="mb-12 ar-fade-up [animation-delay:0.1s]">
+        <div className="ar-fade-up mb-12 [animation-delay:0.1s]">
           <Comment className="mb-2.5">about</Comment>
           <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
             {ABOUT.name}
           </DisplayHeading>
         </div>
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-14 ar-fade-up [animation-delay:0.2s]">
+        <div className="ar-fade-up flex flex-col gap-12 [animation-delay:0.2s] lg:flex-row lg:items-start lg:gap-14">
           {/* Main column */}
           <div className="min-w-0 flex-1">
             {/* Journey */}
-            <div className="mb-11 border-b border-border pb-11">
+            <div className="mb-11 border-border border-b pb-11">
               <SectionLabel
                 comment="journey"
                 heading="Background"
                 color="green"
                 headingClassName="text-base md:text-base"
               />
-              {BACKGROUND_PARAGRAPHS.map((para, i) => (
+              {BACKGROUND_PARAGRAPHS.map(para => (
                 <p
-                  key={i}
-                  className="mb-4 max-w-2xl font-mono text-[13px] leading-loose text-foreground last:mb-0"
+                  key={para}
+                  className="mb-4 max-w-2xl font-mono text-[13px] text-foreground leading-loose last:mb-0"
                 >
                   {para}
                 </p>
@@ -108,13 +108,13 @@ export default function About() {
                     className={cn(
                       'grid grid-cols-1 gap-5 pb-5 sm:grid-cols-[160px_1fr] sm:gap-6 sm:pb-6',
                       i < VALUES.length - 1 &&
-                        'mb-5 border-b border-border sm:mb-6'
+                        'mb-5 border-border border-b sm:mb-6'
                     )}
                   >
-                    <div className="font-mono text-[11px] font-semibold text-primary pt-0.5">
+                    <div className="pt-0.5 font-mono font-semibold text-[11px] text-primary">
                       {value.title}
                     </div>
-                    <p className="font-mono text-[13px] leading-relaxed text-muted-foreground">
+                    <p className="font-mono text-[13px] text-muted-foreground leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -136,31 +136,31 @@ export default function About() {
               />
             </div>
 
-            <div className="mb-7 border-b border-border pb-6">
+            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-2.5">currently</Comment>
-              <div className="font-mono text-[12px] font-semibold text-foreground-bright">
+              <div className="font-mono font-semibold text-[12px] text-foreground-bright">
                 {currentJob.role}
               </div>
-              <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+              <div className="font-mono text-[10px] text-muted-foreground leading-relaxed">
                 {currentJob.company} · {currentJob.location}
                 <br />
                 Feb 2023 → present
               </div>
             </div>
 
-            <div className="mb-7 border-b border-border pb-6">
+            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-2.5">education</Comment>
-              <div className="font-mono text-[12px] font-semibold text-foreground-bright">
+              <div className="font-mono font-semibold text-[12px] text-foreground-bright">
                 {EDUCATION.school}
               </div>
-              <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+              <div className="font-mono text-[10px] text-muted-foreground leading-relaxed">
                 {EDUCATION.degree}
                 <br />
                 {EDUCATION.location} · {EDUCATION.year}
               </div>
             </div>
 
-            <div className="mb-7 border-b border-border pb-6">
+            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-2.5">location</Comment>
               <div className="font-mono text-[11px] text-foreground">
                 ◈ {ABOUT.location}
@@ -170,7 +170,7 @@ export default function About() {
                   aria-hidden="true"
                   className="h-1.5 w-1.5 rounded-full bg-syntax-green"
                 />
-                <span className="font-mono text-[9px] tracking-wide text-syntax-green">
+                <span className="font-mono text-[9px] text-syntax-green tracking-wide">
                   open to work
                 </span>
               </div>
@@ -190,7 +190,7 @@ export default function About() {
                     >
                       {group.name}
                     </div>
-                    <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+                    <div className="font-mono text-[10px] text-muted-foreground leading-relaxed">
                       {group.items.join(' · ')}
                     </div>
                   </div>

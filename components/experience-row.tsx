@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 import type { Job } from '@/lib/about-data';
 import { cn } from '@/lib/utils';
@@ -23,14 +23,14 @@ export function ExperienceRow({ job }: ExperienceRowProps) {
       type="button"
       aria-expanded={open}
       onClick={() => setOpen(o => !o)}
-      className="group block w-full cursor-pointer border-b border-border py-6 text-left"
+      className="group block w-full cursor-pointer border-border border-b py-6 text-left"
     >
       <div className="grid grid-cols-[110px_1fr_18px] items-start gap-6 md:grid-cols-[150px_1fr_18px]">
-        <div className="pt-1 font-mono text-[10px] tracking-wide text-muted-foreground">
+        <div className="pt-1 font-mono text-[10px] text-muted-foreground tracking-wide">
           {job.year}
         </div>
         <div>
-          <div className="mb-1 font-mono text-sm font-bold tracking-tight text-foreground-bright transition-colors group-hover:text-primary">
+          <div className="mb-1 font-bold font-mono text-foreground-bright text-sm tracking-tight transition-colors group-hover:text-primary">
             {job.company}
           </div>
           <div className="font-mono text-[11px] text-muted-foreground">
@@ -54,14 +54,14 @@ export function ExperienceRow({ job }: ExperienceRowProps) {
       >
         <div className="min-h-0">
           <div className="pt-4 md:pl-[174px]">
-            <p className="mb-4 max-w-2xl font-mono text-xs leading-relaxed text-foreground">
+            <p className="mb-4 max-w-2xl font-mono text-foreground text-xs leading-relaxed">
               {job.blurb}
             </p>
             <div className="flex flex-wrap gap-1.5">
               {job.stack.map(tech => (
                 <span
                   key={tech}
-                  className="rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] tracking-wide text-syntax-cyan"
+                  className="rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] text-syntax-cyan tracking-wide"
                 >
                   {tech}
                 </span>

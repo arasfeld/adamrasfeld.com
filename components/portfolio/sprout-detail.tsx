@@ -41,7 +41,7 @@ export function SproutDetail() {
   return (
     <div className="mx-auto w-full max-w-4xl px-6 py-20 md:px-12">
       {/* Back link */}
-      <div className="mb-9 flex items-center gap-2 ar-fade-up">
+      <div className="ar-fade-up mb-9 flex items-center gap-2">
         <Link
           href="/portfolio"
           className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground"
@@ -53,19 +53,19 @@ export function SproutDetail() {
       </div>
 
       {/* Hero */}
-      <div className="mb-16 flex flex-wrap items-start gap-12 ar-fade-up [animation-delay:0.15s]">
+      <div className="ar-fade-up mb-16 flex flex-wrap items-start gap-12 [animation-delay:0.15s]">
         <div className="min-w-[280px] flex-1">
           <div className="mb-4 flex flex-wrap items-center gap-2.5">
             <DisplayHeading className="[font-size:clamp(2.5rem,5vw,3.5rem)]">
               Sprout
             </DisplayHeading>
-            <span className="inline-flex items-center rounded-sm border border-syntax-green/40 bg-syntax-green/10 px-2 py-0.5 font-mono text-[9px] tracking-wide text-syntax-green">
+            <span className="inline-flex items-center rounded-sm border border-syntax-green/40 bg-syntax-green/10 px-2 py-0.5 font-mono text-[9px] text-syntax-green tracking-wide">
               active
             </span>
             <MonoTag>2025</MonoTag>
           </div>
 
-          <p className="mb-6 max-w-lg font-mono text-[15px] leading-relaxed text-foreground">
+          <p className="mb-6 max-w-lg font-mono text-[15px] text-foreground leading-relaxed">
             A cross-platform childcare tracking system for parents, caregivers,
             and daycares — built around the principle that{' '}
             <span className="text-primary">
@@ -74,7 +74,7 @@ export function SproutDetail() {
             .
           </p>
 
-          <p className="mb-7 max-w-lg font-mono text-xs leading-loose text-muted-foreground">
+          <p className="mb-7 max-w-lg font-mono text-muted-foreground text-xs leading-loose">
             Whether you&apos;re a single parent logging naps at home, co-parents
             sharing a day across schedules, or daycare staff recording events
             during care hours — Sprout unifies it all into one timeline. Context
@@ -108,14 +108,14 @@ export function SproutDetail() {
       </div>
 
       {/* Architecture */}
-      <div className="mb-14 ar-fade-up [animation-delay:0.3s]">
+      <div className="ar-fade-up mb-14 [animation-delay:0.3s]">
         <SectionLabel
           comment="architecture"
           heading="How It Works"
           color="green"
           headingClassName="text-base md:text-lg"
         />
-        <p className="mb-6 max-w-2xl font-mono text-xs leading-loose text-muted-foreground">
+        <p className="mb-6 max-w-2xl font-mono text-muted-foreground text-xs leading-loose">
           No custom API server. Clients talk directly to Supabase with
           authorization enforced at the database level via Postgres Row Level
           Security. The mobile app is offline-first — all reads and writes go
@@ -125,7 +125,7 @@ export function SproutDetail() {
       </div>
 
       {/* Tech stack */}
-      <div className="mb-14 ar-fade-up [animation-delay:0.4s]">
+      <div className="ar-fade-up mb-14 [animation-delay:0.4s]">
         <SectionLabel
           comment="stack"
           heading="Tech Stack"
@@ -138,7 +138,7 @@ export function SproutDetail() {
               key={row.layer}
               className={cn(
                 'grid grid-cols-[110px_1fr] gap-6 px-4 py-3',
-                i < STACK_ROWS.length - 1 && 'border-b border-border',
+                i < STACK_ROWS.length - 1 && 'border-border border-b',
                 i % 2 === 1 && 'bg-card/60'
               )}
             >
@@ -165,15 +165,15 @@ export function SproutDetail() {
           {FEATURES.map(feature => (
             <div
               key={feature}
-              className="flex items-start gap-3 border-b border-border py-3"
+              className="flex items-start gap-3 border-border border-b py-3"
             >
               <span
                 aria-hidden="true"
-                className="mt-px flex-shrink-0 font-mono text-xs text-syntax-green"
+                className="mt-px flex-shrink-0 font-mono text-syntax-green text-xs"
               >
                 ✓
               </span>
-              <span className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+              <span className="font-mono text-[11px] text-muted-foreground leading-relaxed">
                 {feature}
               </span>
             </div>

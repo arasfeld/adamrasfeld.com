@@ -6,9 +6,9 @@ import {
   ABOUT,
   EDUCATION,
   JOURNEY,
+  type Job,
   SKILL_GROUPS,
   skillCategoryColor,
-  type Job,
 } from '@/lib/about-data';
 import { resumeStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 import { cn } from '@/lib/utils';
@@ -42,10 +42,10 @@ const SYNTAX_TEXT_CLASS: Record<string, string> = {
 function JobBlock({ job, isLast }: { job: Job; isLast: boolean }) {
   return (
     <div
-      className={cn('job-block', !isLast && 'mb-7 border-b border-border pb-7')}
+      className={cn('job-block', !isLast && 'mb-7 border-border border-b pb-7')}
     >
       <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-3">
-        <div className="font-mono text-sm font-bold tracking-tight text-foreground-bright">
+        <div className="font-bold font-mono text-foreground-bright text-sm tracking-tight">
           {job.company}
         </div>
         <div className="flex-shrink-0 font-mono text-[10px] text-muted-foreground">
@@ -56,14 +56,14 @@ function JobBlock({ job, isLast }: { job: Job; isLast: boolean }) {
         {job.role}
         <span className="text-muted-foreground"> · {job.location}</span>
       </div>
-      <p className="mb-3 max-w-2xl font-mono text-xs leading-relaxed text-foreground">
+      <p className="mb-3 max-w-2xl font-mono text-foreground text-xs leading-relaxed">
         {job.blurb}
       </p>
       <div className="flex flex-wrap gap-1.5">
         {job.stack.map(s => (
           <span
             key={s}
-            className="rounded-sm border border-border px-1.5 py-px font-mono text-[9px] tracking-wide text-syntax-cyan"
+            className="rounded-sm border border-border px-1.5 py-px font-mono text-[9px] text-syntax-cyan tracking-wide"
           >
             {s}
           </span>
@@ -84,7 +84,7 @@ export default function ResumePage() {
       />
       <div className="mx-auto w-full max-w-5xl px-6 py-16 md:px-12">
         {/* File path + print button */}
-        <div className="no-print mb-9 flex items-center justify-between ar-fade-up [animation-delay:0.1s]">
+        <div className="no-print ar-fade-up mb-9 flex items-center justify-between [animation-delay:0.1s]">
           <div className="font-mono text-[11px] text-muted-foreground">
             <span>~/documents/</span>
             <span className="text-foreground">resume</span>
@@ -96,11 +96,11 @@ export default function ResumePage() {
           <PrintButton />
         </div>
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-14 ar-fade-up [animation-delay:0.2s]">
+        <div className="ar-fade-up flex flex-col gap-12 [animation-delay:0.2s] lg:flex-row lg:items-start lg:gap-14">
           {/* Sidebar */}
           <aside className="resume-sidebar w-full flex-shrink-0 lg:sticky lg:top-20 lg:w-52">
-            <div className="mb-7 border-b border-border pb-6">
-              <h1 className="mb-1.5 font-mono text-[22px] font-bold leading-tight tracking-tight text-foreground-bright">
+            <div className="mb-7 border-border border-b pb-6">
+              <h1 className="mb-1.5 font-bold font-mono text-[22px] text-foreground-bright leading-tight tracking-tight">
                 Adam
                 <br />
                 Rasfeld
@@ -113,13 +113,13 @@ export default function ResumePage() {
                   aria-hidden="true"
                   className="h-1.5 w-1.5 rounded-full bg-syntax-green"
                 />
-                <span className="font-mono text-[9px] tracking-wide text-syntax-green">
+                <span className="font-mono text-[9px] text-syntax-green tracking-wide">
                   open to work
                 </span>
               </div>
             </div>
 
-            <div className="mb-7 border-b border-border pb-6">
+            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-3">contact</Comment>
               <ul className="space-y-1.5 font-mono text-[11px]">
                 <li className="text-foreground">◈ {ABOUT.location}</li>
@@ -174,9 +174,9 @@ export default function ResumePage() {
               </ul>
             </div>
 
-            <div className="mb-7 border-b border-border pb-6">
+            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-3">education</Comment>
-              <div className="font-mono text-xs font-semibold text-foreground-bright">
+              <div className="font-mono font-semibold text-foreground-bright text-xs">
                 {EDUCATION.school}
               </div>
               <div className="font-mono text-[11px] text-foreground">
@@ -201,7 +201,7 @@ export default function ResumePage() {
                     >
                       {group.name}
                     </div>
-                    <div className="font-mono text-[10px] leading-relaxed text-foreground">
+                    <div className="font-mono text-[10px] text-foreground leading-relaxed">
                       {group.items.join(' · ')}
                     </div>
                   </div>
@@ -212,19 +212,19 @@ export default function ResumePage() {
 
           {/* Main */}
           <div className="min-w-0 flex-1">
-            <section className="mb-9 border-b border-border pb-9">
+            <section className="mb-9 border-border border-b pb-9">
               <Comment className="mb-1.5">summary</Comment>
-              <h2 className="mb-4 font-mono text-base font-bold tracking-tight text-foreground-bright">
+              <h2 className="mb-4 font-bold font-mono text-base text-foreground-bright tracking-tight">
                 Profile
               </h2>
-              <p className="max-w-2xl font-mono text-[13px] leading-loose text-foreground">
+              <p className="max-w-2xl font-mono text-[13px] text-foreground leading-loose">
                 {ABOUT.summary}
               </p>
             </section>
 
-            <section className="mb-9 border-b border-border pb-9">
+            <section className="mb-9 border-border border-b pb-9">
               <Comment className="mb-1.5">experience</Comment>
-              <h2 className="mb-5 font-mono text-base font-bold tracking-tight text-foreground-bright">
+              <h2 className="mb-5 font-bold font-mono text-base text-foreground-bright tracking-tight">
                 Work History
               </h2>
               {JOURNEY.map((job, i) => (
@@ -238,7 +238,7 @@ export default function ResumePage() {
 
             <section>
               <Comment className="mb-1.5">skills</Comment>
-              <h2 className="mb-5 font-mono text-base font-bold tracking-tight text-foreground-bright">
+              <h2 className="mb-5 font-bold font-mono text-base text-foreground-bright tracking-tight">
                 Tooling
               </h2>
               <div className="grid gap-3.5">

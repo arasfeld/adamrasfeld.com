@@ -20,13 +20,13 @@ function Box({ label, sub, color }: BoxProps) {
       }}
     >
       <div
-        className="font-mono text-[11px] font-bold"
+        className="font-bold font-mono text-[11px]"
         style={{ color, marginBottom: sub ? 3 : 0 }}
       >
         {label}
       </div>
       {sub && (
-        <div className="font-mono text-[9px] leading-relaxed text-muted-foreground">
+        <div className="font-mono text-[9px] text-muted-foreground leading-relaxed">
           {sub}
         </div>
       )}
@@ -59,12 +59,12 @@ function Arrow({
 export function SproutArchDiagram() {
   return (
     <div className="border border-border bg-card p-6">
-      <div className="mb-5 font-mono text-[9px] tracking-[0.15em] text-muted-foreground">
+      <div className="mb-5 font-mono text-[9px] text-muted-foreground tracking-[0.15em]">
         {'// sync architecture'}
       </div>
 
       {/* Top row: mobile app container */}
-      <div className="relative mb-4 border border-dashed border-border p-5 pb-4">
+      <div className="relative mb-4 border border-border border-dashed p-5 pb-4">
         <span className="absolute -top-2 left-3.5 bg-card px-1.5 font-mono text-[9px] text-muted-foreground">
           mobile app
         </span>

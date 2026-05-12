@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,7 @@ export function TypographyBlockquote({
 }: React.ComponentProps<'blockquote'>) {
   return (
     <blockquote
-      className={cn('mt-6 border-l-2 border-border pl-6 italic', className)}
+      className={cn('mt-6 border-border border-l-2 pl-6 italic', className)}
       {...props}
     />
   );
@@ -36,7 +36,7 @@ export function TypographyH1({
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-4xl font-bold tracking-tight text-foreground-bright text-balance md:text-5xl',
+        'scroll-m-20 text-balance font-bold text-4xl text-foreground-bright tracking-tight md:text-5xl',
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ export function TypographyH2({
   return (
     <h2
       className={cn(
-        'scroll-m-20 text-2xl font-bold tracking-tight text-foreground-bright first:mt-0',
+        'scroll-m-20 font-bold text-2xl text-foreground-bright tracking-tight first:mt-0',
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ export function TypographyH3({
   return (
     <h3
       className={cn(
-        'scroll-m-20 text-xl font-semibold tracking-tight text-foreground-bright',
+        'scroll-m-20 font-semibold text-foreground-bright text-xl tracking-tight',
         className
       )}
       {...props}
@@ -81,7 +81,7 @@ export function TypographyH4({
   return (
     <h4
       className={cn(
-        'scroll-m-20 text-base font-semibold tracking-tight text-foreground-bright',
+        'scroll-m-20 font-semibold text-base text-foreground-bright tracking-tight',
         className
       )}
       {...props}
@@ -108,7 +108,7 @@ export function TypographyLarge({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  return <div className={cn('text-lg font-semibold', className)} {...props} />;
+  return <div className={cn('font-semibold text-lg', className)} {...props} />;
 }
 
 export function TypographyLead({
@@ -118,7 +118,7 @@ export function TypographyLead({
   return (
     <p
       className={cn(
-        'text-base leading-relaxed text-muted-foreground',
+        'text-base text-muted-foreground leading-relaxed',
         className
       )}
       {...props}
@@ -143,7 +143,7 @@ export function TypographyMuted({
   ...props
 }: React.ComponentProps<'p'>) {
   return (
-    <p className={cn('text-xs text-muted-foreground', className)} {...props} />
+    <p className={cn('text-muted-foreground text-xs', className)} {...props} />
   );
 }
 
@@ -154,7 +154,7 @@ export function TypographyP({
   return (
     <p
       className={cn(
-        'text-sm leading-relaxed text-foreground [&:not(:first-child)]:mt-4',
+        'text-foreground text-sm leading-relaxed [&:not(:first-child)]:mt-4',
         className
       )}
       {...props}
@@ -168,7 +168,7 @@ export function TypographySmall({
 }: React.ComponentProps<'small'>) {
   return (
     <small
-      className={cn('text-xs leading-none font-medium', className)}
+      className={cn('font-medium text-xs leading-none', className)}
       {...props}
     />
   );
@@ -268,7 +268,7 @@ export function DisplayHeading({
   return (
     <h1
       className={cn(
-        'font-mono font-bold leading-none tracking-tight text-foreground-bright',
+        'font-bold font-mono text-foreground-bright leading-none tracking-tight',
         '[font-size:clamp(2.5rem,7vw,4.5rem)] [letter-spacing:-0.05em]',
         className
       )}
@@ -284,7 +284,7 @@ export function MonoTag({ className, ...props }: React.ComponentProps<'span'>) {
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground',
+        'inline-flex items-center rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground tracking-wide',
         className
       )}
       {...props}

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getAccessToken } from '@/lib/spotify';
 import { TimeRange } from '@/types';
 
@@ -7,8 +7,8 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type'); // 'tracks' or 'artists'
 
   try {
-    const limit = parseInt(searchParams.get('limit') || '20');
-    const offset = parseInt(searchParams.get('offset') || '0');
+    const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const offset = parseInt(searchParams.get('offset') || '0', 10);
     const timeRange = searchParams.get('timeRange') || TimeRange.ShortTerm;
 
     if (!type || !['tracks', 'artists'].includes(type)) {

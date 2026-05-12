@@ -1,12 +1,11 @@
 'use client';
 
+import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
-
+import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
-import { useScrolled } from './use-scrolled';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -14,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+import { useScrolled } from './use-scrolled';
 
 const NAV = [
   { label: 'about', href: '/about' },
@@ -26,7 +25,7 @@ const NAV = [
 
 function isActive(pathname: string, href: string) {
   if (href === '/') return pathname === '/';
-  return pathname === href || pathname.startsWith(href + '/');
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function Header() {
@@ -38,11 +37,11 @@ export function Header() {
       className={cn(
         'sticky top-0 z-50 w-full transition-colors',
         scrolled
-          ? 'border-b border-border-soft bg-background/85 backdrop-blur'
-          : 'border-b border-transparent'
+          ? 'border-border-soft border-b bg-background/85 backdrop-blur'
+          : 'border-transparent border-b'
       )}
     >
-      <div className="max-w-6xl mx-auto flex h-14 items-center justify-between px-6 font-mono">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 font-mono">
         {/* Mobile hamburger menu - far left */}
         <div className="md:hidden">
           <DropdownMenu>
@@ -68,18 +67,18 @@ export function Header() {
         {/* Logo + brand - left on desktop, center on mobile */}
         <Link
           href="/"
-          className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
+          className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2 md:static md:translate-x-0 md:gap-3"
         >
           <span className="text-primary">
             <Logo />
           </span>
-          <span className="hidden sm:inline text-[11px] text-muted-foreground">
+          <span className="hidden text-[11px] text-muted-foreground sm:inline">
             adam<span className="text-primary">.</span>rasfeld
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7 mx-auto pl-2">
+        <nav className="mx-auto hidden items-center gap-7 pl-2 md:flex">
           {NAV.map(item => {
             const active = isActive(pathname, item.href);
             return (

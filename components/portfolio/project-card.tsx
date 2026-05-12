@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 
 import { DeviceWire } from '@/components/portfolio/device-wire';
-import type { Project, ProjectKind, ProjectStatus } from '@/types';
 import { cn } from '@/lib/utils';
+import type { Project, ProjectKind, ProjectStatus } from '@/types';
 
 interface ProjectCardProps {
   project: Project;
@@ -43,26 +44,27 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {/* Dot-grid header */}
       <div
         className={cn(
-          'relative flex h-48 items-center justify-center overflow-hidden border-b border-border',
+          'relative flex h-48 items-center justify-center overflow-hidden border-border border-b',
           accent.text
         )}
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(var(--type-rgb), 0.16) 1.2px, transparent 1.2px)',
-          backgroundSize: '22px 22px',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ['--type-rgb' as any]: accent.rgb,
-        }}
+        style={
+          {
+            backgroundImage:
+              'radial-gradient(circle, rgba(var(--type-rgb), 0.16) 1.2px, transparent 1.2px)',
+            backgroundSize: '22px 22px',
+            '--type-rgb': accent.rgb,
+          } as CSSProperties
+        }
       >
         <div
           aria-hidden="true"
           className="absolute h-40 w-40 rounded-full opacity-15 blur-2xl"
-          style={{ backgroundColor: `rgb(var(--type-rgb))` }}
+          style={{ backgroundColor: 'rgb(var(--type-rgb))' }}
         />
         <div className="relative">
           {project.image ? (
             <div className="overflow-hidden rounded-md border border-border bg-card shadow-md">
-              <div className="flex items-center gap-1 border-b border-border bg-background/60 px-2 py-1.5">
+              <div className="flex items-center gap-1 border-border border-b bg-background/60 px-2 py-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
                 <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/35" />
                 <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/20" />
@@ -83,7 +85,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* Year */}
-        <span className="absolute right-2.5 top-2.5 border border-border bg-card px-1.5 py-px font-mono text-[9px] tracking-wide text-muted-foreground">
+        <span className="absolute top-2.5 right-2.5 border border-border bg-card px-1.5 py-px font-mono text-[9px] text-muted-foreground tracking-wide">
           {project.year}
         </span>
 
@@ -106,7 +108,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {/* Type */}
         <span
           className={cn(
-            'absolute bottom-2.5 right-2.5 font-mono text-[9px] tracking-wide',
+            'absolute right-2.5 bottom-2.5 font-mono text-[9px] tracking-wide',
             accent.text
           )}
         >
@@ -116,10 +118,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Body */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-2 font-mono text-sm font-bold tracking-tight text-foreground-bright">
+        <h3 className="mb-2 font-bold font-mono text-foreground-bright text-sm tracking-tight">
           {project.title}
         </h3>
-        <p className="mb-4 flex-1 font-mono text-[11px] leading-relaxed text-muted-foreground">
+        <p className="mb-4 flex-1 font-mono text-[11px] text-muted-foreground leading-relaxed">
           {project.tagline}
         </p>
 
@@ -127,7 +129,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {project.stack.slice(0, 4).map(s => (
             <span
               key={s}
-              className="rounded-sm border border-border px-1.5 py-px font-mono text-[9px] tracking-wide text-syntax-cyan"
+              className="rounded-sm border border-border px-1.5 py-px font-mono text-[9px] text-syntax-cyan tracking-wide"
             >
               {s}
             </span>
@@ -139,7 +141,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           )}
         </div>
 
-        <div className="flex gap-3 border-t border-border pt-3.5 font-mono text-[10px]">
+        <div className="flex gap-3 border-border border-t pt-3.5 font-mono text-[10px]">
           {detailHref ? (
             <Link
               href={detailHref}

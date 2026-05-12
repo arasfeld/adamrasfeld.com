@@ -56,18 +56,18 @@ export default function Contact() {
       />
       <div className="mx-auto w-full max-w-5xl px-6 py-20 md:px-12">
         {/* Hero */}
-        <div className="mb-12 ar-fade-up [animation-delay:0.1s]">
+        <div className="ar-fade-up mb-12 [animation-delay:0.1s]">
           <Comment className="mb-2.5">contact</Comment>
           <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
             Get in Touch
           </DisplayHeading>
-          <p className="mt-3 max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-md font-mono text-muted-foreground text-xs leading-relaxed">
             Open to new opportunities, interesting projects, and good
             conversations. I respond within a day or two.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] ar-fade-up [animation-delay:0.2s]">
+        <div className="ar-fade-up grid grid-cols-1 gap-12 [animation-delay:0.2s] lg:grid-cols-[1fr_320px]">
           {/* Form */}
           <div>
             <Comment className="mb-5">send a message</Comment>
@@ -76,7 +76,7 @@ export default function Contact() {
 
           {/* Sidebar */}
           <aside>
-            <div className="mb-7 border-b border-border pb-7">
+            <div className="mb-7 border-border border-b pb-7">
               <Comment className="mb-4">direct</Comment>
               <dl className="space-y-2.5">
                 {CONTACT_LINKS.map(({ label, value, href }) => (
@@ -84,7 +84,7 @@ export default function Contact() {
                     key={label}
                     className="grid grid-cols-[64px_1fr] items-baseline gap-3"
                   >
-                    <dt className="font-mono text-[9px] tracking-wide text-muted-foreground">
+                    <dt className="font-mono text-[9px] text-muted-foreground tracking-wide">
                       {label}
                     </dt>
                     <dd className="break-all font-mono text-[11px]">
@@ -108,18 +108,18 @@ export default function Contact() {
               </dl>
             </div>
 
-            <div className="mb-7 border-b border-border pb-7">
+            <div className="mb-7 border-border border-b pb-7">
               <Comment className="mb-3">availability</Comment>
               <div className="mb-2.5 flex items-center gap-2">
                 <span
                   aria-hidden="true"
                   className="h-1.5 w-1.5 rounded-full bg-syntax-green"
                 />
-                <span className="font-mono text-[11px] font-semibold text-foreground-bright">
+                <span className="font-mono font-semibold text-[11px] text-foreground-bright">
                   Open to new opportunities
                 </span>
               </div>
-              <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+              <p className="font-mono text-[11px] text-muted-foreground leading-relaxed">
                 Available for full-time roles, contract work, and consulting
                 engagements. Response time typically within 24–48 hours.
               </p>
@@ -132,7 +132,7 @@ export default function Contact() {
                   <li
                     key={service}
                     className={`flex items-start gap-2.5 py-2 ${
-                      i < SERVICES.length - 1 ? 'border-b border-border' : ''
+                      i < SERVICES.length - 1 ? 'border-border border-b' : ''
                     }`}
                   >
                     <span

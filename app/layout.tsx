@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sonner';
@@ -108,11 +108,11 @@ export default function RootLayout({
         >
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:border focus:rounded-md focus:shadow-lg"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:border focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
           >
             Skip to content
           </a>
-          <div className="flex flex-col h-full w-full min-h-screen">
+          <div className="flex h-full min-h-screen w-full flex-col">
             <Header />
             <main id="main-content" className="mx-auto w-full flex-auto">
               {children}

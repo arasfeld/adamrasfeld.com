@@ -36,7 +36,7 @@ function FieldLabel({ htmlFor, required, children }: FieldLabelProps) {
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-1.5 block font-mono text-[9px] tracking-[0.15em] text-muted-foreground"
+      className="mb-1.5 block font-mono text-[9px] text-muted-foreground tracking-[0.15em]"
     >
       {'// '}
       {children}
@@ -95,7 +95,7 @@ export function ContactForm({ className }: ContactFormProps) {
     return (
       <div
         className={cn(
-          'rounded-md border border-syntax-green/40 bg-syntax-green/5 p-12 text-center ar-fade-up',
+          'ar-fade-up rounded-md border border-syntax-green/40 bg-syntax-green/5 p-12 text-center',
           className
         )}
       >
@@ -124,10 +124,10 @@ export function ContactForm({ className }: ContactFormProps) {
             className="ar-check"
           />
         </svg>
-        <div className="mb-2 font-mono text-sm font-bold text-foreground-bright">
+        <div className="mb-2 font-bold font-mono text-foreground-bright text-sm">
           {'// message sent'}
         </div>
-        <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+        <p className="font-mono text-[11px] text-muted-foreground leading-relaxed">
           Thanks {sentName}. I&apos;ll get back to you at
           <br />
           <span className="text-primary">{sentEmail}</span>

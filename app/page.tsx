@@ -31,16 +31,16 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="px-6 pb-24 pt-24 md:px-16 md:pb-32 md:pt-32">
+      <section className="px-6 pt-24 pb-24 md:px-16 md:pt-32 md:pb-32">
         <div className="mx-auto w-full max-w-5xl">
           <Comment
             color="green"
-            className="mb-8 ar-fade-up [animation-delay:0.15s]"
+            className="ar-fade-up mb-8 [animation-delay:0.15s]"
           >
             hello, world
           </Comment>
 
-          <DisplayHeading className="mb-7 ar-fade-up [animation-delay:0.3s] [font-size:clamp(3.5rem,9.5vw,8.25rem)]">
+          <DisplayHeading className="ar-fade-up mb-7 [animation-delay:0.3s] [font-size:clamp(3.5rem,9.5vw,8.25rem)]">
             {ABOUT.name.split(' ').map(word => (
               <span key={word} className="block">
                 {word}
@@ -48,7 +48,7 @@ export default function Home() {
             ))}
           </DisplayHeading>
 
-          <div className="mb-9 ar-fade-up [animation-delay:0.5s]">
+          <div className="ar-fade-up mb-9 [animation-delay:0.5s]">
             <p
               className="font-mono text-base text-primary md:text-lg"
               aria-live="polite"
@@ -57,19 +57,19 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mb-10 max-w-2xl border-t border-border pt-7 ar-fade-up [animation-delay:0.7s]">
-            <p className="font-mono text-[13px] leading-relaxed text-muted-foreground">
+          <div className="ar-fade-up mb-10 max-w-2xl border-border border-t pt-7 [animation-delay:0.7s]">
+            <p className="font-mono text-[13px] text-muted-foreground leading-relaxed">
               {ABOUT.summary}
             </p>
           </div>
 
-          <div className="mb-11 flex flex-wrap gap-2 ar-fade-up [animation-delay:0.85s]">
+          <div className="ar-fade-up mb-11 flex flex-wrap gap-2 [animation-delay:0.85s]">
             {meta.map(tag => (
               <MonoTag key={tag}>{tag}</MonoTag>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-3 ar-fade-up [animation-delay:1s]">
+          <div className="ar-fade-up flex flex-wrap gap-3 [animation-delay:1s]">
             <Button
               render={<Link href="/portfolio" />}
               variant="default"
@@ -97,7 +97,7 @@ export default function Home() {
             color="green"
             className="mb-10"
           />
-          <div className="border-t border-border">
+          <div className="border-border border-t">
             {JOURNEY.map(job => (
               <ExperienceRow key={`${job.company}-${job.year}`} job={job} />
             ))}
@@ -106,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section className="px-6 pb-24 pt-8 md:px-16">
+      <section className="px-6 pt-8 pb-24 md:px-16">
         <div className="mx-auto w-full max-w-5xl">
           <SectionLabel
             comment="tooling"
@@ -124,7 +124,7 @@ export default function Home() {
                 >
                   <div
                     className={cn(
-                      'mb-3 font-mono text-[9px] font-bold uppercase tracking-[0.18em]',
+                      'mb-3 font-bold font-mono text-[9px] uppercase tracking-[0.18em]',
                       SYNTAX_TEXT_CLASS[colorKey]
                     )}
                   >
@@ -134,7 +134,7 @@ export default function Home() {
                     {group.items.map(item => (
                       <li
                         key={item}
-                        className="font-mono text-xs text-foreground"
+                        className="font-mono text-foreground text-xs"
                       >
                         {item}
                       </li>

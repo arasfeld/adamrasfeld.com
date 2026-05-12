@@ -21,7 +21,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project || !project.hasDetail) {
+  if (!project?.hasDetail) {
     return { title: 'Project Not Found' };
   }
 
@@ -46,7 +46,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProject(slug);
 
-  if (!project || !project.hasDetail) {
+  if (!project?.hasDetail) {
     notFound();
   }
 
