@@ -67,12 +67,12 @@ export function Header() {
         {/* Logo + brand - left on desktop, center on mobile */}
         <Link
           href="/"
-          className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2 md:static md:translate-x-0 md:gap-3"
+          className="group absolute left-1/2 flex -translate-x-1/2 items-center gap-2 md:static md:translate-x-0 md:gap-3"
         >
           <span className="text-primary">
             <Logo />
           </span>
-          <span className="hidden text-[11px] text-muted-foreground sm:inline">
+          <span className="hidden text-[11px] text-muted-foreground transition-colors group-hover:text-foreground sm:inline">
             adam<span className="text-primary">.</span>rasfeld
           </span>
         </Link>
