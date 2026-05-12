@@ -1,9 +1,23 @@
-export function Logo() {
+import { cn } from '@/lib/utils';
+
+interface LogoProps {
+  className?: string;
+  size?: number;
+}
+
+/**
+ * Stylized A·R monogram. Inherits `currentColor` so it themes with the
+ * surrounding text color (typically `text-primary` in the header).
+ */
+export function Logo({ className, size = 22 }: LogoProps) {
   return (
     <svg
-      className="h-12 w-12 text-foreground"
-      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
       viewBox="0 0 420 420"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('block', className)}
+      aria-hidden="true"
     >
       <path
         fill="currentColor"

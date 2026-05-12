@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
+import { useScrolled } from './use-scrolled';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -10,96 +14,88 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { cn } from '@/lib/utils';
+
+const NAV = [
+  { label: 'about', href: '/about' },
+  { label: 'portfolio', href: '/portfolio' },
+  { label: 'resume', href: '/resume' },
+  { label: 'music', href: '/music' },
+  { label: 'contact', href: '/contact' },
+];
+
+function isActive(pathname: string, href: string) {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(href + '/');
+}
 
 export function Header() {
+  const scrolled = useScrolled(24);
+  const pathname = usePathname() ?? '/';
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="max-w-6xl mx-auto flex h-14 items-center justify-between px-6">
+    <header
+      className={cn(
+        'sticky top-0 z-50 w-full transition-colors',
+        scrolled
+          ? 'border-b border-border-soft bg-background/85 backdrop-blur'
+          : 'border-b border-transparent'
+      )}
+    >
+      <div className="max-w-6xl mx-auto flex h-14 items-center justify-between px-6 font-mono">
         {/* Mobile hamburger menu - far left */}
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger
-              render={<Button variant="outline" size="icon" />}
+              render={<Button variant="outline" size="icon-sm" />}
             >
-              <Menu className="h-[1.2rem] w-[1.2rem]" />
+              <Menu className="h-4 w-4" />
               <span className="sr-only">Open menu</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuItem
-                render={<Link href="/about" className="w-full" />}
-              >
-                About
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                render={<Link href="/portfolio" className="w-full" />}
-              >
-                Portfolio
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                render={<Link href="/resume" className="w-full" />}
-              >
-                Resume
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                render={<Link href="/music" className="w-full" />}
-              >
-                Music
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                render={<Link href="/contact" className="w-full" />}
-              >
-                Contact
-              </DropdownMenuItem>
+            <DropdownMenuContent align="start" className="w-44">
+              {NAV.map(item => (
+                <DropdownMenuItem
+                  key={item.href}
+                  render={<Link href={item.href} className="w-full" />}
+                >
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        {/* Desktop navigation - left side */}
-        <div className="hidden md:flex items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+        {/* Logo + brand - left on desktop, center on mobile */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
+        >
+          <span className="text-primary">
             <Logo />
-            <span className="font-bold">Adam Rasfeld</span>
-          </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link
-              href="/about"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              About
-            </Link>
-            <Link
-              href="/portfolio"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Portfolio
-            </Link>
-            <Link
-              href="/resume"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Resume
-            </Link>
-            <Link
-              href="/music"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Music
-            </Link>
-            <Link
-              href="/contact"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Contact
-            </Link>
-          </nav>
-        </div>
+          </span>
+          <span className="hidden sm:inline text-[11px] text-muted-foreground">
+            adam<span className="text-primary">.</span>rasfeld
+          </span>
+        </Link>
 
-        {/* Mobile logo - center */}
-        <div className="md:hidden flex-1 flex justify-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <Logo />
-          </Link>
-        </div>
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-7 mx-auto pl-2">
+          {NAV.map(item => {
+            const active = isActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  'text-[11px] tracking-wide transition-colors hover:text-foreground',
+                  active ? 'text-primary' : 'text-muted-foreground'
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
 
         {/* Theme toggle - right side */}
         <div className="flex items-center">

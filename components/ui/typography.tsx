@@ -9,7 +9,7 @@ export function TypographyA({
   return (
     <a
       className={cn(
-        'font-medium underline-offset-2 hover:underline',
+        'font-medium text-primary underline-offset-2 hover:underline',
         className
       )}
       {...props}
@@ -23,7 +23,7 @@ export function TypographyBlockquote({
 }: React.ComponentProps<'blockquote'>) {
   return (
     <blockquote
-      className={cn('mt-6 border-l-2 pl-6 italic', className)}
+      className={cn('mt-6 border-l-2 border-border pl-6 italic', className)}
       {...props}
     />
   );
@@ -36,7 +36,7 @@ export function TypographyH1({
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance',
+        'scroll-m-20 text-4xl font-bold tracking-tight text-foreground-bright text-balance md:text-5xl',
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ export function TypographyH2({
   return (
     <h2
       className={cn(
-        'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+        'scroll-m-20 text-2xl font-bold tracking-tight text-foreground-bright first:mt-0',
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ export function TypographyH3({
   return (
     <h3
       className={cn(
-        'scroll-m-20 text-2xl font-semibold tracking-tight',
+        'scroll-m-20 text-xl font-semibold tracking-tight text-foreground-bright',
         className
       )}
       {...props}
@@ -81,7 +81,7 @@ export function TypographyH4({
   return (
     <h4
       className={cn(
-        'scroll-m-20 text-xl font-semibold tracking-tight',
+        'scroll-m-20 text-base font-semibold tracking-tight text-foreground-bright',
         className
       )}
       {...props}
@@ -96,7 +96,7 @@ export function TypographyInlineCode({
   return (
     <code
       className={cn(
-        'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
+        'relative rounded-sm border border-border bg-card px-[0.3rem] py-[0.1rem] font-mono text-xs',
         className
       )}
       {...props}
@@ -116,7 +116,13 @@ export function TypographyLead({
   ...props
 }: React.ComponentProps<'p'>) {
   return (
-    <p className={cn('text-xl text-muted-foreground', className)} {...props} />
+    <p
+      className={cn(
+        'text-base leading-relaxed text-muted-foreground',
+        className
+      )}
+      {...props}
+    />
   );
 }
 
@@ -137,7 +143,7 @@ export function TypographyMuted({
   ...props
 }: React.ComponentProps<'p'>) {
   return (
-    <p className={cn('text-sm text-muted-foreground', className)} {...props} />
+    <p className={cn('text-xs text-muted-foreground', className)} {...props} />
   );
 }
 
@@ -147,7 +153,10 @@ export function TypographyP({
 }: React.ComponentProps<'p'>) {
   return (
     <p
-      className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}
+      className={cn(
+        'text-sm leading-relaxed text-foreground [&:not(:first-child)]:mt-4',
+        className
+      )}
       {...props}
     />
   );
@@ -159,7 +168,125 @@ export function TypographySmall({
 }: React.ComponentProps<'small'>) {
   return (
     <small
-      className={cn('text-sm leading-none font-medium', className)}
+      className={cn('text-xs leading-none font-medium', className)}
+      {...props}
+    />
+  );
+}
+
+// ─── Code-editor primitives ─────────────────────────────────────────────────
+
+type SyntaxColor =
+  | 'green'
+  | 'red'
+  | 'yellow'
+  | 'purple'
+  | 'cyan'
+  | 'orange'
+  | 'accent'
+  | 'muted';
+
+const syntaxColorClass: Record<SyntaxColor, string> = {
+  green: 'text-syntax-green',
+  red: 'text-syntax-red',
+  yellow: 'text-syntax-yellow',
+  purple: 'text-syntax-purple',
+  cyan: 'text-syntax-cyan',
+  orange: 'text-syntax-orange',
+  accent: 'text-primary',
+  muted: 'text-muted-foreground',
+};
+
+/**
+ * `// foo` style label rendered in syntax-comment color.
+ * Used as the small kicker above section headings on every page.
+ */
+export function Comment({
+  className,
+  color = 'green',
+  children,
+  prefix = '//',
+  ...props
+}: React.ComponentProps<'div'> & {
+  color?: SyntaxColor;
+  prefix?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        'font-mono text-[10px] tracking-wider',
+        syntaxColorClass[color],
+        className
+      )}
+      {...props}
+    >
+      <span aria-hidden="true">{prefix} </span>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Comment kicker + section heading. The most-repeated pattern in the design.
+ */
+export function SectionLabel({
+  comment,
+  heading,
+  color = 'green',
+  className,
+  headingClassName,
+  level = 2,
+}: {
+  comment: string;
+  heading: React.ReactNode;
+  color?: SyntaxColor;
+  className?: string;
+  headingClassName?: string;
+  level?: 1 | 2;
+}) {
+  const Heading = level === 1 ? TypographyH1 : TypographyH2;
+  return (
+    <div className={cn('mb-6', className)}>
+      <Comment color={color} className="mb-2">
+        {comment}
+      </Comment>
+      <Heading className={cn('text-xl md:text-2xl', headingClassName)}>
+        {heading}
+      </Heading>
+    </div>
+  );
+}
+
+/**
+ * Massive mono display heading used for page H1s (clamp-scaled).
+ * Letter-spacing pulled tight, weight 700.
+ */
+export function DisplayHeading({
+  className,
+  ...props
+}: React.ComponentProps<'h1'>) {
+  return (
+    <h1
+      className={cn(
+        'font-mono font-bold leading-none tracking-tight text-foreground-bright',
+        '[font-size:clamp(2.5rem,7vw,4.5rem)] [letter-spacing:-0.05em]',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Small bordered chip — `8+ yrs experience`, `iOS`, `open to opportunities`, etc.
+ */
+export function MonoTag({ className, ...props }: React.ComponentProps<'span'>) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground',
+        className
+      )}
       {...props}
     />
   );

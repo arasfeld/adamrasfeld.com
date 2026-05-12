@@ -1,101 +1,59 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  TypographyH1,
-  TypographyH2,
-  TypographyH4,
-  TypographyLead,
-  TypographyMuted,
-  TypographyP,
+  Comment,
+  DisplayHeading,
+  SectionLabel,
 } from '@/components/ui/typography';
+import {
+  ABOUT,
+  EDUCATION,
+  JOURNEY,
+  SKILL_GROUPS,
+  VALUES,
+  skillCategoryColor,
+} from '@/lib/about-data';
 import { aboutStructuredData, stringifyJsonLd } from '@/lib/structured-data';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'About Adam Rasfeld - Full Stack Developer',
   description:
     'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
-  keywords: [
-    'About Adam Rasfeld',
-    'Software Engineer Background',
-    'Miami University Computer Science',
-    'Enterprise Software Development',
-    'Software Development Journey',
-    'Technical Skills',
-    'Professional Experience',
-  ],
   alternates: {
     canonical: 'https://adamrasfeld.com/about',
   },
   openGraph: {
     title: 'About Adam Rasfeld - Full Stack Developer',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience. From Miami University to leading enterprise applications.',
+      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience.',
     url: 'https://adamrasfeld.com/about',
   },
   twitter: {
     title: 'About Adam Rasfeld - Full Stack Developer',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience. From Miami University to leading enterprise applications.',
+      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience.',
   },
 };
 
-export default function About() {
-  const skills = {
-    frontend: [
-      'React',
-      'React Native',
-      'Angular',
-      'TypeScript',
-      'JavaScript',
-      'HTML/CSS',
-    ],
-    backend: [
-      'Node.js',
-      '.NET Core',
-      'Ruby on Rails',
-      'Rust',
-      'gRPC',
-      'Kafka',
-      'GraphQL',
-    ],
-    databases: ['PostgreSQL', 'MongoDB', 'MSSQL Server', 'Redis'],
-    other: [
-      'Microservices',
-      'Event-Driven Architecture',
-      'Chrome Extensions',
-      'Software Optimization',
-      'Docker',
-      'AWS',
-    ],
-  };
+const SYNTAX_TEXT_CLASS: Record<string, string> = {
+  yellow: 'text-syntax-yellow',
+  accent: 'text-primary',
+  red: 'text-syntax-red',
+  green: 'text-syntax-green',
+  purple: 'text-syntax-purple',
+};
 
-  const values = [
-    {
-      title: 'Problem Solving',
-      description:
-        'I approach every challenge with a systematic mindset, breaking down complex problems into manageable solutions.',
-    },
-    {
-      title: 'Collaboration',
-      description:
-        'I believe the best results come from working closely with teams, stakeholders, and clients to understand their needs.',
-    },
-    {
-      title: 'Continuous Learning',
-      description:
-        'Technology evolves rapidly, and I stay current with the latest trends and best practices in software development.',
-    },
-    {
-      title: 'Quality Focus',
-      description:
-        'I prioritize writing clean, maintainable code and building systems that are scalable and reliable.',
-    },
-  ];
+const BACKGROUND_PARAGRAPHS: string[] = [
+  `My path in software started at Miami University where I earned a B.S. in Computer Science. First job out of school was at RoviSys — enterprise automation, WinForms to WPF migrations, AutoCAD SDK integrations. Good foundation in writing systems that run in environments where "it crashed" has real consequences.`,
+  `Kroger Digital was where I got a taste of scale. Consumer-facing e-commerce means your bug affects a few million people. I consolidated a fragmented repo structure into a Lerna monorepo, drove test coverage past 90%, and rebuilt auth flows to WCAG standards — learned a lot about what it means to care about quality.`,
+  `At Divisions Maintenance Group I went deep on mobile for the first time — React Native, a native module to get gRPC working on iOS and Android, and a Kafka migration from a service-bus system. At Upstart as SE IV I led the decomposition of a Rails monolith into Kafka-backed microservices, defined data ownership across teams, and built keyset-paginated reporting APIs.`,
+  `Currently at Seamless.AI working on sales-engagement platforms and Chrome extensions. I built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack is React + Node, the challenges are product engineering at a real-world SaaS scale.`,
+];
+
+export default function About() {
+  const currentJob = JOURNEY[0];
 
   return (
     <div className="min-h-screen">
@@ -105,195 +63,141 @@ export default function About() {
           __html: stringifyJsonLd(aboutStructuredData),
         }}
       />
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Mobile: Photo at the very top */}
-        <div className="lg:hidden mb-8">
-          <div className="flex justify-center">
-            <div className="relative w-48 h-48 bg-card rounded-full p-2">
+      <div className="mx-auto w-full max-w-5xl px-6 py-20 md:px-12">
+        {/* Page title */}
+        <div className="mb-12 ar-fade-up [animation-delay:0.1s]">
+          <Comment className="mb-2.5">about</Comment>
+          <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
+            {ABOUT.name}
+          </DisplayHeading>
+        </div>
+
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-14 ar-fade-up [animation-delay:0.2s]">
+          {/* Main column */}
+          <div className="min-w-0 flex-1">
+            {/* Journey */}
+            <div className="mb-11 border-b border-border pb-11">
+              <SectionLabel
+                comment="journey"
+                heading="Background"
+                color="green"
+                headingClassName="text-base md:text-base"
+              />
+              {BACKGROUND_PARAGRAPHS.map((para, i) => (
+                <p
+                  key={i}
+                  className="mb-4 max-w-2xl font-mono text-[13px] leading-loose text-foreground last:mb-0"
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+
+            {/* Values */}
+            <div>
+              <SectionLabel
+                comment="values"
+                heading="What I Care About"
+                color="green"
+                headingClassName="text-base md:text-base"
+              />
+              <div>
+                {VALUES.map((value, i) => (
+                  <div
+                    key={value.title}
+                    className={cn(
+                      'grid grid-cols-1 gap-5 pb-5 sm:grid-cols-[160px_1fr] sm:gap-6 sm:pb-6',
+                      i < VALUES.length - 1 &&
+                        'mb-5 border-b border-border sm:mb-6'
+                    )}
+                  >
+                    <div className="font-mono text-[11px] font-semibold text-primary pt-0.5">
+                      {value.title}
+                    </div>
+                    <p className="font-mono text-[13px] leading-relaxed text-muted-foreground">
+                      {value.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="w-full flex-shrink-0 lg:sticky lg:top-20 lg:w-56">
+            <div className="mx-auto mb-7 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border border-border bg-primary/10">
               <Image
                 src="/me.png"
-                alt="Adam Rasfeld - Full Stack Developer"
-                fill
-                className="rounded-full object-cover shadow-lg"
+                alt="Adam Rasfeld"
+                width={144}
+                height={144}
                 priority
+                className="h-full w-full object-cover"
               />
             </div>
-          </div>
-        </div>
 
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <TypographyH1 className="mb-6 text-wrap-balance">
-            About Me
-          </TypographyH1>
-          <TypographyLead className="max-w-3xl mx-auto text-wrap-pretty">
-            I&apos;m a passionate Full Stack Software Developer with over 8
-            years of experience building scalable applications and optimizing
-            system performance. I specialize in modern web technologies and have
-            worked across the entire tech stack.
-          </TypographyLead>
-        </div>
-
-        {/* Background Section */}
-        <div className="mb-16">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <TypographyH2 className="mb-6 text-wrap-balance">
-                My Journey
-              </TypographyH2>
-              <TypographyP className="mb-6">
-                My journey in software development began at Miami University
-                where I earned my Bachelor of Science in Computer Science. Since
-                then, I&apos;ve had the privilege of working with some
-                incredible companies and teams.
-              </TypographyP>
-              <TypographyP className="mb-6">
-                I started my career at RoviSys, where I developed enterprise
-                applications and learned the fundamentals of software
-                development. From there, I moved to Kroger Digital, where I
-                worked on large-scale consumer-facing applications.
-              </TypographyP>
-              <TypographyP className="mb-6">
-                At Divisions Maintenance Group, I expanded my skills into mobile
-                development and gained experience with React Native. I then
-                joined Upstart as a Software Engineer IV, where I led
-                initiatives to break apart monolithic codebases into
-                microservices and implemented Kafka-based event systems for
-                better scalability.
-              </TypographyP>
-              <TypographyP className="mb-6">
-                Currently, I&apos;m at Seamless.AI, where I&apos;m working on
-                innovative sales engagement platforms and Chrome extensions.
-              </TypographyP>
-            </div>
-
-            <div className="space-y-6">
-              {/* Desktop: Photo in right column */}
-              <div className="hidden lg:flex justify-center">
-                <div className="relative w-64 h-64 bg-card rounded-full p-2">
-                  <Image
-                    src="/me.png"
-                    alt="Adam Rasfeld - Full Stack Developer"
-                    fill
-                    className="rounded-full object-cover shadow-lg"
-                    priority
-                  />
-                </div>
+            <div className="mb-7 border-b border-border pb-6">
+              <Comment className="mb-2.5">currently</Comment>
+              <div className="font-mono text-[12px] font-semibold text-foreground-bright">
+                {currentJob.role}
               </div>
-
-              {/* Combined Info Card */}
-              <Card>
-                <CardContent className="space-y-6">
-                  <div>
-                    <TypographyH4 className="mb-3">Education</TypographyH4>
-                    <TypographyMuted>
-                      <strong>Bachelor of Science in Computer Science</strong>
-                      <br />
-                      Miami University, Oxford OH
-                      <br />
-                      Graduated: 2016
-                    </TypographyMuted>
-                  </div>
-
-                  <div>
-                    <TypographyH4 className="mb-3">Current Role</TypographyH4>
-                    <TypographyMuted>
-                      <strong>Software Engineer II</strong>
-                      <br />
-                      Seamless.AI, Columbus OH
-                      <br />
-                      February 2023 - Present
-                    </TypographyMuted>
-                  </div>
-
-                  <div>
-                    <TypographyH4 className="mb-3">Location</TypographyH4>
-                    <TypographyMuted>Cincinnati, Ohio</TypographyMuted>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+                {currentJob.company} · {currentJob.location}
+                <br />
+                Feb 2023 → present
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Technical Skills Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <TypographyH2 className="mb-6">Technical Skills</TypographyH2>
-            <TypographyLead className="max-w-3xl mx-auto">
-              A comprehensive toolkit for building modern, scalable applications
-            </TypographyLead>
-          </div>
+            <div className="mb-7 border-b border-border pb-6">
+              <Comment className="mb-2.5">education</Comment>
+              <div className="font-mono text-[12px] font-semibold text-foreground-bright">
+                {EDUCATION.school}
+              </div>
+              <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+                {EDUCATION.degree}
+                <br />
+                {EDUCATION.location} · {EDUCATION.year}
+              </div>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(skills).map(([category, skillList]) => (
-              <Card
-                key={category}
-                className="group hover:shadow-lg transition-shadow"
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg capitalize">
-                    {category}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {skillList.map(skill => (
-                      <Badge key={skill} variant="outline" className="text-xs">
-                        {skill}
-                      </Badge>
-                    ))}
+            <div className="mb-7 border-b border-border pb-6">
+              <Comment className="mb-2.5">location</Comment>
+              <div className="font-mono text-[11px] text-foreground">
+                ◈ {ABOUT.location}
+              </div>
+              <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-sm border border-syntax-green/40 bg-syntax-green/10 px-2 py-0.5">
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 rounded-full bg-syntax-green"
+                />
+                <span className="font-mono text-[9px] tracking-wide text-syntax-green">
+                  open to work
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <Comment className="mb-3">skills</Comment>
+              {SKILL_GROUPS.map(group => {
+                const colorKey = skillCategoryColor[group.name];
+                return (
+                  <div key={group.name} className="mb-2.5">
+                    <div
+                      className={cn(
+                        'mb-1 font-mono text-[9px] uppercase tracking-[0.18em]',
+                        SYNTAX_TEXT_CLASS[colorKey]
+                      )}
+                    >
+                      {group.name}
+                    </div>
+                    <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+                      {group.items.join(' · ')}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Values Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <TypographyH2 className="mb-6">What I Value</TypographyH2>
-            <TypographyLead className="max-w-3xl mx-auto">
-              The principles that guide my approach to software development
-            </TypographyLead>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <Card
-                key={index}
-                className="group hover:shadow-lg transition-shadow"
-              >
-                <CardHeader>
-                  <CardTitle className="text-xl">{value.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <TypographyP>{value.description}</TypographyP>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Beyond the Code Section */}
-        <div className="text-center">
-          <Card className="p-12">
-            <TypographyH2 className="mb-6">Beyond the Code</TypographyH2>
-            <TypographyLead className="mb-8 max-w-3xl mx-auto">
-              When I&apos;m not coding, you can find me exploring new
-              technologies, contributing to open-source projects, or sharing
-              knowledge with the developer community. I believe in continuous
-              learning and staying current with industry trends.
-            </TypographyLead>
-            <Button
-              render={<Link href="/contact" />}
-              variant="outline"
-              size="lg"
-            >
-              Get in Touch
-            </Button>
-          </Card>
+                );
+              })}
+            </div>
+          </aside>
         </div>
       </div>
     </div>

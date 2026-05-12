@@ -1,300 +1,148 @@
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import {
-  Building2,
-  Database,
-  Lightbulb,
-  Palette,
-  Settings,
-  Smartphone,
-  Wrench,
-  Zap,
-} from 'lucide-react';
 
+import { ExperienceRow } from '@/components/experience-row';
+import { Typewriter } from '@/components/typewriter';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  TypographyH1,
-  TypographyH2,
-  TypographyP,
+  Comment,
+  DisplayHeading,
+  MonoTag,
+  SectionLabel,
 } from '@/components/ui/typography';
+import {
+  ABOUT,
+  JOURNEY,
+  SKILL_GROUPS,
+  skillCategoryColor,
+} from '@/lib/about-data';
+import { cn } from '@/lib/utils';
 
-// Dynamically import PricingSection as it is conditionally rendered
-const PricingSection = dynamic(
-  () => import('@/components/pricing-section').then(mod => mod.PricingSection),
-  {
-    loading: () => (
-      <div className="py-20 animate-pulse bg-muted/20 h-[500px]" />
-    ),
-  }
-);
+const SYNTAX_TEXT_CLASS: Record<string, string> = {
+  yellow: 'text-syntax-yellow',
+  accent: 'text-primary',
+  red: 'text-syntax-red',
+  green: 'text-syntax-green',
+  purple: 'text-syntax-purple',
+};
 
 export default function Home() {
+  const meta = [ABOUT.location, '8+ yrs experience', 'open to opportunities'];
+
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-12">
-        <div className="relative max-w-4xl mx-auto w-full">
-          <div className="text-center space-y-8">
-            <div className="space-y-4">
-              <TypographyH1 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent text-wrap-balance">
-                Adam Rasfeld
-              </TypographyH1>
-            </div>
+      {/* Hero */}
+      <section className="px-6 pb-24 pt-24 md:px-16 md:pb-32 md:pt-32">
+        <div className="mx-auto w-full max-w-5xl">
+          <Comment
+            color="green"
+            className="mb-8 ar-fade-up [animation-delay:0.15s]"
+          >
+            hello, world
+          </Comment>
 
-            <div className="space-y-6">
-              <TypographyH2 className="text-2xl md:text-3xl font-semibold text-muted-foreground text-wrap-balance">
-                Full Stack Developer
-              </TypographyH2>
-            </div>
+          <DisplayHeading className="mb-7 ar-fade-up [animation-delay:0.3s] [font-size:clamp(3.5rem,9.5vw,8.25rem)]">
+            {ABOUT.name.split(' ').map(word => (
+              <span key={word} className="block">
+                {word}
+              </span>
+            ))}
+          </DisplayHeading>
 
-            <div>
-              <TypographyP className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-wrap-pretty">
-                Building digital solutions with precision. Transforming complex
-                algorithms into elegant, scalable systems.
-              </TypographyP>
-            </div>
+          <div className="mb-9 ar-fade-up [animation-delay:0.5s]">
+            <p
+              className="font-mono text-base text-primary md:text-lg"
+              aria-live="polite"
+            >
+              <Typewriter text={ABOUT.title} />
+            </p>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
-              <div>
-                <Button render={<Link href="/portfolio" />} size="lg">
-                  View Portfolio
-                </Button>
-              </div>
-              <div>
-                <Button
-                  render={<Link href="/contact" />}
-                  variant="outline"
-                  size="lg"
-                >
-                  Get in Touch
-                </Button>
-              </div>
-            </div>
+          <div className="mb-10 max-w-2xl border-t border-border pt-7 ar-fade-up [animation-delay:0.7s]">
+            <p className="font-mono text-[13px] leading-relaxed text-muted-foreground">
+              {ABOUT.summary}
+            </p>
+          </div>
+
+          <div className="mb-11 flex flex-wrap gap-2 ar-fade-up [animation-delay:0.85s]">
+            {meta.map(tag => (
+              <MonoTag key={tag}>{tag}</MonoTag>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3 ar-fade-up [animation-delay:1s]">
+            <Button
+              render={<Link href="/portfolio" />}
+              variant="default"
+              size="default"
+            >
+              view work →
+            </Button>
+            <Button
+              render={<Link href="/contact" />}
+              variant="outline"
+              size="default"
+            >
+              get in touch
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <TypographyH2 className="text-4xl md:text-5xl font-bold text-wrap-balance">
-                  Building the Future,
-                  <span className="block text-primary">
-                    One Algorithm at a Time
-                  </span>
-                </TypographyH2>
-                <TypographyP className="text-xl text-muted-foreground leading-relaxed">
-                  With over 8 years of experience crafting digital solutions, I
-                  blend technical expertise with creative problem-solving to
-                  deliver exceptional user experiences.
-                </TypographyP>
-                <TypographyP className="text-lg text-muted-foreground leading-relaxed">
-                  From startups to enterprise, I&apos;ve helped teams scale
-                  their applications and optimize their systems for maximum
-                  performance.
-                </TypographyP>
-              </div>
-              <div>
-                <Button
-                  render={<Link href="/about" />}
-                  variant="outline"
-                  size="lg"
-                >
-                  Learn More
-                </Button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              {[
-                {
-                  name: 'Frontend',
-                  tech: 'React, Angular, TypeScript',
-                  icon: Zap,
-                },
-                {
-                  name: 'Backend',
-                  tech: 'Node.js, .NET, Ruby',
-                  icon: Wrench,
-                },
-                {
-                  name: 'Mobile',
-                  tech: 'React Native, iOS, Android',
-                  icon: Smartphone,
-                },
-                {
-                  name: 'Architecture',
-                  tech: 'Microservices, Cloud, DevOps',
-                  icon: Building2,
-                },
-              ].map((skill, index) => {
-                const IconComponent = skill.icon;
-                return (
-                  <div key={index}>
-                    <Card className="group hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center mb-4">
-                          <IconComponent
-                            className="w-6 h-6 text-primary"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {skill.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {skill.tech}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-20 px-6 bg-muted/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <TypographyH2 className="text-4xl md:text-5xl font-bold mb-6 text-wrap-balance">
-              Services
-            </TypographyH2>
-            <TypographyP className="text-xl text-muted-foreground max-w-3xl mx-auto text-wrap-pretty">
-              From concept to deployment, I handle every aspect of modern
-              software development
-            </TypographyP>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Palette,
-                title: 'Frontend Development',
-                description:
-                  'Creating responsive, interactive interfaces that users love',
-              },
-              {
-                icon: Settings,
-                title: 'Backend Development',
-                description:
-                  'Building robust, scalable APIs and server-side solutions',
-              },
-              {
-                icon: Smartphone,
-                title: 'Mobile Development',
-                description: 'Cross-platform mobile apps that work seamlessly',
-              },
-              {
-                icon: Building2,
-                title: 'System Architecture',
-                description:
-                  'Designing scalable, maintainable system architectures',
-              },
-              {
-                icon: Database,
-                title: 'Database Design',
-                description:
-                  'Optimizing data storage and retrieval for performance',
-              },
-              {
-                icon: Lightbulb,
-                title: 'Technical Consulting',
-                description:
-                  'Strategic guidance for technology decisions and implementation',
-              },
-            ].map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div key={index}>
-                  <Card className="group hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="w-16 h-16 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center mb-4">
-                        <IconComponent
-                          className="w-8 h-8 text-primary"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <TypographyP className="text-muted-foreground">
-                        {service.description}
-                      </TypographyP>
-                    </CardContent>
-                  </Card>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Conditional Pricing Section */}
-      {process.env.NEXT_PUBLIC_SHOW_PRICING === 'true' && <PricingSection />}
-
-      {/* Stats Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-            {[
-              { number: '8+', label: 'Years Experience' },
-              { number: '15+', label: 'Technologies' },
-              { number: '7+', label: 'Enterprise Apps' },
-              { number: '100%', label: 'Client Satisfaction' },
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-5xl md:text-6xl font-bold text-primary mb-2 tabular-nums">
-                  {stat.number}
-                </div>
-                <div className="text-muted-foreground font-medium">
-                  {stat.label}
-                </div>
-              </div>
+      {/* Experience */}
+      <section className="px-6 py-20 md:px-16">
+        <div className="mx-auto w-full max-w-5xl">
+          <SectionLabel
+            comment="experience"
+            heading="Work History"
+            color="green"
+            className="mb-10"
+          />
+          <div className="border-t border-border">
+            {JOURNEY.map(job => (
+              <ExperienceRow key={`${job.company}-${job.year}`} job={job} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-muted/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div>
-            <Card className="p-12">
-              <div>
-                <TypographyH2 className="text-4xl md:text-5xl font-bold mb-6 text-wrap-balance">
-                  Ready to Get Started?
-                </TypographyH2>
-              </div>
-              <div>
-                <TypographyP className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-wrap-pretty">
-                  Let&apos;s turn your vision into reality. I&apos;m here to
-                  help you build the next big thing.
-                </TypographyP>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <div>
-                  <Button render={<Link href="/contact" />} size="lg">
-                    Start a Project
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    render={<Link href="/portfolio" />}
-                    variant="outline"
-                    size="lg"
+      {/* Skills */}
+      <section className="px-6 pb-24 pt-8 md:px-16">
+        <div className="mx-auto w-full max-w-5xl">
+          <SectionLabel
+            comment="tooling"
+            heading="Skills"
+            color="purple"
+            className="mb-10"
+          />
+          <div className="grid grid-cols-1 gap-px overflow-hidden border border-border bg-border sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(190px,1fr))]">
+            {SKILL_GROUPS.map(group => {
+              const colorKey = skillCategoryColor[group.name];
+              return (
+                <div
+                  key={group.name}
+                  className="bg-card p-5 transition-colors hover:bg-surface-hover"
+                >
+                  <div
+                    className={cn(
+                      'mb-3 font-mono text-[9px] font-bold uppercase tracking-[0.18em]',
+                      SYNTAX_TEXT_CLASS[colorKey]
+                    )}
                   >
-                    View Portfolio
-                  </Button>
+                    {group.name}
+                  </div>
+                  <ul className="space-y-1.5">
+                    {group.items.map(item => (
+                      <li
+                        key={item}
+                        className="font-mono text-xs text-foreground"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </Card>
+              );
+            })}
           </div>
         </div>
       </section>

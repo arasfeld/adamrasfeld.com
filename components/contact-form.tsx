@@ -1,27 +1,23 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { TypographyP } from '@/components/ui/typography';
+import { cn } from '@/lib/utils';
 
-// Contact form validation schema
 const contactFormSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Please enter a valid email address'),
   subject: z.string().min(1, 'Subject is required'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
-  website: z.string().optional(), // Honeypot field
+  website: z.string().optional(),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -30,38 +26,59 @@ interface ContactFormProps {
   className?: string;
 }
 
+interface FieldLabelProps {
+  htmlFor: string;
+  required?: boolean;
+  children: React.ReactNode;
+}
+
+function FieldLabel({ htmlFor, required, children }: FieldLabelProps) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="mb-1.5 block font-mono text-[9px] tracking-[0.15em] text-muted-foreground"
+    >
+      {'// '}
+      {children}
+      {required && <span className="ml-1 text-syntax-red">*</span>}
+    </label>
+  );
+}
+
 export function ContactForm({ className }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sentName, setSentName] = useState<string | null>(null);
+  const [sentEmail, setSentEmail] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isDirty },
+    watch,
+    formState: { errors, isValid },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      website: '',
-    },
+    mode: 'onChange',
+    defaultValues: { website: '' },
   });
+
+  const watched = watch();
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
-
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("Message sent successfully! I'll get back to you soon.");
-        reset(); // Clear the form
+        setSentName(data.firstName);
+        setSentEmail(data.email);
+        reset();
       } else {
         toast.error(
           result.error || 'Failed to send message. Please try again.'
@@ -74,134 +91,177 @@ export function ContactForm({ className }: ContactFormProps) {
     }
   };
 
+  if (sentName && sentEmail) {
+    return (
+      <div
+        className={cn(
+          'rounded-md border border-syntax-green/40 bg-syntax-green/5 p-12 text-center ar-fade-up',
+          className
+        )}
+      >
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 48 48"
+          className="mx-auto mb-4"
+          aria-hidden="true"
+        >
+          <circle
+            cx="24"
+            cy="24"
+            r="22"
+            stroke="var(--syntax-green)"
+            strokeWidth="1.5"
+            fill="none"
+          />
+          <polyline
+            points="14,24 21,31 34,17"
+            stroke="var(--syntax-green)"
+            strokeWidth="2.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="ar-check"
+          />
+        </svg>
+        <div className="mb-2 font-mono text-sm font-bold text-foreground-bright">
+          {'// message sent'}
+        </div>
+        <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+          Thanks {sentName}. I&apos;ll get back to you at
+          <br />
+          <span className="text-primary">{sentEmail}</span>
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-5"
+          onClick={() => {
+            setSentName(null);
+            setSentEmail(null);
+          }}
+        >
+          send another
+        </Button>
+      </div>
+    );
+  }
+
+  const hasMinFields = watched.firstName && watched.email && watched.message;
+
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle className="text-2xl">Send Me a Message</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">First Name</Label>
-              <Input
-                id="firstName"
-                placeholder="John"
-                autoComplete="given-name"
-                required
-                {...register('firstName')}
-                className={errors.firstName ? 'border-red-500' : ''}
-              />
-              {errors.firstName && (
-                <TypographyP className="text-sm text-red-600">
-                  {errors.firstName.message}
-                </TypographyP>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name</Label>
-              <Input
-                id="lastName"
-                placeholder="Doe"
-                autoComplete="family-name"
-                required
-                {...register('lastName')}
-                className={errors.lastName ? 'border-red-500' : ''}
-              />
-              {errors.lastName && (
-                <TypographyP className="text-sm text-red-600">
-                  {errors.lastName.message}
-                </TypographyP>
-              )}
-            </div>
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)} className={cn(className)}>
+      <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+        <div className="mb-4">
+          <FieldLabel htmlFor="firstName" required>
+            first name
+          </FieldLabel>
+          <Input
+            id="firstName"
+            placeholder="Your first name"
+            autoComplete="given-name"
+            aria-invalid={!!errors.firstName}
+            {...register('firstName')}
+          />
+          {errors.firstName && (
+            <p className="mt-1.5 font-mono text-[10px] text-syntax-red">
+              {errors.firstName.message}
+            </p>
+          )}
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              required
-              placeholder="john@example.com"
-              {...register('email')}
-              className={errors.email ? 'border-red-500' : ''}
-            />
-            {errors.email && (
-              <TypographyP className="text-sm text-red-600">
-                {errors.email.message}
-              </TypographyP>
-            )}
-          </div>
+        <div className="mb-4">
+          <FieldLabel htmlFor="lastName" required>
+            last name
+          </FieldLabel>
+          <Input
+            id="lastName"
+            placeholder="Your last name"
+            autoComplete="family-name"
+            aria-invalid={!!errors.lastName}
+            {...register('lastName')}
+          />
+          {errors.lastName && (
+            <p className="mt-1.5 font-mono text-[10px] text-syntax-red">
+              {errors.lastName.message}
+            </p>
+          )}
+        </div>
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="subject">Subject</Label>
-            <Input
-              id="subject"
-              placeholder="Project Inquiry"
-              autoComplete="off"
-              required
-              {...register('subject')}
-              className={errors.subject ? 'border-red-500' : ''}
-            />
-            {errors.subject && (
-              <TypographyP className="text-sm text-red-600">
-                {errors.subject.message}
-              </TypographyP>
-            )}
-          </div>
+      <div className="mb-4">
+        <FieldLabel htmlFor="email" required>
+          email
+        </FieldLabel>
+        <Input
+          id="email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder="you@email.com"
+          aria-invalid={!!errors.email}
+          {...register('email')}
+        />
+        {errors.email && (
+          <p className="mt-1.5 font-mono text-[10px] text-syntax-red">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              placeholder="Tell me about your project or how I can help..."
-              rows={6}
-              required
-              className={`resize-none ${
-                errors.message ? 'border-red-500' : ''
-              }`}
-              {...register('message')}
-            />
-            {errors.message && (
-              <TypographyP className="text-sm text-red-600">
-                {errors.message.message}
-              </TypographyP>
-            )}
-          </div>
+      <div className="mb-4">
+        <FieldLabel htmlFor="subject">subject</FieldLabel>
+        <Input
+          id="subject"
+          placeholder="What's this about?"
+          autoComplete="off"
+          aria-invalid={!!errors.subject}
+          {...register('subject')}
+        />
+        {errors.subject && (
+          <p className="mt-1.5 font-mono text-[10px] text-syntax-red">
+            {errors.subject.message}
+          </p>
+        )}
+      </div>
 
-          {/* Honeypot field */}
-          <div className="hidden" aria-hidden="true">
-            <Input
-              id="website"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-              {...register('website')}
-            />
-          </div>
+      <div className="mb-5">
+        <FieldLabel htmlFor="message" required>
+          message
+        </FieldLabel>
+        <Textarea
+          id="message"
+          rows={7}
+          placeholder="Tell me about your project or opportunity..."
+          aria-invalid={!!errors.message}
+          className="resize-y"
+          {...register('message')}
+        />
+        {errors.message && (
+          <p className="mt-1.5 font-mono text-[10px] text-syntax-red">
+            {errors.message.message}
+          </p>
+        )}
+      </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            size="lg"
-            disabled={isSubmitting || !isValid || !isDirty}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sending...
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4 mr-2" />
-                Send Message
-              </>
-            )}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      {/* Honeypot */}
+      <div className="hidden" aria-hidden="true">
+        <Input
+          id="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register('website')}
+        />
+      </div>
+
+      <Button
+        type="submit"
+        size="default"
+        disabled={isSubmitting || !isValid || !hasMinFields}
+      >
+        {isSubmitting ? 'sending...' : '→ send message'}
+      </Button>
+    </form>
   );
 }

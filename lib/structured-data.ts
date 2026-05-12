@@ -116,16 +116,10 @@ export const rootStructuredData = [
 /**
  * Portfolio structured data
  */
+import type { Project } from '@/types';
+
 export function createPortfolioStructuredData(
-  projects: Array<{
-    title: string;
-    description: string;
-    technologies: string[];
-    year: string;
-    liveUrl?: string | null;
-    githubUrl: string;
-    image: string;
-  }>
+  projects: Project[]
 ): WithContext<CollectionPage> {
   return {
     '@context': 'https://schema.org',
@@ -136,29 +130,38 @@ export function createPortfolioStructuredData(
     url: 'https://adamrasfeld.com/portfolio',
     mainEntity: {
       '@type': 'ItemList',
-      itemListElement: projects.map((project, index) => ({
-        '@type': 'SoftwareApplication',
-        position: index + 1,
-        name: project.title,
-        description: project.description,
-        url: project.liveUrl || project.githubUrl,
-        applicationCategory: 'WebApplication',
-        operatingSystem: 'Web Browser',
-        programmingLanguage: project.technologies,
-        dateCreated: project.year,
-        image: `https://adamrasfeld.com${project.image}`,
-        author: {
-          '@type': 'Person',
-          name: 'Adam Rasfeld',
-          url: 'https://adamrasfeld.com',
-        },
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-        },
-      })),
+      itemListElement: projects.map((project, index) => {
+        const detailUrl = project.hasDetail
+          ? `https://adamrasfeld.com/portfolio/${project.id}`
+          : null;
+        return {
+          '@type': 'SoftwareApplication',
+          position: index + 1,
+          name: project.title,
+          description: project.description ?? project.tagline,
+          url: detailUrl ?? project.live ?? project.github ?? undefined,
+          applicationCategory: 'WebApplication',
+          operatingSystem:
+            project.type === 'mobile'
+              ? 'iOS, Android'
+              : project.type === 'desktop'
+                ? 'macOS, Windows, Linux'
+                : 'Web Browser',
+          programmingLanguage: project.stack,
+          dateCreated: project.year,
+          author: {
+            '@type': 'Person',
+            name: 'Adam Rasfeld',
+            url: 'https://adamrasfeld.com',
+          },
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+          },
+        };
+      }),
     },
   };
 }

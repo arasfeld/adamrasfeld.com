@@ -1,7 +1,10 @@
 export function Footer() {
   return (
-    <footer className="p-4 text-center text-sm">
-      <p>© {new Date().getFullYear()} Adam Rasfeld. All rights reserved.</p>
+    <footer className="border-t border-border">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-6 font-mono text-[10px] tracking-wide text-muted-foreground">
+        <span>© {new Date().getFullYear()} Adam Rasfeld</span>
+        <span className="opacity-60">built with taste</span>
+      </div>
     </footer>
   );
 }

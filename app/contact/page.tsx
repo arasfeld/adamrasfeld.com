@@ -1,55 +1,49 @@
 import type { Metadata } from 'next';
-import {
-  Clock,
-  Code,
-  Database,
-  Github,
-  Linkedin,
-  Mail,
-  MessageSquare,
-  Phone,
-  Smartphone,
-  Zap,
-} from 'lucide-react';
 
 import { ContactForm } from '@/components/contact-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  TypographyH1,
-  TypographyLead,
-  TypographyMuted,
-  TypographyP,
-} from '@/components/ui/typography';
+import { Comment, DisplayHeading } from '@/components/ui/typography';
+import { ABOUT } from '@/lib/about-data';
 import { contactStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
   title: 'Contact Adam Rasfeld - Full Stack Developer',
   description:
-    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities. Fast response time and transparent communication.',
-  keywords: [
-    'Contact Adam Rasfeld',
-    'Software Development Services',
-    'Web Development Consulting',
-    'Mobile App Development',
-    'Freelance Developer',
-    'Cincinnati Developer',
-    'Remote Developer',
-  ],
+    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities.',
   alternates: {
     canonical: 'https://adamrasfeld.com/contact',
   },
   openGraph: {
-    title: 'Contact Adam Rasfeld - Full Stack Developer',
+    title: 'Contact Adam Rasfeld',
     description:
-      'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities.',
+      'Get in touch with Adam Rasfeld for your next software development project.',
     url: 'https://adamrasfeld.com/contact',
   },
   twitter: {
-    title: 'Contact Adam Rasfeld - Full Stack Developer',
+    title: 'Contact Adam Rasfeld',
     description:
-      'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities.',
+      'Get in touch with Adam Rasfeld for your next software development project.',
   },
 };
+
+const CONTACT_LINKS = [
+  { label: 'email', value: ABOUT.email, href: `mailto:${ABOUT.email}` },
+  { label: 'github', value: 'github.com/arasfeld', href: ABOUT.github },
+  {
+    label: 'linkedin',
+    value: 'linkedin.com/in/adam-rasfeld',
+    href: ABOUT.linkedin,
+  },
+  { label: 'location', value: ABOUT.location, href: null as string | null },
+];
+
+const SERVICES = [
+  'Full-stack web development',
+  'Mobile app development (iOS + Android)',
+  'System architecture + microservices',
+  'API design and integration',
+  'Performance optimization',
+  'Technical consulting',
+];
 
 export default function Contact() {
   return (
@@ -60,144 +54,101 @@ export default function Contact() {
           __html: stringifyJsonLd(contactStructuredData),
         }}
       />
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="text-center mb-16">
-          <TypographyH1 className="mb-6 text-wrap-balance">
-            Get In Touch
-          </TypographyH1>
-          <TypographyLead className="max-w-3xl mx-auto text-wrap-pretty">
-            I&apos;m always interested in new opportunities and exciting
-            projects. Whether you have a question, want to discuss a potential
-            collaboration, or just want to say hello, I&apos;d love to hear from
-            you.
-          </TypographyLead>
+      <div className="mx-auto w-full max-w-5xl px-6 py-20 md:px-12">
+        {/* Hero */}
+        <div className="mb-12 ar-fade-up [animation-delay:0.1s]">
+          <Comment className="mb-2.5">contact</Comment>
+          <DisplayHeading className="[font-size:clamp(2.25rem,5vw,2.75rem)]">
+            Get in Touch
+          </DisplayHeading>
+          <p className="mt-3 max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
+            Open to new opportunities, interesting projects, and good
+            conversations. I respond within a day or two.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Contact Form */}
-          <ContactForm />
-
-          {/* Contact Information */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl text-wrap-balance">
-                  Contact Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Mail
-                        className="w-6 h-6 text-primary"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <TypographyP className="font-semibold">Email</TypographyP>
-                      <TypographyMuted className="break-all tabular-nums">
-                        arasfeld@gmail.com
-                      </TypographyMuted>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Phone
-                        className="w-6 h-6 text-primary"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <TypographyP className="font-semibold">Phone</TypographyP>
-                      <TypographyMuted className="tabular-nums">
-                        (513) 746-0289
-                      </TypographyMuted>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <a
-                      href="https://github.com/arasfeld"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors flex-shrink-0"
-                    >
-                      <Github
-                        className="w-6 h-6 text-primary"
-                        aria-hidden="true"
-                      />
-                      <span className="sr-only">GitHub</span>
-                    </a>
-                    <div className="min-w-0">
-                      <TypographyP className="font-semibold">
-                        GitHub
-                      </TypographyP>
-                      <TypographyMuted>@arasfeld</TypographyMuted>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <a
-                      href="https://www.linkedin.com/in/adam-rasfeld"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors flex-shrink-0"
-                    >
-                      <Linkedin
-                        className="w-6 h-6 text-primary"
-                        aria-hidden="true"
-                      />
-                      <span className="sr-only">LinkedIn</span>
-                    </a>
-                    <div className="min-w-0">
-                      <TypographyP className="font-semibold">
-                        LinkedIn
-                      </TypographyP>
-                      <TypographyMuted>adam-rasfeld</TypographyMuted>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl text-wrap-balance">
-                  Services Offered
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <TypographyP>
-                  I offer comprehensive software development services including:
-                </TypographyP>
-                <ul className="mt-4 space-y-3">
-                  {[
-                    { text: 'Full-stack web development', icon: Code },
-                    { text: 'Mobile app development', icon: Smartphone },
-                    { text: 'System architecture design', icon: Database },
-                    { text: 'API development and integration', icon: Zap },
-                    { text: 'Performance optimization', icon: Clock },
-                    { text: 'Technical consulting', icon: MessageSquare },
-                  ].map((service, index) => (
-                    <li
-                      key={index}
-                      className="text-sm text-muted-foreground flex items-start gap-3"
-                    >
-                      <div className="w-5 h-5 bg-primary/10 border border-primary/20 rounded flex items-center justify-center mt-0.5 flex-shrink-0">
-                        <service.icon
-                          className="w-3 h-3 text-primary"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      {service.text}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] ar-fade-up [animation-delay:0.2s]">
+          {/* Form */}
+          <div>
+            <Comment className="mb-5">send a message</Comment>
+            <ContactForm />
           </div>
+
+          {/* Sidebar */}
+          <aside>
+            <div className="mb-7 border-b border-border pb-7">
+              <Comment className="mb-4">direct</Comment>
+              <dl className="space-y-2.5">
+                {CONTACT_LINKS.map(({ label, value, href }) => (
+                  <div
+                    key={label}
+                    className="grid grid-cols-[64px_1fr] items-baseline gap-3"
+                  >
+                    <dt className="font-mono text-[9px] tracking-wide text-muted-foreground">
+                      {label}
+                    </dt>
+                    <dd className="break-all font-mono text-[11px]">
+                      {href ? (
+                        <a
+                          href={href}
+                          target={
+                            href.startsWith('http') ? '_blank' : undefined
+                          }
+                          rel="noopener noreferrer"
+                          className="text-primary transition-opacity hover:opacity-70"
+                        >
+                          {value}
+                        </a>
+                      ) : (
+                        <span className="text-foreground">{value}</span>
+                      )}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="mb-7 border-b border-border pb-7">
+              <Comment className="mb-3">availability</Comment>
+              <div className="mb-2.5 flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 rounded-full bg-syntax-green"
+                />
+                <span className="font-mono text-[11px] font-semibold text-foreground-bright">
+                  Open to new opportunities
+                </span>
+              </div>
+              <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+                Available for full-time roles, contract work, and consulting
+                engagements. Response time typically within 24–48 hours.
+              </p>
+            </div>
+
+            <div>
+              <Comment className="mb-3">services</Comment>
+              <ul>
+                {SERVICES.map((service, i) => (
+                  <li
+                    key={service}
+                    className={`flex items-start gap-2.5 py-2 ${
+                      i < SERVICES.length - 1 ? 'border-b border-border' : ''
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-px flex-shrink-0 font-mono text-[11px] text-primary"
+                    >
+                      →
+                    </span>
+                    <span className="font-mono text-[11px] text-muted-foreground">
+                      {service}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
         </div>
       </div>
     </div>
