@@ -275,26 +275,33 @@ export default function Portfolio() {
 
                 {/* Action Buttons */}
                 <div className="flex gap-4 pt-4">
-                  <Button asChild size="sm">
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="w-4 h-4 mr-2" />
-                      View Code
-                    </a>
-                  </Button>
-                  {project.liveUrl && (
-                    <Button asChild size="sm" variant="outline">
+                  <Button
+                    render={
                       <a
-                        href={project.liveUrl}
+                        href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Visit Site
-                      </a>
+                      />
+                    }
+                    size="sm"
+                  >
+                    <Github className="w-4 h-4 mr-2" />
+                    View Code
+                  </Button>
+                  {project.liveUrl && (
+                    <Button
+                      render={
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      }
+                      size="sm"
+                      variant="outline"
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Visit Site
                     </Button>
                   )}
                 </div>
@@ -312,8 +319,8 @@ export default function Portfolio() {
               projects. Let&apos;s discuss how I can help bring your ideas to
               life.
             </TypographyLead>
-            <Button asChild variant="outline" size="lg">
-              <a href="/contact">Get in Touch</a>
+            <Button render={<a href="/contact" />} variant="outline" size="lg">
+              Get in Touch
             </Button>
           </Card>
         </div>

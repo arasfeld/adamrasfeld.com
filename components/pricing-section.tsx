@@ -117,11 +117,11 @@ export function PricingSection() {
                   </ul>
                   <div className="pt-4">
                     <Button
-                      asChild
+                      render={<Link href="/contact" />}
                       className="w-full"
                       variant={pkg.popular ? 'default' : 'outline'}
                     >
-                      <Link href="/contact">Get Started</Link>
+                      Get Started
                     </Button>
                   </div>
                 </CardContent>

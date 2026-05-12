@@ -57,13 +57,17 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
               <div>
-                <Button asChild size="lg">
-                  <Link href="/portfolio">View Portfolio</Link>
+                <Button render={<Link href="/portfolio" />} size="lg">
+                  View Portfolio
                 </Button>
               </div>
               <div>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/contact">Get in Touch</Link>
+                <Button
+                  render={<Link href="/contact" />}
+                  variant="outline"
+                  size="lg"
+                >
+                  Get in Touch
                 </Button>
               </div>
             </div>
@@ -95,8 +99,12 @@ export default function Home() {
                 </TypographyP>
               </div>
               <div>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/about">Learn More</Link>
+                <Button
+                  render={<Link href="/about" />}
+                  variant="outline"
+                  size="lg"
+                >
+                  Learn More
                 </Button>
               </div>
             </div>
@@ -272,13 +280,17 @@ export default function Home() {
               </div>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <div>
-                  <Button asChild size="lg">
-                    <Link href="/contact">Start a Project</Link>
+                  <Button render={<Link href="/contact" />} size="lg">
+                    Start a Project
                   </Button>
                 </div>
                 <div>
-                  <Button asChild variant="outline" size="lg">
-                    <Link href="/portfolio">View Portfolio</Link>
+                  <Button
+                    render={<Link href="/portfolio" />}
+                    variant="outline"
+                    size="lg"
+                  >
+                    View Portfolio
                   </Button>
                 </div>
               </div>

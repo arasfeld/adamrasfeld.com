@@ -18,37 +18,37 @@ export function Header() {
         {/* Mobile hamburger menu - far left */}
         <div className="md:hidden">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Menu className="h-[1.2rem] w-[1.2rem]" />
-                <span className="sr-only">Open menu</span>
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="icon" />}
+            >
+              <Menu className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Open menu</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuItem asChild>
-                <Link href="/about" className="w-full">
-                  About
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/about" className="w-full" />}
+              >
+                About
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/portfolio" className="w-full">
-                  Portfolio
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/portfolio" className="w-full" />}
+              >
+                Portfolio
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/resume" className="w-full">
-                  Resume
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/resume" className="w-full" />}
+              >
+                Resume
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/music" className="w-full">
-                  Music
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/music" className="w-full" />}
+              >
+                Music
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/contact" className="w-full">
-                  Contact
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/contact" className="w-full" />}
+              >
+                Contact
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

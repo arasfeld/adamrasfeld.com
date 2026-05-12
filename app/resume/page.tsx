@@ -303,31 +303,41 @@ export default function Resume() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="group">
-              <a href="/adam-rasfeld-resume.pdf" download>
-                <Download className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                Download Resume
-              </a>
+            <Button
+              render={<a href="/adam-rasfeld-resume.pdf" download />}
+              size="lg"
+              className="group"
+            >
+              <Download className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+              Download Resume
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a
-                href="https://github.com/arasfeld"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="w-4 h-4 mr-2" />
-                GitHub
-              </a>
+            <Button
+              render={
+                <a
+                  href="https://github.com/arasfeld"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+              variant="outline"
+              size="lg"
+            >
+              <Github className="w-4 h-4 mr-2" />
+              GitHub
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a
-                href="https://www.linkedin.com/in/adam-rasfeld"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="w-4 h-4 mr-2" />
-                LinkedIn
-              </a>
+            <Button
+              render={
+                <a
+                  href="https://www.linkedin.com/in/adam-rasfeld"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+              variant="outline"
+              size="lg"
+            >
+              <Linkedin className="w-4 h-4 mr-2" />
+              LinkedIn
             </Button>
           </div>
         </div>

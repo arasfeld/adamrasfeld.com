@@ -286,8 +286,12 @@ export default function About() {
               knowledge with the developer community. I believe in continuous
               learning and staying current with industry trends.
             </TypographyLead>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/contact">Get in Touch</Link>
+            <Button
+              render={<Link href="/contact" />}
+              variant="outline"
+              size="lg"
+            >
+              Get in Touch
             </Button>
           </Card>
         </div>

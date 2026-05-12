@@ -96,7 +96,7 @@ export function TypographyInlineCode({
   return (
     <code
       className={cn(
-        'bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
+        'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
         className
       )}
       {...props}
@@ -116,7 +116,7 @@ export function TypographyLead({
   ...props
 }: React.ComponentProps<'p'>) {
   return (
-    <p className={cn('text-muted-foreground text-xl', className)} {...props} />
+    <p className={cn('text-xl text-muted-foreground', className)} {...props} />
   );
 }
 
@@ -137,7 +137,7 @@ export function TypographyMuted({
   ...props
 }: React.ComponentProps<'p'>) {
   return (
-    <p className={cn('text-muted-foreground text-sm', className)} {...props} />
+    <p className={cn('text-sm text-muted-foreground', className)} {...props} />
   );
 }
 
