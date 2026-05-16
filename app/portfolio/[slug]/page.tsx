@@ -1,11 +1,21 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { FluxDetail } from '@/components/portfolio/flux-detail';
+import { FreeboxDetail } from '@/components/portfolio/freebox-detail';
+import { JoyceDetail } from '@/components/portfolio/joyce-detail';
+import { MapGameDetail } from '@/components/portfolio/map-game-detail';
+import { RazzifyDetail } from '@/components/portfolio/razzify-detail';
 import { SproutDetail } from '@/components/portfolio/sprout-detail';
 import { getDetailSlugs, getProject } from '@/lib/portfolio-data';
 
 const DETAIL_COMPONENTS: Record<string, () => React.ReactElement> = {
   sprout: SproutDetail,
+  freebox: FreeboxDetail,
+  razzify: RazzifyDetail,
+  'joyce-art-studio': JoyceDetail,
+  flux: FluxDetail,
+  'map-game': MapGameDetail,
 };
 
 export function generateStaticParams() {

@@ -18,6 +18,12 @@ export interface Project {
   live: string | null;
   /** Set to true when a dedicated detail page exists at `/portfolio/<id>`. */
   hasDetail: boolean;
-  /** Optional screenshot shown in the card header instead of the wireframe. */
-  image?: string;
+  /**
+   * Optional screenshot shown in the card header instead of the wireframe.
+   * `dark` is optional — when omitted, `light` is shown in both themes.
+   */
+  image?: {
+    light: string;
+    dark?: string;
+  };
 }

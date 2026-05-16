@@ -9,7 +9,7 @@ interface LogoProps {
  * Stylized A·R monogram. Inherits `currentColor` so it themes with the
  * surrounding text color (typically `text-primary` in the header).
  */
-export function Logo({ className, size = 22 }: LogoProps) {
+export function Logo({ className, size = 32 }: LogoProps) {
   return (
     <svg
       width={size}

@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   title: 'Portfolio - Adam Rasfeld Projects',
   description:
-    "Explore Adam Rasfeld's portfolio of full-stack development projects — Sprout childcare tracker, Freebox marketplace, Joyce Art Studio, Electron Spotify client, Vice habit tracker, Map Game, and Family Tree explorer.",
+    "Explore Adam Rasfeld's portfolio of full-stack development projects — Sprout childcare tracker, Freebox marketplace, Joyce Art Studio, Electron Spotify client, Flux habit tracker, Map Game, and Family Tree explorer.",
   keywords: [
     'Adam Rasfeld Portfolio',
     'Full Stack Projects',

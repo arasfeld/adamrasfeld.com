@@ -63,22 +63,60 @@ export function ProjectCard({ project }: ProjectCardProps) {
         />
         <div className="relative">
           {project.image ? (
-            <div className="overflow-hidden rounded-md border border-border bg-card shadow-md">
-              <div className="flex items-center gap-1 border-border border-b bg-background/60 px-2 py-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/35" />
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/20" />
+            project.type === 'mobile' ? (
+              <div className="overflow-hidden rounded-[18px] border border-border bg-card shadow-md">
+                <div className="relative aspect-[693/1500] w-[80px]">
+                  <Image
+                    src={project.image.light}
+                    alt={`${project.title} screenshot`}
+                    fill
+                    sizes="80px"
+                    className={cn(
+                      'object-cover',
+                      project.image.dark && 'dark:hidden'
+                    )}
+                  />
+                  {project.image.dark && (
+                    <Image
+                      src={project.image.dark}
+                      alt={`${project.title} screenshot`}
+                      fill
+                      sizes="80px"
+                      className="hidden object-cover dark:block"
+                    />
+                  )}
+                </div>
               </div>
-              <div className="relative aspect-video w-[220px] sm:w-[240px]">
-                <Image
-                  src={project.image}
-                  alt={`${project.title} screenshot`}
-                  fill
-                  sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
-                  className="object-cover"
-                />
+            ) : (
+              <div className="overflow-hidden rounded-md border border-border bg-card shadow-md">
+                <div className="flex items-center gap-1 border-border border-b bg-background/60 px-2 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/35" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/20" />
+                </div>
+                <div className="relative aspect-video w-[220px] sm:w-[240px]">
+                  <Image
+                    src={project.image.light}
+                    alt={`${project.title} screenshot`}
+                    fill
+                    sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
+                    className={cn(
+                      'object-cover',
+                      project.image.dark && 'dark:hidden'
+                    )}
+                  />
+                  {project.image.dark && (
+                    <Image
+                      src={project.image.dark}
+                      alt={`${project.title} screenshot`}
+                      fill
+                      sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
+                      className="hidden object-cover dark:block"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            )
           ) : (
             <DeviceWire type={project.type} />
           )}

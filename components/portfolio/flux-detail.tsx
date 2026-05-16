@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { SproutArchDiagram } from '@/components/portfolio/sprout-arch-diagram';
+import { FluxArchDiagram } from '@/components/portfolio/flux-arch-diagram';
 import { Button } from '@/components/ui/button';
 import {
   Comment,
@@ -10,6 +10,44 @@ import {
   SectionLabel,
 } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
+
+const STACK_ROWS: { layer: string; tech: string }[] = [
+  { layer: 'Frontend', tech: 'Expo SDK 54 · React Native 0.81 · React 19' },
+  { layer: 'Language', tech: 'TypeScript (strict mode)' },
+  {
+    layer: 'Routing',
+    tech: 'Expo Router (file-based) · Stack + Tab navigation',
+  },
+  { layer: 'Styling', tech: 'HeroUI Native · Uniwind (Tailwind v4 universal)' },
+  { layer: 'State', tech: 'Redux Toolkit · async thunks · custom hooks' },
+  { layer: 'Local DB', tech: 'AsyncStorage via StorageService singleton' },
+  {
+    layer: 'Date utils',
+    tech: 'date-fns · @react-native-community/datetimepicker',
+  },
+  { layer: 'Feedback', tech: 'Expo Notifications · Expo Haptics' },
+  { layer: 'Build', tech: 'Expo CLI · Metro · EAS Build' },
+];
+
+const FEATURES: string[] = [
+  'Track multiple vices, each with its own color and start date',
+  'Days-sober counter auto-calculated from the start date',
+  'Daily check-ins with mood sentiment and optional notes',
+  'Off-days log a relapse without resetting your main streak',
+  'Per-vice streak counter plus longest-streak tracking',
+  'Tiered achievement badges — common, rare, epic, legendary',
+  'Calendar heatmap visualizes check-in density over time',
+  'Stats tab: longest streaks, badge progress, check-in counts',
+  'Light / dark theme with six customizable accent colors',
+  'iPad-optimized layout with capped content width',
+];
+
+const META_CHIPS = [
+  'iOS · Android · Web',
+  'Offline-first',
+  'Local-only data',
+  'Open source',
+];
 
 interface PhoneFrameProps {
   lightSrc: string;
@@ -53,36 +91,9 @@ function PhoneFrame({
   );
 }
 
-const STACK_ROWS: { layer: string; tech: string }[] = [
-  { layer: 'Mobile', tech: 'Expo SDK 54 · React Native 0.81 · React 19' },
-  { layer: 'Language', tech: 'TypeScript (strict mode)' },
-  { layer: 'Routing', tech: 'Expo Router (file-based)' },
-  { layer: 'Local DB', tech: 'expo-sqlite + Drizzle ORM' },
-  { layer: 'Sync', tech: 'Custom lightweight sync engine (push/pull)' },
-  { layer: 'Backend', tech: 'Supabase — Postgres, Auth, Storage, Realtime' },
-  { layer: 'State', tech: 'TanStack Query (mutations + loading state)' },
-  { layer: 'Monorepo', tech: 'Turborepo + pnpm workspaces' },
-];
-
-const FEATURES: string[] = [
-  'Offline-first — reads always from SQLite, no spinner on data load',
-  'One continuous timeline per child regardless of caregiver',
-  'Role-based access: parent, caregiver, admin, org staff',
-  'Event types: naps, meals, diapers, notes, messages',
-  'Visibility controls: all / parents-only / org-only',
-  'Automatic conflict resolution via last-write-wins on updated_at',
-  'Sync activates on sign-in; app is fully usable offline without auth',
-  'Photo uploads via Supabase Storage',
-  'Real-time live updates via Supabase Realtime (in roadmap)',
-  'Cross-platform — iOS + Android from single codebase',
-];
-
-const META_CHIPS = ['iOS', 'Android', 'Offline-first', 'Open source'];
-
-export function SproutDetail() {
+export function FluxDetail() {
   return (
     <div className="mx-auto w-full max-w-4xl px-6 py-20 md:px-12">
-      {/* Back link */}
       <div className="ar-fade-up mb-9 flex items-center gap-2">
         <Link
           href="/portfolio"
@@ -94,12 +105,11 @@ export function SproutDetail() {
         <Comment className="!text-[11px]">case study</Comment>
       </div>
 
-      {/* Hero */}
       <div className="ar-fade-up mb-16 flex flex-wrap items-start gap-12 [animation-delay:0.15s]">
         <div className="min-w-[280px] flex-1">
           <div className="mb-4 flex flex-wrap items-center gap-2.5">
             <DisplayHeading className="[font-size:clamp(2.5rem,5vw,3.5rem)]">
-              Sprout
+              Flux
             </DisplayHeading>
             <span className="inline-flex items-center rounded-sm border border-syntax-green/40 bg-syntax-green/10 px-2 py-0.5 font-mono text-[9px] text-syntax-green tracking-wide">
               active
@@ -108,19 +118,18 @@ export function SproutDetail() {
           </div>
 
           <p className="mb-6 max-w-lg font-mono text-[15px] text-foreground leading-relaxed">
-            A cross-platform childcare tracking system for parents, caregivers,
-            and daycares — built around the principle that{' '}
-            <span className="text-primary">
-              a child has one continuous timeline
-            </span>
-            .
+            A cross-platform sobriety tracker for any number of vices —{' '}
+            <span className="text-syntax-green">
+              streaks, mood-tagged check-ins, and tiered badges
+            </span>{' '}
+            without giving up your data.
           </p>
 
           <p className="mb-7 max-w-lg font-mono text-muted-foreground text-xs leading-loose">
-            Whether you&apos;re a single parent logging naps at home, co-parents
-            sharing a day across schedules, or daycare staff recording events
-            during care hours — Sprout unifies it all into one timeline. Context
-            changes; data persists.
+            No server, no account. Everything lives in AsyncStorage via a
+            StorageService singleton, and Redux Toolkit thunks bridge the async
+            I/O to reducers. Off-days let you log a relapse without resetting
+            your main streak, and badges unlock at milestone day counts.
           </p>
 
           <div className="mb-7 flex flex-wrap gap-1.5">
@@ -132,7 +141,7 @@ export function SproutDetail() {
           <Button
             render={
               <a
-                href="https://github.com/arasfeld/sprout"
+                href="https://github.com/arasfeld/flux"
                 target="_blank"
                 rel="noopener noreferrer"
               />
@@ -145,52 +154,51 @@ export function SproutDetail() {
         </div>
 
         <PhoneFrame
-          lightSrc="/sprout-home-light.png"
-          darkSrc="/sprout-home-dark.png"
-          alt="Sprout — home with quick actions"
+          lightSrc="/flux-home-light.png"
+          darkSrc="/flux-home-dark.png"
+          alt="Flux — today view with streaks and habits"
           sizes="240px"
           className="mx-auto w-[240px] flex-shrink-0 lg:mx-0"
         />
       </div>
 
-      {/* App showcase */}
       <div className="ar-fade-up mb-14 [animation-delay:0.25s]">
         <SectionLabel
           comment="app"
-          heading="Two Views Of The Day"
+          heading="Your Progress, Two Ways"
           color="green"
           headingClassName="text-base md:text-lg"
         />
         <p className="mb-8 max-w-2xl font-mono text-muted-foreground text-xs leading-loose">
-          Caregivers log events from the home grid. The same events flow into a
-          continuous calendar timeline you can scrub by day, and a date-grouped
-          list for at-a-glance review — same data, two lenses.
+          The calendar shows a month at a glance — color dots per habit, off
+          days, and per-habit completion bars. The stats tab zooms out to streak
+          history, mood distribution, and badge progress — same data, two
+          lenses.
         </p>
         <div className="mx-auto grid max-w-2xl grid-cols-2 gap-6 sm:gap-10">
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/sprout-timeline-light.png"
-              darkSrc="/sprout-timeline-dark.png"
-              alt="Sprout — timeline calendar view"
+              lightSrc="/flux-calendar-light.png"
+              darkSrc="/flux-calendar-dark.png"
+              alt="Flux — monthly calendar with per-habit dots"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"
             />
-            <Comment className="!text-[10px]">timeline</Comment>
+            <Comment className="!text-[10px]">calendar</Comment>
           </div>
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/sprout-list-light.png"
-              darkSrc="/sprout-list-dark.png"
-              alt="Sprout — list view grouped by date"
+              lightSrc="/flux-stats-light.png"
+              darkSrc="/flux-stats-dark.png"
+              alt="Flux — stats with streak history and mood"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"
             />
-            <Comment className="!text-[10px]">list</Comment>
+            <Comment className="!text-[10px]">stats</Comment>
           </div>
         </div>
       </div>
 
-      {/* Architecture */}
       <div className="ar-fade-up mb-14 [animation-delay:0.35s]">
         <SectionLabel
           comment="architecture"
@@ -199,15 +207,17 @@ export function SproutDetail() {
           headingClassName="text-base md:text-lg"
         />
         <p className="mb-6 max-w-2xl font-mono text-muted-foreground text-xs leading-loose">
-          No custom API server. Clients talk directly to Supabase with
-          authorization enforced at the database level via Postgres Row Level
-          Security. The mobile app is offline-first — all reads and writes go
-          through a local SQLite database synced by a lightweight engine.
+          There is no backend. All state lives in AsyncStorage, wrapped by a
+          StorageService singleton with namespaced keys. Redux Toolkit thunks
+          (loadVicesFromStorage, addOffDays, removeCheckIn) handle the async
+          read/write boundary; reducers stay synchronous and persist on each
+          mutation. The data model includes off-days so a relapse is captured
+          without losing streak history, and badge logic runs against the full
+          check-in history on every change.
         </p>
-        <SproutArchDiagram />
+        <FluxArchDiagram />
       </div>
 
-      {/* Tech stack */}
       <div className="ar-fade-up mb-14 [animation-delay:0.45s]">
         <SectionLabel
           comment="stack"
@@ -236,7 +246,6 @@ export function SproutDetail() {
         </div>
       </div>
 
-      {/* Features */}
       <div className="ar-fade-up [animation-delay:0.55s]">
         <SectionLabel
           comment="features"
