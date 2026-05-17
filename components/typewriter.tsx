@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import type { CSSProperties } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,8 +11,10 @@ interface TypewriterProps {
 }
 
 /**
- * Types out `text` one character at a time, leaving a blinking caret behind.
- * Used on the home hero ("Full Stack Developer").
+ * CSS-only typewriter used on the home hero ("Full Stack Developer").
+ * The text exists in the DOM from the start (no JS state) — only the
+ * visible width is animated via steps(). Caret blink kicks in once the
+ * typing animation finishes.
  */
 export function Typewriter({
   text,
@@ -23,46 +23,31 @@ export function Typewriter({
   className,
   caretClassName,
 }: TypewriterProps) {
-  const [displayed, setDisplayed] = useState('');
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-
-    const startId = setTimeout(() => {
-      if (cancelled) return;
-      setDisplayed('');
-      setDone(false);
-      let i = 0;
-      intervalId = setInterval(() => {
-        if (cancelled) return;
-        i += 1;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length) {
-          if (intervalId) clearInterval(intervalId);
-          setDone(true);
-        }
-      }, speed);
-    }, delayMs);
-
-    return () => {
-      cancelled = true;
-      clearTimeout(startId);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [text, speed, delayMs]);
+  const chars = text.length;
+  const durationMs = chars * speed;
 
   return (
     <span className={cn('inline-flex items-center', className)}>
-      <span>{displayed}</span>
+      <span
+        className="ar-typewriter overflow-hidden whitespace-nowrap"
+        style={
+          {
+            animationDelay: `${delayMs}ms`,
+            animationDuration: `${durationMs}ms`,
+            animationTimingFunction: `steps(${chars}, end)`,
+            '--typewriter-chars': chars,
+          } as CSSProperties
+        }
+      >
+        {text}
+      </span>
       <span
         aria-hidden="true"
         className={cn(
-          'ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.05em] bg-current',
-          done && 'ar-blink',
+          'ar-blink ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.05em] bg-current',
           caretClassName
         )}
+        style={{ animationDelay: `${delayMs + durationMs}ms` }}
       />
     </span>
   );
