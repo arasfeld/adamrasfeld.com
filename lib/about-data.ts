@@ -11,9 +11,9 @@ export const ABOUT = {
   github: 'https://github.com/arasfeld',
   linkedin: 'https://www.linkedin.com/in/adam-rasfeld',
   intro:
-    'Full Stack Software Engineer with 8+ years building scalable web and mobile applications. I work across the entire stack — React, Next.js, Node.js, Ruby on Rails, gRPC, Kafka — and I care equally about systems that scale and interfaces that feel good to use.',
+    'Full Stack Software Engineer with 11+ years building scalable web and mobile applications. I work across the entire stack — React, Svelte, Next.js, Node.js, .NET, gRPC, Kafka — and I care equally about systems that scale and interfaces that feel good to use.',
   summary:
-    "From breaking apart Rails monoliths into Kafka-driven microservices at Upstart, to shipping Chrome extensions and dynamic data tables at Seamless.AI, I've spent the last decade making complex systems feel simple. I care about clean architecture, sharp craft, and shipping software people actually want to use.",
+    "From breaking apart Rails monoliths into Kafka-driven microservices at Upstart, to shipping Chrome extensions and data tables at Seamless.AI, to building Filevine's F2 finance platform, I've spent the last decade making complex systems feel simple. I care about clean architecture, sharp craft, and shipping software people actually want to use.",
 };
 
 export type Job = {
@@ -27,7 +27,23 @@ export type Job = {
 
 export const JOURNEY: Job[] = [
   {
-    year: '2023 — Now',
+    year: '2025 — Now',
+    company: 'Filevine',
+    role: 'Software Engineer',
+    location: 'Remote',
+    blurb:
+      'On the F2 (Filevine Finance) team, building a financial platform layered onto Filevine — full-stack work across a Svelte + TanStack Query frontend and a C# / Node.js backend, with AG-Grid powering the heavier data surfaces. Leaning into AI-assisted development with Claude Code as a daily driver.',
+    stack: [
+      'C#',
+      'Node.js',
+      'TypeScript',
+      'Svelte',
+      'TanStack Query',
+      'AG-Grid',
+    ],
+  },
+  {
+    year: '2023 — 2025',
     company: 'Seamless.AI',
     role: 'Software Engineer II',
     location: 'Columbus, OH',
@@ -99,7 +115,14 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     name: 'Frontend',
-    items: ['React', 'React Native', 'Next.js', 'Redux'],
+    items: [
+      'React',
+      'React Native',
+      'Next.js',
+      'Svelte',
+      'TanStack Query',
+      'Redux',
+    ],
   },
   {
     name: 'Backend',

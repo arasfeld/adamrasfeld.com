@@ -26,7 +26,7 @@ const SYNTAX_TEXT_CLASS: Record<string, string> = {
 };
 
 export default function Home() {
-  const meta = [ABOUT.location, '8+ yrs experience', 'open to opportunities'];
+  const meta = [ABOUT.location, '11+ yrs experience', 'open to opportunities'];
 
   return (
     <div className="min-h-screen">

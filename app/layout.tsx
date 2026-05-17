@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: '%s | Adam Rasfeld',
   },
   description:
-    'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures. Specializing in React, Node.js, TypeScript, and modern web technologies.',
+    'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures. Specializing in React, Node.js, TypeScript, and modern web technologies.',
   keywords: [
     'Full Stack Developer',
     'React Developer',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     url: 'https://adamrasfeld.com',
     title: 'Adam Rasfeld - Full Stack Developer',
     description:
-      'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+      'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
     siteName: 'Adam Rasfeld Portfolio',
     images: [
       {
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Adam Rasfeld - Full Stack Developer',
     description:
-      'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+      'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
     images: ['/opengraph-image'],
   },
   robots: {

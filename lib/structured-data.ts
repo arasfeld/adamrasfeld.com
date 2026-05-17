@@ -28,7 +28,7 @@ export const basePersonSchema: WithContext<Person> = {
   url: 'https://adamrasfeld.com',
   image: 'https://adamrasfeld.com/og-image.png',
   description:
-    'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+    'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
   jobTitle: 'Full Stack Developer',
   worksFor: {
     '@type': 'Organization',
@@ -101,7 +101,7 @@ export const webpageSchema: WithContext<WebPage> = {
     '@id': 'https://adamrasfeld.com/#person',
   },
   description:
-    'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+    'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
 };
 
 /**
@@ -175,7 +175,7 @@ export const resumeStructuredData: WithContext<Person> = {
   name: 'Adam Rasfeld',
   jobTitle: 'Full Stack Developer',
   description:
-    'Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+    'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
   url: 'https://adamrasfeld.com/resume',
   email: 'arasfeld@gmail.com',
   telephone: '+1-513-746-0289',
@@ -193,18 +193,17 @@ export const resumeStructuredData: WithContext<Person> = {
   hasOccupation: [
     {
       '@type': 'Occupation',
-      name: 'Software Engineer II',
-    },
-    {
-      '@type': 'Occupation',
       name: 'Software Engineer',
     },
   ],
   knowsAbout: [
     'React',
+    'Svelte',
     'Node.js',
     'TypeScript',
     'JavaScript',
+    'C#',
+    '.NET',
     'Next.js',
     'Full Stack Development',
     'Web Development',
@@ -257,14 +256,14 @@ export const aboutStructuredData: WithContext<AboutPage> = {
   '@type': 'AboutPage',
   name: 'About Adam Rasfeld - Full Stack Developer',
   description:
-    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
+    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
   url: 'https://adamrasfeld.com/about',
   mainEntity: {
     '@type': 'Person',
     name: 'Adam Rasfeld',
     jobTitle: 'Full Stack Developer',
     description:
-      'Passionate Full Stack Developer with 8+ years of experience building scalable web applications, mobile apps, and system architectures.',
+      'Passionate Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
     alumniOf: {
       '@type': 'EducationalOrganization',
       name: 'Miami University',

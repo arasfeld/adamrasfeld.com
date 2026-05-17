@@ -16,18 +16,18 @@ import { cn } from '@/lib/utils';
 export const metadata: Metadata = {
   title: 'Resume - Adam Rasfeld',
   description:
-    'Adam Rasfeld — Full Stack Developer. 8+ years of experience across React, Node.js, Ruby on Rails, gRPC, Kafka, and more.',
+    'Adam Rasfeld — Full Stack Developer. 11+ years of experience across React, Node.js, Ruby on Rails, gRPC, Kafka, and more.',
   alternates: { canonical: 'https://adamrasfeld.com/resume' },
   openGraph: {
     title: 'Resume - Adam Rasfeld',
     description:
-      'Full Stack Developer with 8+ years of experience building scalable web applications and system architectures.',
+      'Full Stack Developer with 11+ years of experience building scalable web applications and system architectures.',
     url: 'https://adamrasfeld.com/resume',
   },
   twitter: {
     title: 'Resume - Adam Rasfeld',
     description:
-      'Full Stack Developer with 8+ years of experience building scalable web applications and system architectures.',
+      'Full Stack Developer with 11+ years of experience building scalable web applications and system architectures.',
   },
 };
 

@@ -20,20 +20,20 @@ import { cn } from '@/lib/utils';
 export const metadata: Metadata = {
   title: 'About Adam Rasfeld - Full Stack Developer',
   description:
-    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
+    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
   alternates: {
     canonical: 'https://adamrasfeld.com/about',
   },
   openGraph: {
     title: 'About Adam Rasfeld - Full Stack Developer',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience.',
+      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience.',
     url: 'https://adamrasfeld.com/about',
   },
   twitter: {
     title: 'About Adam Rasfeld - Full Stack Developer',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 8+ years of experience.',
+      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience.',
   },
 };
 
@@ -49,7 +49,8 @@ const BACKGROUND_PARAGRAPHS: string[] = [
   `My path in software started at Miami University where I earned a B.S. in Computer Science. First job out of school was at RoviSys — enterprise automation, WinForms to WPF migrations, AutoCAD SDK integrations. Good foundation in writing systems that run in environments where "it crashed" has real consequences.`,
   'Kroger Digital was where I got a taste of scale. Consumer-facing e-commerce means your bug affects a few million people. I consolidated a fragmented repo structure into a Lerna monorepo, drove test coverage past 90%, and rebuilt auth flows to WCAG standards — learned a lot about what it means to care about quality.',
   'At Divisions Maintenance Group I went deep on mobile for the first time — React Native, a native module to get gRPC working on iOS and Android, and a Kafka migration from a service-bus system. At Upstart as SE IV I led the decomposition of a Rails monolith into Kafka-backed microservices, defined data ownership across teams, and built keyset-paginated reporting APIs.',
-  'Currently at Seamless.AI working on sales-engagement platforms and Chrome extensions. I built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack is React + Node, the challenges are product engineering at a real-world SaaS scale.',
+  'At Seamless.AI I worked on sales-engagement platforms and Chrome extensions — built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack was React + Node, the challenges were product engineering at real-world SaaS scale.',
+  'Now at Filevine on the F2 (Filevine Finance) team, building a financial platform layered onto the core legal-tech product. The stack pulls together Svelte + TanStack Query on the frontend with C# and Node.js on the backend, and AG-Grid for the heavier data surfaces. It is also where I have leaned hard into AI-assisted development — Claude Code is part of the daily loop.',
 ];
 
 export default function About() {

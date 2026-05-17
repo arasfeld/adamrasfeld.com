@@ -74,7 +74,7 @@ export default async function Image() {
             maxWidth: '800px',
           }}
         >
-          8+ years building scalable web applications, mobile apps, and system
+          11+ years building scalable web applications, mobile apps, and system
           architectures
         </div>
 
