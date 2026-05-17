@@ -102,14 +102,14 @@ export function FreeboxDetail() {
             </div>
             <div className="relative aspect-video">
               <Image
-                src="/freebox-light.png"
+                src="/freebox-light.webp"
                 alt="Freebox marketplace — available items grid, light theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"
                 className="object-cover dark:hidden"
               />
               <Image
-                src="/freebox-dark.png"
+                src="/freebox-dark.webp"
                 alt="Freebox marketplace — available items grid, dark theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"

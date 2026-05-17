@@ -132,7 +132,7 @@ export function JoyceDetail() {
             </div>
             <div className="relative aspect-video w-[320px] sm:w-[360px]">
               <Image
-                src="/joyce-app-main.png"
+                src="/joyce-app-main.webp"
                 alt="Joyce Art Studio screenshot"
                 fill
                 sizes="(min-width: 640px) 360px, 320px"

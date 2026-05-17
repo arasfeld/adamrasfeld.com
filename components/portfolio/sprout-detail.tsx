@@ -145,8 +145,8 @@ export function SproutDetail() {
         </div>
 
         <PhoneFrame
-          lightSrc="/sprout-home-light.png"
-          darkSrc="/sprout-home-dark.png"
+          lightSrc="/sprout-home-light.webp"
+          darkSrc="/sprout-home-dark.webp"
           alt="Sprout — home with quick actions"
           sizes="240px"
           className="mx-auto w-[240px] flex-shrink-0 lg:mx-0"
@@ -169,8 +169,8 @@ export function SproutDetail() {
         <div className="mx-auto grid max-w-2xl grid-cols-2 gap-6 sm:gap-10">
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/sprout-timeline-light.png"
-              darkSrc="/sprout-timeline-dark.png"
+              lightSrc="/sprout-timeline-light.webp"
+              darkSrc="/sprout-timeline-dark.webp"
               alt="Sprout — timeline calendar view"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"
@@ -179,8 +179,8 @@ export function SproutDetail() {
           </div>
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/sprout-list-light.png"
-              darkSrc="/sprout-list-dark.png"
+              lightSrc="/sprout-list-light.webp"
+              darkSrc="/sprout-list-dark.webp"
               alt="Sprout — list view grouped by date"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"

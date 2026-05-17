@@ -154,8 +154,8 @@ export function FluxDetail() {
         </div>
 
         <PhoneFrame
-          lightSrc="/flux-home-light.png"
-          darkSrc="/flux-home-dark.png"
+          lightSrc="/flux-home-light.webp"
+          darkSrc="/flux-home-dark.webp"
           alt="Flux — today view with streaks and habits"
           sizes="240px"
           className="mx-auto w-[240px] flex-shrink-0 lg:mx-0"
@@ -178,8 +178,8 @@ export function FluxDetail() {
         <div className="mx-auto grid max-w-2xl grid-cols-2 gap-6 sm:gap-10">
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/flux-calendar-light.png"
-              darkSrc="/flux-calendar-dark.png"
+              lightSrc="/flux-calendar-light.webp"
+              darkSrc="/flux-calendar-dark.webp"
               alt="Flux — monthly calendar with per-habit dots"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"
@@ -188,8 +188,8 @@ export function FluxDetail() {
           </div>
           <div className="flex flex-col items-center gap-3">
             <PhoneFrame
-              lightSrc="/flux-stats-light.png"
-              darkSrc="/flux-stats-dark.png"
+              lightSrc="/flux-stats-light.webp"
+              darkSrc="/flux-stats-dark.webp"
               alt="Flux — stats with streak history and mood"
               sizes="(min-width: 640px) 240px, 40vw"
               className="w-full"

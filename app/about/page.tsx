@@ -128,7 +128,7 @@ export default function About() {
           <aside className="w-full flex-shrink-0 lg:sticky lg:top-20 lg:w-56">
             <div className="mx-auto mb-7 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border border-border bg-primary/10">
               <Image
-                src="/me.png"
+                src="/me.webp"
                 alt="Adam Rasfeld"
                 width={144}
                 height={144}

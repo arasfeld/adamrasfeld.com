@@ -111,14 +111,14 @@ export function RazzifyDetail() {
             </div>
             <div className="relative aspect-[16/10]">
               <Image
-                src="/razzify-light.png"
+                src="/razzify-light.webp"
                 alt="Razzify desktop client — playlist view, light theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"
                 className="object-cover dark:hidden"
               />
               <Image
-                src="/razzify-dark.png"
+                src="/razzify-dark.webp"
                 alt="Razzify desktop client — playlist view, dark theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"

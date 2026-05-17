@@ -105,14 +105,14 @@ export function MapGameDetail() {
             </div>
             <div className="relative aspect-video">
               <Image
-                src="/map-game-light.png"
+                src="/map-game-light.webp"
                 alt="Map Game — US states quiz, light theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"
                 className="object-cover dark:hidden"
               />
               <Image
-                src="/map-game-dark.png"
+                src="/map-game-dark.webp"
                 alt="Map Game — US states quiz, dark theme"
                 fill
                 sizes="(min-width: 1024px) 420px, 100vw"

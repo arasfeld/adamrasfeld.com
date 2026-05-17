@@ -26,7 +26,7 @@ export const basePersonSchema: WithContext<Person> = {
   name: 'Adam Rasfeld',
   alternateName: 'Adam Rasfeld',
   url: 'https://adamrasfeld.com',
-  image: 'https://adamrasfeld.com/og-image.png',
+  image: 'https://adamrasfeld.com/opengraph-image',
   description:
     'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
   jobTitle: 'Full Stack Developer',

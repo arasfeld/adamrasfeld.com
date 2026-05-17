@@ -25,8 +25,8 @@ export const PROJECTS: Project[] = [
     live: null,
     hasDetail: true,
     image: {
-      light: '/sprout-home-light.png',
-      dark: '/sprout-home-dark.png',
+      light: '/sprout-home-light.webp',
+      dark: '/sprout-home-dark.webp',
     },
   },
   {
@@ -55,7 +55,7 @@ export const PROJECTS: Project[] = [
     live: 'https://joyceartstudio.com',
     hasDetail: true,
     image: {
-      light: '/joyce-app-main.png',
+      light: '/joyce-app-main.webp',
     },
   },
   {
@@ -84,8 +84,8 @@ export const PROJECTS: Project[] = [
     live: null,
     hasDetail: true,
     image: {
-      light: '/razzify-light.png',
-      dark: '/razzify-dark.png',
+      light: '/razzify-light.webp',
+      dark: '/razzify-dark.webp',
     },
   },
   {
@@ -114,8 +114,8 @@ export const PROJECTS: Project[] = [
     live: null,
     hasDetail: true,
     image: {
-      light: '/freebox-light.png',
-      dark: '/freebox-dark.png',
+      light: '/freebox-light.webp',
+      dark: '/freebox-dark.webp',
     },
   },
   {
@@ -142,8 +142,8 @@ export const PROJECTS: Project[] = [
     live: null,
     hasDetail: true,
     image: {
-      light: '/flux-home-light.png',
-      dark: '/flux-home-dark.png',
+      light: '/flux-home-light.webp',
+      dark: '/flux-home-dark.webp',
     },
   },
   {
@@ -168,8 +168,8 @@ export const PROJECTS: Project[] = [
     live: null,
     hasDetail: true,
     image: {
-      light: '/map-game-light.png',
-      dark: '/map-game-dark.png',
+      light: '/map-game-light.webp',
+      dark: '/map-game-dark.webp',
     },
   },
 ];
