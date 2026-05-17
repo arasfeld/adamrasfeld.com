@@ -1,29 +1,17 @@
-'use client';
-
-import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { ArtistRow } from '@/components/music/artist-row';
-import { NowPlayingBar } from '@/components/music/now-playing-bar';
+import { NowPlaying } from '@/components/music/now-playing';
 import { TimeRangeSelector } from '@/components/music/time-range-selector';
 import { TrackRow } from '@/components/music/track-row';
-import { MusicPageSkeleton } from '@/components/spotify-skeletons';
+import { RowListSkeleton } from '@/components/spotify-skeletons';
 import {
   Comment,
   DisplayHeading,
   SectionLabel,
 } from '@/components/ui/typography';
-import {
-  useCurrentlyPlaying,
-  useRecentlyPlayed,
-  useTopArtists,
-  useTopTracks,
-} from '@/lib/spotify-hooks';
-import {
-  type Artist as SpotifyArtist,
-  type Track as SpotifyTrack,
-  TimeRange,
-} from '@/types';
+import { getRecentlyPlayed, getTopArtists, getTopTracks } from '@/lib/spotify';
+import { TimeRange } from '@/types';
 
 type Range = 'short' | 'medium' | 'long';
 
@@ -33,37 +21,80 @@ const RANGE_ENUM: Record<Range, TimeRange> = {
   long: TimeRange.LongTerm,
 };
 
-function MusicContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+function parseRange(value: string | string[] | undefined): Range {
+  if (value === 'short' || value === 'medium' || value === 'long') return value;
+  return 'long';
+}
 
-  const tracksRange = (searchParams.get('tracks') as Range) || 'long';
-  const artistsRange = (searchParams.get('artists') as Range) || 'long';
-
-  const setRange = (key: 'tracks' | 'artists') => (value: Range) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(key, value);
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-
-  const { tracks, isLoading: tracksLoading } = useTopTracks(
-    10,
-    0,
-    RANGE_ENUM[tracksRange]
+async function TopTracksList({ range }: { range: Range }) {
+  const tracks = await getTopTracks(10, RANGE_ENUM[range]);
+  if (tracks.length === 0) {
+    return (
+      <p className="font-mono text-[11px] text-muted-foreground">
+        no tracks available
+      </p>
+    );
+  }
+  return (
+    <>
+      {tracks.map((track, i) => (
+        <TrackRow key={`${range}-${track.id}`} track={track} rank={i + 1} />
+      ))}
+    </>
   );
-  const { artists, isLoading: artistsLoading } = useTopArtists(
-    10,
-    0,
-    RANGE_ENUM[artistsRange]
-  );
-  const { tracks: recentTracks, isLoading: recentLoading } =
-    useRecentlyPlayed(10);
-  const { playing: currentlyPlaying, isLoading: nowPlayingLoading } =
-    useCurrentlyPlaying();
+}
 
-  const initialLoading =
-    tracksLoading && artistsLoading && recentLoading && nowPlayingLoading;
-  if (initialLoading) return <MusicPageSkeleton />;
+async function TopArtistsList({ range }: { range: Range }) {
+  const artists = await getTopArtists(10, RANGE_ENUM[range]);
+  if (artists.length === 0) {
+    return (
+      <p className="font-mono text-[11px] text-muted-foreground">
+        no artists available
+      </p>
+    );
+  }
+  return (
+    <>
+      {artists.map((artist, i) => (
+        <ArtistRow key={`${range}-${artist.id}`} artist={artist} rank={i + 1} />
+      ))}
+    </>
+  );
+}
+
+async function RecentlyPlayedList() {
+  const tracks = await getRecentlyPlayed(10);
+  if (tracks.length === 0) {
+    return (
+      <p className="font-mono text-[11px] text-muted-foreground">
+        no recent listens
+      </p>
+    );
+  }
+  return (
+    <>
+      {tracks.map((track, i) => (
+        <TrackRow
+          key={`recent-${track.played_at}`}
+          track={track}
+          rank={i + 1}
+        />
+      ))}
+    </>
+  );
+}
+
+interface PageProps {
+  searchParams: Promise<{
+    tracks?: string | string[];
+    artists?: string | string[];
+  }>;
+}
+
+export default async function Music({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const tracksRange = parseRange(params.tracks);
+  const artistsRange = parseRange(params.artists);
 
   return (
     <div className="min-h-screen">
@@ -86,10 +117,8 @@ function MusicContent() {
         </div>
       </div>
 
-      {/* Now playing */}
-      {currentlyPlaying?.item && (
-        <NowPlayingBar track={currentlyPlaying.item} />
-      )}
+      {/* Now playing (client island — polls every 30s) */}
+      <NowPlaying />
 
       {/* Top tracks + artists */}
       <div className="ar-fade-up mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-16 gap-y-12 px-6 py-12 [animation-delay:0.3s] md:grid-cols-2 md:px-12">
@@ -102,27 +131,16 @@ function MusicContent() {
             className="mb-4"
           />
           <TimeRangeSelector
+            param="tracks"
             value={tracksRange}
-            onChange={setRange('tracks')}
             className="mb-5"
           />
-          {tracksLoading ? (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              loading...
-            </p>
-          ) : tracks?.length > 0 ? (
-            tracks.map((track: SpotifyTrack, i: number) => (
-              <TrackRow
-                key={`${tracksRange}-${track.id}`}
-                track={track}
-                rank={i + 1}
-              />
-            ))
-          ) : (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              no tracks available
-            </p>
-          )}
+          <Suspense
+            key={`tracks-${tracksRange}`}
+            fallback={<RowListSkeleton />}
+          >
+            <TopTracksList range={tracksRange} />
+          </Suspense>
         </section>
 
         <section>
@@ -134,27 +152,16 @@ function MusicContent() {
             className="mb-4"
           />
           <TimeRangeSelector
+            param="artists"
             value={artistsRange}
-            onChange={setRange('artists')}
             className="mb-5"
           />
-          {artistsLoading ? (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              loading...
-            </p>
-          ) : artists?.length > 0 ? (
-            artists.map((artist: SpotifyArtist, i: number) => (
-              <ArtistRow
-                key={`${artistsRange}-${artist.id}`}
-                artist={artist}
-                rank={i + 1}
-              />
-            ))
-          ) : (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              no artists available
-            </p>
-          )}
+          <Suspense
+            key={`artists-${artistsRange}`}
+            fallback={<RowListSkeleton />}
+          >
+            <TopArtistsList range={artistsRange} />
+          </Suspense>
         </section>
       </div>
 
@@ -168,35 +175,11 @@ function MusicContent() {
           className="mb-5"
         />
         <div className="grid grid-cols-1 gap-x-16 md:grid-cols-2">
-          {recentLoading ? (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              loading...
-            </p>
-          ) : recentTracks?.length > 0 ? (
-            recentTracks.map(
-              (track: SpotifyTrack & { played_at: string }, i: number) => (
-                <TrackRow
-                  key={`recent-${track.played_at}`}
-                  track={track}
-                  rank={i + 1}
-                />
-              )
-            )
-          ) : (
-            <p className="font-mono text-[11px] text-muted-foreground">
-              no recent listens
-            </p>
-          )}
+          <Suspense fallback={<RowListSkeleton />}>
+            <RecentlyPlayedList />
+          </Suspense>
         </div>
       </div>
     </div>
-  );
-}
-
-export default function Music() {
-  return (
-    <Suspense fallback={<MusicPageSkeleton />}>
-      <MusicContent />
-    </Suspense>
   );
 }
