@@ -15,17 +15,28 @@ export async function GET() {
       }
     );
 
+    // Let the Vercel CDN serve repeat polls from the edge instead of
+    // invoking the function — clients poll every 30s so we match that.
+    const cacheControl = 'public, s-maxage=30, stale-while-revalidate=60';
+
     if (!response.ok) {
-      return NextResponse.json(null, { status: response.status });
+      return NextResponse.json(null, {
+        status: response.status,
+        headers: { 'Cache-Control': cacheControl },
+      });
     }
 
     // Check if response has content (204 No Content means no currently playing)
     if (response.status === 204) {
-      return NextResponse.json(null);
+      return NextResponse.json(null, {
+        headers: { 'Cache-Control': cacheControl },
+      });
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': cacheControl },
+    });
   } catch (error) {
     console.error('Error in currently-playing API route:', error);
     return NextResponse.json(
