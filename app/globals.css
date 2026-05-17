@@ -194,6 +194,35 @@
   }
 }
 
+@keyframes ar-glitch {
+  0%,
+  78%,
+  100% {
+    clip-path: inset(0);
+    transform: translateX(0);
+  }
+  80% {
+    clip-path: inset(28% 0 42% 0);
+    transform: translateX(-8px);
+  }
+  82% {
+    clip-path: inset(58% 0 12% 0);
+    transform: translateX(8px);
+  }
+  84% {
+    clip-path: inset(14% 0 68% 0);
+    transform: translateX(-4px);
+  }
+  86% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translateX(6px);
+  }
+  88% {
+    clip-path: inset(0);
+    transform: translateX(0);
+  }
+}
+
 .ar-fade-up {
   animation: ar-fade-up 0.5s ease both;
 }
@@ -211,6 +240,9 @@
   stroke-dasharray: 30;
   stroke-dashoffset: 0;
   animation: ar-check 0.4s ease 0.2s both;
+}
+.ar-glitch {
+  animation: ar-glitch 4s steps(1, end) infinite;
 }
 
 /* ─── Print (resume page) ────────────────────────────────────────────────── */
