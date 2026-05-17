@@ -98,6 +98,10 @@ export default async function Music({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen">
+      {/* Speeds up the first album-art request by warming the connection to
+          Spotify's image CDN before the <Image> requests fire. */}
+      <link rel="preconnect" href="https://i.scdn.co" crossOrigin="anonymous" />
+
       {/* Hero */}
       <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-20 pb-10 [animation-delay:0.1s] md:px-12">
         <Comment className="mb-2.5">music</Comment>

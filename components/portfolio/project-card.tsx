@@ -8,6 +8,7 @@ import type { Project, ProjectKind, ProjectStatus } from '@/types';
 
 interface ProjectCardProps {
   project: Project;
+  priority?: boolean;
 }
 
 /** Maps a project kind to its accent color class for the dot-grid header. */
@@ -34,7 +35,7 @@ const STATUS_BADGE: Record<
   active: null,
 };
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, priority }: ProjectCardProps) {
   const accent = TYPE_COLOR[project.type];
   const statusBadge = STATUS_BADGE[project.status];
   const detailHref = project.hasDetail ? `/portfolio/${project.id}` : null;
@@ -71,6 +72,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     alt={`${project.title} screenshot`}
                     fill
                     sizes="80px"
+                    priority={priority}
                     className={cn(
                       'object-cover',
                       project.image.dark && 'dark:hidden'
@@ -82,6 +84,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                       alt={`${project.title} screenshot`}
                       fill
                       sizes="80px"
+                      priority={priority}
                       className="hidden object-cover dark:block"
                     />
                   )}
@@ -100,6 +103,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     alt={`${project.title} screenshot`}
                     fill
                     sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
+                    priority={priority}
                     className={cn(
                       'object-cover',
                       project.image.dark && 'dark:hidden'
@@ -111,6 +115,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                       alt={`${project.title} screenshot`}
                       fill
                       sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
+                      priority={priority}
                       className="hidden object-cover dark:block"
                     />
                   )}

@@ -68,8 +68,8 @@ export default function Portfolio() {
 
         {/* Grid */}
         <div className="ar-fade-up grid grid-cols-1 gap-4 [animation-delay:0.25s] sm:grid-cols-2 lg:grid-cols-3">
-          {PROJECTS.map(project => (
-            <ProjectCard key={project.id} project={project} />
+          {PROJECTS.map((project, i) => (
+            <ProjectCard key={project.id} project={project} priority={i < 3} />
           ))}
         </div>
       </div>
