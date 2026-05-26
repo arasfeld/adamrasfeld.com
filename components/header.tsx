@@ -17,7 +17,7 @@ const NAV = [
 export function Header() {
   return (
     <ScrollShell>
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 font-mono">
+      <div className="safe-px-6 mx-auto flex h-14 max-w-6xl items-center justify-between font-mono">
         <MobileMenu items={NAV} />
 
         <Link

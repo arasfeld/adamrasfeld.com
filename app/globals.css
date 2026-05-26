@@ -145,6 +145,15 @@
   }
 }
 
+/* ─── Safe-area utilities (for viewport-fit=cover on notched devices) ────── */
+@utility safe-px-6 {
+  padding-left: max(1.5rem, env(safe-area-inset-left));
+  padding-right: max(1.5rem, env(safe-area-inset-right));
+}
+@utility safe-pb-6 {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
 /* ─── Animations ─────────────────────────────────────────────────────────── */
 @keyframes ar-fade-up {
   from {

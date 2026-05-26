@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sonner';
@@ -8,6 +8,8 @@ import './globals.css';
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { ThemeColorMeta } from '@/components/theme-color-meta';
+import { THEME_COLORS, THEME_STORAGE_KEY } from '@/lib/brand';
 import { rootStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 
 const jetbrainsMono = JetBrains_Mono({
@@ -82,7 +84,38 @@ export const metadata: Metadata = {
   verification: {
     google: '-R-KI3oaQCkFTCZykSq3Xrv3V3E0U6EBq5zrhuEktyo',
   },
+  appleWebApp: {
+    capable: true,
+    title: 'Adam Rasfeld',
+    statusBarStyle: 'default',
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
 };
+
+export const viewport: Viewport = {
+  colorScheme: 'light dark',
+  viewportFit: 'cover',
+};
+
+const THEME_COLOR_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem('${THEME_STORAGE_KEY}') || 'system';
+    var isDark =
+      stored === 'dark' ||
+      (stored === 'system' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = isDark ? '${THEME_COLORS.dark}' : '${THEME_COLORS.light}';
+    document.head.appendChild(meta);
+  } catch (e) {}
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -98,6 +131,7 @@ export default function RootLayout({
             __html: stringifyJsonLd(rootStructuredData),
           }}
         />
+        <script dangerouslySetInnerHTML={{ __html: THEME_COLOR_SCRIPT }} />
       </head>
       <body className={`${jetbrainsMono.variable} antialiased`}>
         <ThemeProvider
@@ -106,6 +140,7 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
+          <ThemeColorMeta />
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:border focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
