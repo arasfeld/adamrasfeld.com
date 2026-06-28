@@ -9,8 +9,8 @@ import { ThemeToggle } from '@/components/theme-toggle';
 const NAV = [
   { label: 'about', href: '/about' },
   { label: 'portfolio', href: '/portfolio' },
-  { label: 'resume', href: '/resume' },
   { label: 'music', href: '/music' },
+  { label: 'games', href: '/games' },
   { label: 'contact', href: '/contact' },
 ];
 
