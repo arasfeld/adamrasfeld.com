@@ -4,16 +4,11 @@
  * shapes the `lib/steam.ts` data functions return to the UI.
  */
 
-export type SteamState = 'in-game' | 'online' | 'offline';
-
 export interface SteamProfile {
   steamId: string;
   persona: string;
   realName?: string;
   avatar?: string;
-  state: SteamState;
-  /** Name of the game currently being played, when `state === 'in-game'`. */
-  playing?: string;
   /** Account creation time (unix seconds), when public. */
   memberSince?: number;
   country?: string;

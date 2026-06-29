@@ -5,7 +5,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
 const ROW_KEYS = Array.from({ length: 8 }, (_, i) => `bar-row-${i}`);
-const CARD_KEYS = Array.from({ length: 4 }, (_, i) => `showcase-card-${i}`);
+const CARD_KEYS = Array.from({ length: 8 }, (_, i) => `showcase-card-${i}`);
 const ACH_KEYS = Array.from({ length: 8 }, (_, i) => `ach-badge-${i}`);
 const ROTATION_KEYS = Array.from({ length: 3 }, (_, i) => `rotation-${i}`);
 
@@ -71,7 +71,7 @@ export function BarChartSkeleton({ rows = 8 }: { rows?: number }) {
 
 export function ShowcaseSkeleton() {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-3.5">
+    <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
       {CARD_KEYS.map(key => (
         <div
           key={key}

@@ -181,7 +181,7 @@ async function ShowcaseSection() {
   const games = await getShowcaseAchievements();
   if (games.length === 0) return <Empty>showcase unavailable</Empty>;
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-3.5">
+    <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
       {games.map(game => (
         <ShowcaseCard key={game.appid} game={game} />
       ))}
@@ -254,8 +254,22 @@ export default async function Games({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Most played bar chart */}
+      {/* Completionist showcase */}
       <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-12 [animation-delay:0.45s] md:px-12">
+        <SectionLabel
+          comment="100% completed"
+          heading="Completionist Showcase"
+          color="green"
+          headingClassName="text-base md:text-lg"
+          className="mb-5"
+        />
+        <Suspense fallback={<ShowcaseSkeleton />}>
+          <ShowcaseSection />
+        </Suspense>
+      </div>
+
+      {/* Most played bar chart */}
+      <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-12 pb-20 [animation-delay:0.6s] md:px-12">
         <div className="mb-5 flex items-end justify-between gap-4">
           <SectionLabel
             comment="library"
@@ -268,20 +282,6 @@ export default async function Games({ searchParams }: PageProps) {
         </div>
         <Suspense key={sort} fallback={<BarChartSkeleton />}>
           <MostPlayedSection sort={sort} />
-        </Suspense>
-      </div>
-
-      {/* Completionist showcase */}
-      <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-12 pb-20 [animation-delay:0.6s] md:px-12">
-        <SectionLabel
-          comment="100% completed"
-          heading="Completionist Showcase"
-          color="green"
-          headingClassName="text-base md:text-lg"
-          className="mb-5"
-        />
-        <Suspense fallback={<ShowcaseSkeleton />}>
-          <ShowcaseSection />
         </Suspense>
       </div>
     </div>

@@ -31,9 +31,9 @@ function Metric({
 }
 
 /**
- * Hero card for the most-active game: wide banner art, headline playtime
- * metrics, achievement progress, and an "also in rotation" mini-list. Replaces
- * the old vertical Recently Played list.
+ * Hero card for the top recently-played game (by 2-week playtime): wide banner
+ * art, headline playtime metrics, achievement progress, and an "also in
+ * rotation" mini-list. Deliberately historical — no live "playing now" status.
  */
 export function CurrentlyInto({
   game,
@@ -47,16 +47,12 @@ export function CurrentlyInto({
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border-soft bg-card">
       <div className="relative h-[150px] w-full overflow-hidden">
-        <GameBanner name={game.name} appid={game.appid} />
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-black/50 px-2.5 py-1 backdrop-blur">
-          <span className="h-1.5 w-1.5 rounded-full bg-syntax-green" />
-          <span className="font-mono text-[10px] text-white">most active</span>
-        </div>
+        <GameBanner name={game.name} appid={game.appid} priority />
       </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-2 font-mono text-[10px] text-syntax-green">
-          {'// currently into'}
+          {'// recently played'}
         </div>
         <div className="font-bold text-[19px] text-foreground-bright leading-tight tracking-tight">
           {game.name}

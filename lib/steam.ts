@@ -5,7 +5,6 @@ import type {
   SteamAchievement,
   SteamGame,
   SteamProfile,
-  SteamState,
 } from '@/types';
 
 const STEAM_API = 'https://api.steampowered.com';
@@ -61,8 +60,6 @@ interface RawPlayer {
   personaname: string;
   realname?: string;
   avatarfull?: string;
-  personastate?: number;
-  gameextrainfo?: string;
   timecreated?: number;
   loccountrycode?: string;
 }
@@ -95,19 +92,13 @@ export async function getProfile(): Promise<SteamProfile | null> {
   const player = data?.response?.players?.[0];
   if (!player) return null;
 
-  const state: SteamState = player.gameextrainfo
-    ? 'in-game'
-    : (player.personastate ?? 0) > 0
-      ? 'online'
-      : 'offline';
-
+  // Intentionally omit live presence (online/in-game state, current game) — the
+  // page must never reveal whether Adam is playing right now.
   return {
     steamId: player.steamid,
     persona: player.personaname,
     realName: player.realname,
     avatar: player.avatarfull,
-    state,
-    playing: player.gameextrainfo,
     memberSince: player.timecreated,
     country: player.loccountrycode,
   };
@@ -161,7 +152,7 @@ export async function getRecentlyPlayed(): Promise<SteamGame[]> {
   return (data?.response?.games ?? []).map(mapGame);
 }
 
-// ─── Achievements (curated showcase only — bounded cost) ─────────────────────
+// ─── Achievements (curated showcase + recently played — bounded cost) ────────
 
 interface GameAchievementData {
   appid: number;
@@ -236,7 +227,7 @@ async function getGameSchema(
 }
 
 /**
- * Achievement completion for a single game (the "currently into" hero metric).
+ * Achievement completion for a single game (the recently-played hero metric).
  * One bounded GetPlayerAchievements call; returns `null` when the game has no
  * achievements or its stats are private.
  */
@@ -274,8 +265,18 @@ export async function getShowcaseAchievements(): Promise<ShowcaseGame[]> {
 export async function getRecentAchievements(
   limit = 6
 ): Promise<RecentAchievement[]> {
+  // Scan the games actually played in the last 2 weeks (where genuinely recent
+  // unlocks live) unioned with the curated showcase, so the list reflects the
+  // newest achievements rather than old unlocks from long-finished games.
+  const recentlyPlayed = await getRecentlyPlayed();
+  const scanAppids = [
+    ...new Set([
+      ...recentlyPlayed.map(g => g.appid),
+      ...COMPLETIONIST_SHOWCASE,
+    ]),
+  ];
   const games = (
-    await Promise.all(COMPLETIONIST_SHOWCASE.map(fetchGameAchievements))
+    await Promise.all(scanAppids.map(fetchGameAchievements))
   ).filter((g): g is GameAchievementData => g !== null);
 
   const unlocked = games

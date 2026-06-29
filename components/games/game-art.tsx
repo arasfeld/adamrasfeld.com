@@ -30,6 +30,8 @@ interface GameArtProps {
   width: number;
   height: number;
   className?: string;
+  /** Eager-load + preload for above-the-fold LCP images. */
+  priority?: boolean;
 }
 
 /** Fixed-size game/avatar thumbnail with a deterministic gradient fallback. */
@@ -41,6 +43,7 @@ export function GameArt({
   width,
   height,
   className,
+  priority,
 }: GameArtProps) {
   const [failed, setFailed] = useState(false);
   const url = src ?? (appid != null ? steamArtUrl(appid, art) : undefined);
@@ -70,6 +73,7 @@ export function GameArt({
       alt={name}
       width={width}
       height={height}
+      priority={priority}
       onError={() => setFailed(true)}
       className={cn('flex-shrink-0 object-cover', className)}
     />
@@ -81,10 +85,13 @@ export function GameBanner({
   name,
   appid,
   className,
+  priority,
 }: {
   name: string;
   appid: number;
   className?: string;
+  /** Eager-load + preload for above-the-fold LCP images. */
+  priority?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -107,6 +114,7 @@ export function GameBanner({
       alt={name}
       fill
       sizes="(max-width: 768px) 50vw, 240px"
+      priority={priority}
       onError={() => setFailed(true)}
       className={cn('object-cover', className)}
     />

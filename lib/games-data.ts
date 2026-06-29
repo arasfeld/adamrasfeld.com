@@ -10,17 +10,19 @@
  */
 
 /**
- * App IDs mirrored from Adam's Steam "Completionist Showcase". Order here is the
- * display order on the page.
+ * Curated 100%-completed games for the showcase (2 rows of 4). Order here is the
+ * display order on the page — currently sorted by playtime, biggest first. Swap
+ * any appid to re-feature: every entry is just a Steam appid.
  */
 export const COMPLETIONIST_SHOWCASE: number[] = [
-  1245620, // Elden Ring
-  22380, // Fallout: New Vegas
-  356190, // Middle-earth: Shadow of War
-  1145350, // Hades II
-  // TODO(adam): verify/add the remaining showcase appids:
-  //   - Grand Theft Auto: Vice City – The Definitive Edition
-  //   - <the sixth featured game whose capsule art hadn't loaded in the screenshot>
+  1245620, // Elden Ring — 111h
+  1145350, // Hades II — 98h
+  582160, // Assassin's Creed Origins — 87h
+  489830, // The Elder Scrolls V: Skyrim Special Edition — 86h
+  1145360, // Hades — 85h
+  22380, // Fallout: New Vegas — 71h
+  356190, // Middle-earth: Shadow of War — 56h
+  1546990, // Grand Theft Auto: Vice City – The Definitive Edition — 43h
 ];
 
 /**
