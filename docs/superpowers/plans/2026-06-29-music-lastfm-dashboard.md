@@ -1278,10 +1278,9 @@ function Empty({ children }: { children: React.ReactNode }) {
 }
 
 async function StatsSection() {
-  const [info, artistsRes, tracksRes, weekly, genres] = await Promise.all([
+  const [info, artistsRes, weekly, genres] = await Promise.all([
     getUserInfo(),
     getTopArtists('overall', 1),
-    getTopTracks('overall', 1),
     getWeeklyScrobbles(),
     getGenreBreakdown('overall'),
   ]);
@@ -1302,8 +1301,6 @@ async function StatsSection() {
     },
     { label: 'Since', value: fmtYear(info.memberSince) },
   ];
-  // tracksRes is fetched to warm the cache for downstream sections; total unused here.
-  void tracksRes;
   return <StatsStrip stats={stats} />;
 }
 
@@ -1532,7 +1529,7 @@ export default async function Music({ searchParams }: PageProps) {
 - [ ] **Step 2: Typecheck + lint**
 
 Run: `pnpm tsc --noEmit && pnpm check`
-Expected: pass. If Biome flags the `void tracksRes;` line as unused-pattern noise, instead drop `getTopTracks('overall', 1)` from the `Promise.all` and the `tracksRes` binding entirely (it only warmed cache).
+Expected: pass.
 
 - [ ] **Step 3: Commit**
 
