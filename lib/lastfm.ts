@@ -86,13 +86,15 @@ export async function getTopArtists(
   const raw = data?.topartists;
   if (!raw?.artist) return { artists: [], total: 0 };
   return {
-    artists: raw.artist.map((a: any) => ({
-      name: a.name,
-      playcount: Number(a.playcount) || 0,
-      rank: Number(a['@attr']?.rank) || 0,
-      url: a.url,
-      image: pickImage(a.image),
-    })),
+    artists: (Array.isArray(raw.artist) ? raw.artist : [raw.artist]).map(
+      (a: any) => ({
+        name: a.name,
+        playcount: Number(a.playcount) || 0,
+        rank: Number(a['@attr']?.rank) || 0,
+        url: a.url,
+        image: pickImage(a.image),
+      })
+    ),
     total: Number(raw['@attr']?.total) || 0,
   };
 }
@@ -109,14 +111,16 @@ export async function getTopTracks(
   const raw = data?.toptracks;
   if (!raw?.track) return { tracks: [], total: 0 };
   return {
-    tracks: raw.track.map((t: any) => ({
-      name: t.name,
-      artist: t.artist?.name ?? '',
-      playcount: Number(t.playcount) || 0,
-      rank: Number(t['@attr']?.rank) || 0,
-      url: t.url,
-      image: pickImage(t.image),
-    })),
+    tracks: (Array.isArray(raw.track) ? raw.track : [raw.track]).map(
+      (t: any) => ({
+        name: t.name,
+        artist: t.artist?.name ?? '',
+        playcount: Number(t.playcount) || 0,
+        rank: Number(t['@attr']?.rank) || 0,
+        url: t.url,
+        image: pickImage(t.image),
+      })
+    ),
     total: Number(raw['@attr']?.total) || 0,
   };
 }
@@ -131,7 +135,8 @@ export async function getRecentTracks(
   );
   const raw = data?.recenttracks?.track;
   if (!raw) return [];
-  return raw.map((t: any) => ({
+  const list = Array.isArray(raw) ? raw : [raw];
+  return list.map((t: any) => ({
     name: t.name,
     artist: t.artist?.['#text'] ?? '',
     album: t.album?.['#text'] || undefined,
