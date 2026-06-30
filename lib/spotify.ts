@@ -81,3 +81,23 @@ export async function getRecentlyPlayed(
     })) ?? []
   );
 }
+
+/**
+ * Best-effort artist image via Spotify search — used to enrich Last.fm artists
+ * (which return blank images). Requires an exact name match to avoid mismatched
+ * art. Cached 24h since artist art is effectively immutable.
+ */
+export async function searchArtistImage(
+  name: string
+): Promise<string | undefined> {
+  const params = new URLSearchParams({ q: name, type: 'artist', limit: '1' });
+  const res = await spotifyFetch(`/search?${params}`, 86_400);
+  if (!res.ok) return undefined;
+  const data = await res.json();
+  const artist = data.artists?.items?.[0];
+  if (!artist || artist.name?.toLowerCase() !== name.toLowerCase()) {
+    return undefined;
+  }
+  const image = artist.images?.[1] || artist.images?.[0];
+  return image?.url;
+}
