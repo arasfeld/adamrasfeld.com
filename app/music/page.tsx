@@ -1,86 +1,188 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { ArtistRow } from '@/components/music/artist-row';
+import {
+  ArtistBadge,
+  type ResolvedArtist,
+} from '@/components/music/artist-badge';
+import { fmtNum, fmtYear } from '@/components/music/format';
+import {
+  ArtistBadgesSkeleton,
+  OnRepeatSkeleton,
+  RecentCardsSkeleton,
+  SoundProfileSkeleton,
+  TrackBarsSkeleton,
+} from '@/components/music/music-skeletons';
 import { NowPlaying } from '@/components/music/now-playing';
+import { OnRepeat } from '@/components/music/on-repeat';
+import { RecentCard } from '@/components/music/recent-card';
+import { SoundProfile } from '@/components/music/sound-profile';
+import { type MusicStat, StatsStrip } from '@/components/music/stats-strip';
 import { TimeRangeSelector } from '@/components/music/time-range-selector';
-import { TrackRow } from '@/components/music/track-row';
-import { RowListSkeleton } from '@/components/spotify-skeletons';
+import { TrackBar } from '@/components/music/track-bar';
 import {
   Comment,
   DisplayHeading,
   SectionLabel,
 } from '@/components/ui/typography';
-import { getRecentlyPlayed, getTopArtists, getTopTracks } from '@/lib/spotify';
-import { TimeRange } from '@/types';
+import { resolveArtistImage } from '@/lib/album-art';
+import {
+  getGenreBreakdown,
+  getRecentTracks,
+  getTopArtists,
+  getTopTracks,
+  getUserInfo,
+  getWeeklyScrobbles,
+  RANGE_TO_PERIOD,
+} from '@/lib/lastfm';
+import type { MusicRange } from '@/types';
 
-type Range = 'short' | 'medium' | 'long';
-
-const RANGE_ENUM: Record<Range, TimeRange> = {
-  short: TimeRange.ShortTerm,
-  medium: TimeRange.MediumTerm,
-  long: TimeRange.LongTerm,
+export const metadata: Metadata = {
+  title: 'Music',
+  description:
+    "Adam Rasfeld's listening habits — most-played artists and tracks, a genre sound profile, and recent scrobbles, pulled live from Last.fm.",
+  alternates: { canonical: 'https://adamrasfeld.com/music' },
+  openGraph: {
+    title: 'Music',
+    description:
+      "Adam Rasfeld's listening habits — top artists, top tracks, and recent scrobbles from Last.fm.",
+    url: 'https://adamrasfeld.com/music',
+  },
+  twitter: {
+    title: 'Music',
+    description:
+      "Adam Rasfeld's listening habits — top artists, top tracks, and recent scrobbles.",
+  },
 };
 
-function parseRange(value: string | string[] | undefined): Range {
+function parseRange(value: string | string[] | undefined): MusicRange {
   if (value === 'short' || value === 'medium' || value === 'long') return value;
   return 'long';
 }
 
-async function TopTracksList({ range }: { range: Range }) {
-  const tracks = await getTopTracks(10, RANGE_ENUM[range]);
-  if (tracks.length === 0) {
-    return (
-      <p className="font-mono text-[11px] text-muted-foreground">
-        no tracks available
-      </p>
-    );
-  }
+function Empty({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      {tracks.map((track, i) => (
-        <TrackRow key={`${range}-${track.id}`} track={track} rank={i + 1} />
-      ))}
-    </>
+    <p className="font-mono text-[11px] text-muted-foreground">{children}</p>
   );
 }
 
-async function TopArtistsList({ range }: { range: Range }) {
-  const artists = await getTopArtists(10, RANGE_ENUM[range]);
-  if (artists.length === 0) {
-    return (
-      <p className="font-mono text-[11px] text-muted-foreground">
-        no artists available
-      </p>
-    );
-  }
+async function StatsSection() {
+  const [info, artistsRes, weekly, genres] = await Promise.all([
+    getUserInfo(),
+    getTopArtists('overall', 1),
+    getWeeklyScrobbles(),
+    getGenreBreakdown('overall'),
+  ]);
+  if (!info) return null;
+
+  const stats: MusicStat[] = [
+    { label: 'Scrobbles', value: fmtNum(info.scrobbles) },
+    { label: 'Artists', value: fmtNum(artistsRes.total) },
+    {
+      label: 'Top genre',
+      value: genres[0]?.name ?? '—',
+      colorClass: 'text-syntax-green',
+    },
+    {
+      label: 'This week',
+      value: fmtNum(weekly),
+      colorClass: 'text-primary',
+    },
+    { label: 'Since', value: fmtYear(info.memberSince) },
+  ];
+  return <StatsStrip stats={stats} />;
+}
+
+async function OnRepeatSection() {
+  const [{ artists }, { tracks }, info] = await Promise.all([
+    getTopArtists('overall', 4),
+    getTopTracks('overall', 50),
+    getUserInfo(),
+  ]);
+  if (artists.length === 0) return <Empty>not connected</Empty>;
+
+  const resolved = await Promise.all(
+    artists.map(async a => ({
+      ...a,
+      resolvedImage: await resolveArtistImage(a.name, a.image),
+    }))
+  );
+  const hero = resolved[0];
+  const others = resolved.slice(1, 4);
+  const topTrack =
+    tracks.find(t => t.artist === hero.name) ?? tracks[0] ?? null;
+  const share =
+    info && info.scrobbles > 0
+      ? Math.round((hero.playcount / info.scrobbles) * 1000) / 10
+      : 0;
+
   return (
-    <>
-      {artists.map((artist, i) => (
-        <ArtistRow key={`${range}-${artist.id}`} artist={artist} rank={i + 1} />
-      ))}
-    </>
+    <OnRepeat artist={hero} others={others} topTrack={topTrack} share={share} />
   );
 }
 
-async function RecentlyPlayedList() {
-  const tracks = await getRecentlyPlayed(10);
-  if (tracks.length === 0) {
-    return (
-      <p className="font-mono text-[11px] text-muted-foreground">
-        no recent listens
-      </p>
-    );
-  }
+async function TopArtistsSection({ range }: { range: MusicRange }) {
+  const { artists } = await getTopArtists(RANGE_TO_PERIOD[range], 6);
+  if (artists.length === 0) return <Empty>no artists available</Empty>;
+
+  const max = Math.max(...artists.map(a => a.playcount), 1);
+  const resolved: ResolvedArtist[] = await Promise.all(
+    artists.map(async a => ({
+      ...a,
+      resolvedImage: await resolveArtistImage(a.name, a.image),
+    }))
+  );
+
   return (
-    <>
-      {tracks.map((track, i) => (
-        <TrackRow
-          key={`recent-${track.played_at}`}
-          track={track}
+    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+      {resolved.map((artist, i) => (
+        <ArtistBadge
+          key={`${range}-${artist.name}`}
+          artist={artist}
           rank={i + 1}
+          max={max}
         />
       ))}
-    </>
+    </div>
+  );
+}
+
+async function TopTracksSection({ range }: { range: MusicRange }) {
+  const { tracks } = await getTopTracks(RANGE_TO_PERIOD[range], 8);
+  if (tracks.length === 0) return <Empty>no tracks available</Empty>;
+
+  const max = Math.max(...tracks.map(t => t.playcount), 1);
+  return (
+    <div>
+      {tracks.map((track, i) => (
+        <TrackBar
+          key={`${range}-${track.name}-${track.artist}`}
+          track={track}
+          rank={i + 1}
+          max={max}
+        />
+      ))}
+    </div>
+  );
+}
+
+async function SoundProfileSection() {
+  const genres = await getGenreBreakdown('overall');
+  return <SoundProfile genres={genres} />;
+}
+
+async function RecentlyPlayedSection() {
+  const tracks = await getRecentTracks(8);
+  if (tracks.length === 0) return <Empty>no recent listens</Empty>;
+  return (
+    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
+      {tracks.map((track, i) => (
+        <RecentCard
+          key={`recent-${track.playedAt ?? 'now'}-${i}`}
+          track={track}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -94,13 +196,13 @@ interface PageProps {
 export default async function Music({ searchParams }: PageProps) {
   const params = await searchParams;
   const tracksRange = parseRange(params.tracks);
-  const artistsRange = parseRange(params.artists);
+  const artistsRange = params.artists ? parseRange(params.artists) : 'medium';
 
   return (
     <div className="min-h-screen">
-      {/* Speeds up the first album-art request by warming the connection to
-          Spotify's image CDN before the <Image> requests fire. */}
+      {/* Warm connections to the art CDNs before <Image> requests fire. */}
       <link rel="preconnect" href="https://i.scdn.co" crossOrigin="anonymous" />
+      <link rel="preconnect" href="https://lastfm.freetls.fastly.net" />
 
       {/* Hero */}
       <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-20 pb-10 [animation-delay:0.1s] md:px-12">
@@ -115,62 +217,93 @@ export default async function Music({ searchParams }: PageProps) {
               <span className="absolute inset-0 rounded-full bg-syntax-green" />
             </div>
             <span className="font-mono text-[10px] text-muted-foreground">
-              live from spotify
+              live from last.fm
             </span>
           </div>
         </div>
       </div>
 
-      {/* Now playing (client island — polls every 30s) */}
+      {/* Now playing (Spotify client island — polls every 30s) */}
       <NowPlaying />
 
-      {/* Top tracks + artists */}
-      <div className="ar-fade-up mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-16 gap-y-12 px-6 py-12 [animation-delay:0.3s] md:grid-cols-2 md:px-12">
-        <section>
-          <SectionLabel
-            comment="top tracks"
-            heading="Tracks"
-            color="green"
-            headingClassName="text-base md:text-lg"
-            className="mb-4"
-          />
-          <TimeRangeSelector
-            param="tracks"
-            value={tracksRange}
-            className="mb-5"
-          />
-          <Suspense
-            key={`tracks-${tracksRange}`}
-            fallback={<RowListSkeleton />}
-          >
-            <TopTracksList range={tracksRange} />
-          </Suspense>
-        </section>
+      {/* Stats */}
+      <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-10 [animation-delay:0.2s] md:px-12">
+        <Suspense fallback={null}>
+          <StatsSection />
+        </Suspense>
+      </div>
 
-        <section>
-          <SectionLabel
-            comment="top artists"
-            heading="Artists"
-            color="green"
-            headingClassName="text-base md:text-lg"
-            className="mb-4"
-          />
-          <TimeRangeSelector
-            param="artists"
-            value={artistsRange}
-            className="mb-5"
-          />
+      {/* Bento: On Repeat hero + Top Artists */}
+      <div className="ar-fade-up mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 px-6 pt-12 [animation-delay:0.3s] md:px-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <Suspense fallback={<OnRepeatSkeleton />}>
+            <OnRepeatSection />
+          </Suspense>
+        </div>
+        <div className="lg:col-span-8">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <SectionLabel
+              comment="most played"
+              heading="Top Artists"
+              color="green"
+              headingClassName="text-base md:text-lg"
+              className="mb-0"
+            />
+            <TimeRangeSelector
+              param="artists"
+              value={artistsRange}
+              className="pb-0.5"
+            />
+          </div>
           <Suspense
             key={`artists-${artistsRange}`}
-            fallback={<RowListSkeleton />}
+            fallback={<ArtistBadgesSkeleton />}
           >
-            <TopArtistsList range={artistsRange} />
+            <TopArtistsSection range={artistsRange} />
           </Suspense>
-        </section>
+        </div>
+      </div>
+
+      {/* Split: Top Tracks bar chart + Sound Profile */}
+      <div className="ar-fade-up mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-12 gap-y-12 px-6 pt-12 [animation-delay:0.45s] md:px-12 lg:grid-cols-[1.35fr_1fr]">
+        <div>
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <SectionLabel
+              comment="on heavy rotation"
+              heading="Top Tracks"
+              color="green"
+              headingClassName="text-base md:text-lg"
+              className="mb-0"
+            />
+            <TimeRangeSelector
+              param="tracks"
+              value={tracksRange}
+              className="pb-0.5"
+            />
+          </div>
+          <Suspense
+            key={`tracks-${tracksRange}`}
+            fallback={<TrackBarsSkeleton />}
+          >
+            <TopTracksSection range={tracksRange} />
+          </Suspense>
+        </div>
+        <div>
+          <SectionLabel
+            comment="sound profile"
+            heading="What I Listen To"
+            color="green"
+            headingClassName="text-base md:text-lg"
+            className="mb-5"
+          />
+          <Suspense fallback={<SoundProfileSkeleton />}>
+            <SoundProfileSection />
+          </Suspense>
+        </div>
       </div>
 
       {/* Recently played */}
-      <div className="ar-fade-up mx-auto w-full max-w-5xl border-border border-t px-6 pt-12 pb-20 [animation-delay:0.5s] md:px-12">
+      <div className="ar-fade-up mx-auto w-full max-w-5xl px-6 pt-12 pb-20 [animation-delay:0.6s] md:px-12">
         <SectionLabel
           comment="history"
           heading="Recently Played"
@@ -178,11 +311,9 @@ export default async function Music({ searchParams }: PageProps) {
           headingClassName="text-base md:text-lg"
           className="mb-5"
         />
-        <div className="grid grid-cols-1 gap-x-16 md:grid-cols-2">
-          <Suspense fallback={<RowListSkeleton />}>
-            <RecentlyPlayedList />
-          </Suspense>
-        </div>
+        <Suspense fallback={<RecentCardsSkeleton />}>
+          <RecentlyPlayedSection />
+        </Suspense>
       </div>
     </div>
   );
