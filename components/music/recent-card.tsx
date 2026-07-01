@@ -4,7 +4,7 @@ import type { LastfmRecentTrack } from '@/types';
 /** Album-art card for a recently-played scrobble. */
 export function RecentCard({ track }: { track: LastfmRecentTrack }) {
   return (
-    <div className="overflow-hidden rounded-md border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border-soft">
+    <div className="overflow-hidden rounded-md border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-primary">
       <div className="relative aspect-square w-full overflow-hidden">
         <MusicArtFill name={track.name} src={track.image} />
         {track.nowPlaying && (
