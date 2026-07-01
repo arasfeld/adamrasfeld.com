@@ -46,3 +46,11 @@ Set the `SPOTIFY_REDIRECT_URI` environment variable to `http://localhost:3000/ap
 Navigate to http://localhost:3000/api/spotify/login and authorize with Spotify.
 
 You should get redirected back to the `/api/spotify/callback` endpoint with a JSON object containing a `refresh_token` value. Copy this value and paste it into the `SPOTIFY_REFRESH_TOKEN` environment variable.
+
+## Last.fm Setup
+
+The music page's dashboard data — top artists and tracks with play counts, recently played history, listening totals, and genre tags — is sourced from Last.fm.
+
+Create a read-only API account at https://www.last.fm/api/account/create and copy the API key into `LASTFM_API_KEY`. Set `LASTFM_USERNAME` to the Last.fm username whose scrobble history should be displayed (defaults to `arazzy` in `.env.example`).
+
+Spotify is still required for the live now-playing bar and to enrich artist images.
