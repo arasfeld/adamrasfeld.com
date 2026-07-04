@@ -48,14 +48,12 @@ The site is built around a **code-editor aesthetic** using the Atom One Light/Da
 
 Custom keyframes (`ar-fade-up`, `ar-blink`, `ar-eq-bar`, `ar-ping`, `ar-check`) live in `globals.css` and are applied via the matching utility classes. The home page staggers `[animation-delay:…]` on `.ar-fade-up` blocks for the entrance.
 
-There is also a **print stylesheet** at the bottom of `globals.css` scoped to `@media print` for `/resume` — use the `no-print` class to hide elements when printing, and `job-block` for break-avoidance.
-
 ## Architecture
 
 ### Content as data
 
 Page content is hard-coded TypeScript, not pulled from a CMS:
-- `lib/about-data.ts` — `ABOUT`, `JOURNEY` (work history), `EDUCATION`, `SKILL_GROUPS`, `VALUES`, plus the `skillCategoryColor` mapping that ties skill categories to syntax color tokens. Shared by home, about, and resume pages.
+- `lib/about-data.ts` — `ABOUT`, `JOURNEY` (work history, used by home/portfolio), `EDUCATION`, `SKILL_GROUPS`, `VALUES`, `INTERESTS` (personal/about-me interests), plus the `skillCategoryColor` mapping that ties skill categories to syntax color tokens. Shared by home and about pages.
 - `lib/portfolio-data.ts` — `PROJECTS` array (typed by `types/portfolio.ts`), plus `getProject(slug)` and `getDetailSlugs()` helpers.
 
 When adding or editing project listings/jobs/skills, edit these data files; the rendering pages will pick them up automatically.
@@ -83,7 +81,7 @@ See the README for the one-time `/api/spotify/login` → `/api/spotify/callback`
 
 ### SEO / structured data
 
-`lib/structured-data.ts` centralizes all schema.org JSON-LD payloads (Person, WebSite, WebPage, AboutPage, ContactPage, CollectionPage for portfolio, plus a `Person`-based resume schema). Use `stringifyJsonLd(data)` — it escapes `<` to `<` for XSS-safe inline injection — and inject via `<script type="application/ld+json" dangerouslySetInnerHTML={…} />` (see `app/layout.tsx`). `app/opengraph-image.tsx` provides the OG image via `@vercel/og`. `app/sitemap.ts` and `app/robots.ts` produce their respective routes.
+`lib/structured-data.ts` centralizes all schema.org JSON-LD payloads (Person, WebSite, WebPage, AboutPage, ContactPage, CollectionPage for portfolio). Use `stringifyJsonLd(data)` — it escapes `<` to `<` for XSS-safe inline injection — and inject via `<script type="application/ld+json" dangerouslySetInnerHTML={…} />` (see `app/layout.tsx`). `app/opengraph-image.tsx` provides the OG image via `@vercel/og`. `app/sitemap.ts` and `app/robots.ts` produce their respective routes.
 
 The root `metadata` in `app/layout.tsx` defines the `title.template`, OpenGraph defaults, and Twitter card. Page-level files should export their own `metadata` (static) or `generateMetadata` (dynamic, async) to override.
 

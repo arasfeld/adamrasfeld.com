@@ -275,26 +275,3 @@
 .ar-glitch {
   animation: ar-glitch 4s steps(1, end) infinite;
 }
-
-/* ─── Print (resume page) ────────────────────────────────────────────────── */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  body {
-    background: #fff !important;
-    color: #1a1a1a !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  .resume-sidebar {
-    position: static !important;
-    top: auto !important;
-  }
-  .job-block {
-    break-inside: avoid;
-  }
-  @page {
-    margin: 0.65in 0.7in;
-  }
-}
