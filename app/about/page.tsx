@@ -4,12 +4,13 @@ import Image from 'next/image';
 import {
   Comment,
   DisplayHeading,
+  MonoTag,
   SectionLabel,
 } from '@/components/ui/typography';
 import {
   ABOUT,
   EDUCATION,
-  JOURNEY,
+  INTERESTS,
   SKILL_GROUPS,
   skillCategoryColor,
   VALUES,
@@ -18,22 +19,22 @@ import { aboutStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'About Adam Rasfeld - Full Stack Developer',
+  title: 'About Adam Rasfeld',
   description:
-    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
+    'Get to know Adam Rasfeld — a software engineer in Cincinnati, Ohio. Beyond the editor: family, gaming, music, running, and tinkering with side projects.',
   alternates: {
     canonical: 'https://adamrasfeld.com/about',
   },
   openGraph: {
-    title: 'About Adam Rasfeld - Full Stack Developer',
+    title: 'About Adam Rasfeld',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience.',
+      'Get to know Adam Rasfeld — a software engineer in Cincinnati, Ohio, and what he gets up to outside the editor.',
     url: 'https://adamrasfeld.com/about',
   },
   twitter: {
-    title: 'About Adam Rasfeld - Full Stack Developer',
+    title: 'About Adam Rasfeld',
     description:
-      'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience.',
+      'Get to know Adam Rasfeld — a software engineer in Cincinnati, Ohio, and what he gets up to outside the editor.',
   },
 };
 
@@ -45,17 +46,12 @@ const SYNTAX_TEXT_CLASS: Record<string, string> = {
   purple: 'text-syntax-purple',
 };
 
-const BACKGROUND_PARAGRAPHS: string[] = [
-  `My path in software started at Miami University where I earned a B.S. in Computer Science. First job out of school was at RoviSys — enterprise automation, WinForms to WPF migrations, AutoCAD SDK integrations. Good foundation in writing systems that run in environments where "it crashed" has real consequences.`,
-  'Kroger Digital was where I got a taste of scale. Consumer-facing e-commerce means your bug affects a few million people. I consolidated a fragmented repo structure into a Lerna monorepo, drove test coverage past 90%, and rebuilt auth flows to WCAG standards — learned a lot about what it means to care about quality.',
-  'At Divisions Maintenance Group I went deep on mobile for the first time — React Native, a native module to get gRPC working on iOS and Android, and a Kafka migration from a service-bus system. At Upstart as SE IV I led the decomposition of a Rails monolith into Kafka-backed microservices, defined data ownership across teams, and built keyset-paginated reporting APIs.',
-  'At Seamless.AI I worked on sales-engagement platforms and Chrome extensions — built customizable datatables, shipped the Connect campaign workflow, migrated the extension to Manifest v3, and mentored a junior engineer. The stack was React + Node, the challenges were product engineering at real-world SaaS scale.',
-  'Now at Filevine on the F2 (Filevine Finance) team, building a financial platform layered onto the core legal-tech product. The stack pulls together Svelte + TanStack Query on the frontend with C# and Node.js on the backend, and AG-Grid for the heavier data surfaces. It is also where I have leaned hard into AI-assisted development — Claude Code is part of the daily loop.',
+const BIO_PARAGRAPHS: string[] = [
+  "I'm a full-stack software engineer in the suburbs of Cincinnati, Ohio. I've loved building software for over a decade — I like things that feel simple to use and hold up under the hood, and I tend to think in systems more than features. AI-assisted development is part of my daily loop these days, and I'm always chasing the next thing to learn.",
+  "Off the clock I'm a husband and dad to two kids (and two very-much-in-charge cats). When I'm not with my family you'll usually find me gaming, getting a lift or run in, knocking out yardwork, or working through a TV series or movie. I played trombone in symphonic band and jazz ensemble back in the day, and I still go to as many concerts and festivals as I can.",
 ];
 
 export default function About() {
-  const currentJob = JOURNEY[0];
-
   return (
     <div className="min-h-screen">
       <script
@@ -76,15 +72,15 @@ export default function About() {
         <div className="ar-fade-up flex flex-col gap-12 [animation-delay:0.2s] lg:flex-row lg:items-start lg:gap-14">
           {/* Main column */}
           <div className="min-w-0 flex-1">
-            {/* Journey */}
+            {/* Bio */}
             <div className="mb-11 border-border border-b pb-11">
               <SectionLabel
-                comment="journey"
-                heading="Background"
+                comment="hello"
+                heading="A bit about me"
                 color="green"
                 headingClassName="text-base md:text-base"
               />
-              {BACKGROUND_PARAGRAPHS.map(para => (
+              {BIO_PARAGRAPHS.map(para => (
                 <p
                   key={para}
                   className="mb-4 max-w-2xl font-mono text-[13px] text-foreground leading-loose last:mb-0"
@@ -92,6 +88,33 @@ export default function About() {
                   {para}
                 </p>
               ))}
+            </div>
+
+            {/* Outside the editor */}
+            <div className="mb-11 border-border border-b pb-11">
+              <SectionLabel
+                comment="off-the-clock"
+                heading="Outside the Editor"
+                color="green"
+                headingClassName="text-base md:text-base"
+              />
+              <div className="flex flex-col gap-5">
+                {INTERESTS.map(group => (
+                  <div
+                    key={group.label}
+                    className="grid grid-cols-1 gap-2 sm:grid-cols-[140px_1fr] sm:gap-4"
+                  >
+                    <div className="pt-1 font-mono font-semibold text-[11px] text-primary">
+                      {group.label}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {group.items.map(item => (
+                        <MonoTag key={item}>{item}</MonoTag>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Values */}
@@ -138,18 +161,6 @@ export default function About() {
             </div>
 
             <div className="mb-7 border-border border-b pb-6">
-              <Comment className="mb-2.5">currently</Comment>
-              <div className="font-mono font-semibold text-[12px] text-foreground-bright">
-                {currentJob.role}
-              </div>
-              <div className="font-mono text-[10px] text-muted-foreground leading-relaxed">
-                {currentJob.company} · {currentJob.location}
-                <br />
-                Feb 2023 → present
-              </div>
-            </div>
-
-            <div className="mb-7 border-border border-b pb-6">
               <Comment className="mb-2.5">education</Comment>
               <div className="font-mono font-semibold text-[12px] text-foreground-bright">
                 {EDUCATION.school}
@@ -172,9 +183,22 @@ export default function About() {
                   className="h-1.5 w-1.5 rounded-full bg-syntax-green"
                 />
                 <span className="font-mono text-[9px] text-syntax-green tracking-wide">
-                  open to work
+                  open to freelance
                 </span>
               </div>
+            </div>
+
+            <div className="mb-7 border-border border-b pb-6">
+              <Comment className="mb-2.5">resume</Comment>
+              <a
+                href="/adam-rasfeld-resume.pdf"
+                target="_blank"
+                rel="noopener"
+                download
+                className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 font-mono text-[10px] text-muted-foreground tracking-wide transition-colors hover:border-primary/50 hover:bg-surface-hover hover:text-foreground-bright"
+              >
+                <span aria-hidden="true">↓</span> download resume.pdf
+              </a>
             </div>
 
             <div>

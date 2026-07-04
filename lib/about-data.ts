@@ -1,5 +1,5 @@
 /**
- * Shared content for Adam Rasfeld — used by home, about, resume.
+ * Shared content for Adam Rasfeld — used by home, about, portfolio.
  * Mirrors the design prototype's `data.jsx`.
  */
 
@@ -143,6 +143,24 @@ export const skillCategoryColor: Record<
   Data: 'green',
   Platform: 'purple',
 };
+
+export const INTERESTS: { label: string; items: string[] }[] = [
+  {
+    label: 'Family & home',
+    items: ['wife + two kids', 'two cats', 'suburban Cincinnati'],
+  },
+  { label: 'Gaming', items: ['PC', 'Steam Deck', 'World of Warcraft'] },
+  { label: 'Music', items: ['trombone', 'concerts', 'music festivals'] },
+  {
+    label: 'Fitness',
+    items: ['running', 'first half marathon', 'weightlifting'],
+  },
+  { label: 'Cincy sports', items: ['Bengals', 'Reds', 'FC Cincinnati'] },
+  {
+    label: 'Around the house',
+    items: ['yardwork', 'side projects', 'TV & movies'],
+  },
+];
 
 export const VALUES: { title: string; description: string }[] = [
   {
