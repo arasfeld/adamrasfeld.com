@@ -167,57 +167,6 @@ export function createPortfolioStructuredData(
 }
 
 /**
- * Resume structured data
- */
-export const resumeStructuredData: WithContext<Person> = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Adam Rasfeld',
-  jobTitle: 'Full Stack Developer',
-  description:
-    'Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
-  url: 'https://adamrasfeld.com/resume',
-  email: 'arasfeld@gmail.com',
-  telephone: '+1-513-746-0289',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Cincinnati',
-    addressRegion: 'OH',
-    addressCountry: 'US',
-  },
-  alumniOf: {
-    '@type': 'EducationalOrganization',
-    name: 'Miami University',
-    description: 'Bachelor of Science in Computer Science',
-  },
-  hasOccupation: [
-    {
-      '@type': 'Occupation',
-      name: 'Software Engineer',
-    },
-  ],
-  knowsAbout: [
-    'React',
-    'Svelte',
-    'Node.js',
-    'TypeScript',
-    'JavaScript',
-    'C#',
-    '.NET',
-    'Next.js',
-    'Full Stack Development',
-    'Web Development',
-    'Mobile App Development',
-    'System Architecture',
-    'API Development',
-  ],
-  sameAs: [
-    'https://github.com/arasfeld',
-    'https://www.linkedin.com/in/adam-rasfeld',
-  ],
-};
-
-/**
  * Contact page structured data
  */
 export const contactStructuredData: WithContext<ContactPage> = {
@@ -225,7 +174,7 @@ export const contactStructuredData: WithContext<ContactPage> = {
   '@type': 'ContactPage',
   name: 'Contact Adam Rasfeld - Full Stack Developer',
   description:
-    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities.',
+    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, contract engagements, and consulting.',
   url: 'https://adamrasfeld.com/contact',
   mainEntity: {
     '@type': 'Person',
@@ -244,7 +193,7 @@ export const contactStructuredData: WithContext<ContactPage> = {
       'https://www.linkedin.com/in/adam-rasfeld',
     ],
     description:
-      'Available for freelance work, consulting, and full-time opportunities in software development.',
+      'Available for freelance work, contract engagements, and consulting in software development.',
   },
 };
 
@@ -254,16 +203,16 @@ export const contactStructuredData: WithContext<ContactPage> = {
 export const aboutStructuredData: WithContext<AboutPage> = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About Adam Rasfeld - Full Stack Developer',
+  name: 'About Adam Rasfeld',
   description:
-    'Learn about Adam Rasfeld, a passionate Full Stack Developer with 11+ years of experience. From Miami University to leading enterprise applications, discover his journey in software development.',
+    'Get to know Adam Rasfeld — a software engineer in Cincinnati, Ohio, and what he gets up to outside the editor: family, gaming, music, running, and tinkering.',
   url: 'https://adamrasfeld.com/about',
   mainEntity: {
     '@type': 'Person',
     name: 'Adam Rasfeld',
     jobTitle: 'Full Stack Developer',
     description:
-      'Passionate Full Stack Developer with 11+ years of experience building scalable web applications, mobile apps, and system architectures.',
+      'Full-stack software engineer in Cincinnati, Ohio. Husband, dad, gamer, runner, and trombone player who builds software for the love of it.',
     alumniOf: {
       '@type': 'EducationalOrganization',
       name: 'Miami University',

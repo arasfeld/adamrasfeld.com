@@ -8,7 +8,7 @@ import { contactStructuredData, stringifyJsonLd } from '@/lib/structured-data';
 export const metadata: Metadata = {
   title: 'Contact Adam Rasfeld - Full Stack Developer',
   description:
-    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, consulting, and full-time opportunities.',
+    'Get in touch with Adam Rasfeld for your next software development project. Available for freelance work, contract engagements, and consulting.',
   alternates: {
     canonical: 'https://adamrasfeld.com/contact',
   },
@@ -116,11 +116,11 @@ export default function Contact() {
                   className="h-1.5 w-1.5 rounded-full bg-syntax-green"
                 />
                 <span className="font-mono font-semibold text-[11px] text-foreground-bright">
-                  Open to new opportunities
+                  Open to freelance
                 </span>
               </div>
               <p className="font-mono text-[11px] text-muted-foreground leading-relaxed">
-                Available for full-time roles, contract work, and consulting
+                Available for freelance projects, contract work, and consulting
                 engagements. Response time typically within 24–48 hours.
               </p>
             </div>
