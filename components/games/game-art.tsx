@@ -3,22 +3,12 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { ArtFill, ArtThumb } from '@/components/art-image';
 
 /** Steam capsule/header art is addressable by appid on the public CDN. */
 function steamArtUrl(appid: number, art: 'capsule' | 'header') {
   const file = art === 'header' ? 'header.jpg' : 'capsule_231x87.jpg';
   return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/${file}`;
-}
-
-function firstLetter(name: string) {
-  return name.trim()[0]?.toUpperCase() ?? '?';
-}
-
-/** Deterministic gradient from the game name — the fallback when art is missing. */
-function gradient(name: string) {
-  const hue = name.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
-  return `linear-gradient(135deg, hsl(${hue}, 32%, 42%), hsl(${(hue + 40) % 360}, 28%, 30%))`;
 }
 
 interface GameArtProps {
@@ -45,37 +35,15 @@ export function GameArt({
   className,
   priority,
 }: GameArtProps) {
-  const [failed, setFailed] = useState(false);
   const url = src ?? (appid != null ? steamArtUrl(appid, art) : undefined);
-
-  if (!url || failed) {
-    return (
-      <div
-        className={cn(
-          'grid flex-shrink-0 place-items-center overflow-hidden',
-          className
-        )}
-        style={{ width, height, background: gradient(name) }}
-      >
-        <span
-          className="font-bold text-white/80"
-          style={{ fontSize: Math.round(Math.min(width, height) * 0.42) }}
-        >
-          {firstLetter(name)}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <Image
+    <ArtThumb
+      name={name}
       src={url}
-      alt={name}
       width={width}
       height={height}
       priority={priority}
-      onError={() => setFailed(true)}
-      className={cn('flex-shrink-0 object-cover', className)}
+      className={className}
     />
   );
 }
@@ -93,30 +61,12 @@ export function GameBanner({
   /** Eager-load + preload for above-the-fold LCP images. */
   priority?: boolean;
 }) {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <div
-        className={cn('grid h-full w-full place-items-center', className)}
-        style={{ background: gradient(name) }}
-      >
-        <span className="font-bold text-7xl text-white/20">
-          {firstLetter(name)}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <Image
+    <ArtFill
+      name={name}
       src={steamArtUrl(appid, 'header')}
-      alt={name}
-      fill
-      sizes="(max-width: 768px) 50vw, 240px"
       priority={priority}
-      onError={() => setFailed(true)}
-      className={cn('object-cover', className)}
+      className={className}
     />
   );
 }

@@ -1,5 +1,5 @@
-import { fmtRelative } from '@/components/games/format';
 import { AchievementIcon } from '@/components/games/game-art';
+import { fmtRelative } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { RecentAchievement } from '@/types';
 

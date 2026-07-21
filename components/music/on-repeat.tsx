@@ -1,5 +1,5 @@
-import { fmtNum } from '@/components/music/format';
 import { MusicArt, MusicArtFill } from '@/components/music/music-art';
+import { fmtNum } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { LastfmArtist, LastfmTrack } from '@/types';
 

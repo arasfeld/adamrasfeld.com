@@ -7,7 +7,7 @@ export async function getAccessToken() {
     throw new Error('Missing Spotify environment variables');
   }
 
-  const response = await fetch('https://accounts.spotify.com/api/token', {
+  const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       Authorization: `Basic ${Buffer.from(
@@ -19,11 +19,16 @@ export async function getAccessToken() {
       grant_type: 'refresh_token',
       refresh_token: SPOTIFY_REFRESH_TOKEN,
     }),
-    // cache access token for 1 hour before revalidating
-    next: { revalidate: 3600 },
-  }).then(res => res.json());
+    // Tokens live 3600s — revalidate slightly early so a cache-boundary
+    // token is never already expired when used.
+    next: { revalidate: 3300 },
+  });
 
-  return response;
+  if (!res.ok) {
+    throw new Error(`Spotify token refresh failed: ${res.status}`);
+  }
+
+  return (await res.json()) as { access_token: string };
 }
 
 async function spotifyFetch(path: string, revalidate: number) {
@@ -37,19 +42,24 @@ async function spotifyFetch(path: string, revalidate: number) {
 /**
  * Best-effort artist image via Spotify search — used to enrich Last.fm artists
  * (which return blank images). Requires an exact name match to avoid mismatched
- * art. Cached 24h since artist art is effectively immutable.
+ * art. Cached 24h since artist art is effectively immutable. Fails soft to
+ * undefined — the art is decorative and must never take a section down.
  */
 export async function searchArtistImage(
   name: string
 ): Promise<string | undefined> {
-  const params = new URLSearchParams({ q: name, type: 'artist', limit: '1' });
-  const res = await spotifyFetch(`/search?${params}`, 86_400);
-  if (!res.ok) return undefined;
-  const data = await res.json();
-  const artist = data.artists?.items?.[0];
-  if (!artist || artist.name?.toLowerCase() !== name.toLowerCase()) {
+  try {
+    const params = new URLSearchParams({ q: name, type: 'artist', limit: '1' });
+    const res = await spotifyFetch(`/search?${params}`, 86_400);
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const artist = data.artists?.items?.[0];
+    if (!artist || artist.name?.toLowerCase() !== name.toLowerCase()) {
+      return undefined;
+    }
+    const image = artist.images?.[1] || artist.images?.[0];
+    return image?.url;
+  } catch {
     return undefined;
   }
-  const image = artist.images?.[1] || artist.images?.[0];
-  return image?.url;
 }

@@ -6,7 +6,7 @@ export type LastfmPeriod =
   | '12month'
   | 'overall';
 
-/** UI time-range keys reused from the existing TimeRangeSelector. */
+/** UI time-range keys used by the music page's QueryToggle. */
 export type MusicRange = 'short' | 'medium' | 'long';
 
 export interface LastfmArtist {

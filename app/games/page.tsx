@@ -3,7 +3,6 @@ import { Suspense } from 'react';
 
 import { AchievementBadge } from '@/components/games/achievement-badge';
 import { CurrentlyInto } from '@/components/games/currently-into';
-import { fmtHours, fmtNum } from '@/components/games/format';
 import {
   AchievementsSkeleton,
   BarChartSkeleton,
@@ -13,13 +12,14 @@ import {
 import { PlayBar } from '@/components/games/play-bar';
 import { ProfileBar } from '@/components/games/profile-bar';
 import { ShowcaseCard } from '@/components/games/showcase-card';
-import { SortToggle } from '@/components/games/sort-toggle';
 import { type GameStat, StatsGrid } from '@/components/games/stats-grid';
+import { QueryToggle } from '@/components/query-toggle';
 import {
   Comment,
   DisplayHeading,
   SectionLabel,
 } from '@/components/ui/typography';
+import { fmtHours, fmtNum } from '@/lib/format';
 import { STEAM_TOTALS } from '@/lib/games-data';
 import {
   getGameCompletion,
@@ -52,6 +52,11 @@ export const metadata: Metadata = {
 };
 
 type Sort = 'total' | 'recent';
+
+const SORT_OPTIONS: { key: Sort; label: string }[] = [
+  { key: 'total', label: 'all time' },
+  { key: 'recent', label: '2 weeks' },
+];
 
 function parseSort(value: string | string[] | undefined): Sort {
   return value === 'recent' ? 'recent' : 'total';
@@ -278,7 +283,12 @@ export default async function Games({ searchParams }: PageProps) {
             headingClassName="text-base md:text-lg"
             className="mb-0"
           />
-          <SortToggle value={sort} className="pb-0.5" />
+          <QueryToggle
+            param="sort"
+            options={SORT_OPTIONS}
+            value={sort}
+            className="pb-0.5"
+          />
         </div>
         <Suspense key={sort} fallback={<BarChartSkeleton />}>
           <MostPlayedSection sort={sort} />

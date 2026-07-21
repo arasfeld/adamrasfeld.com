@@ -67,13 +67,21 @@ When adding or editing project listings/jobs/skills, edit these data files; the 
 
 `generateStaticParams` is driven by `getDetailSlugs()`, so the SSG params follow `hasDetail` automatically.
 
-### Spotify integration
+Detail pages share `CaseStudyBackLink`, `StackTable`, and `FeatureList` from `components/portfolio/case-study.tsx` — use them instead of hand-rolling the back-link header, striped stack table, or ✓-feature grid. Heroes and prose stay bespoke per project.
 
-Two-layer pattern:
-- **Server** (`lib/spotify.ts`, `app/api/spotify/**`): exchanges the long-lived `SPOTIFY_REFRESH_TOKEN` for an access token using the client credentials, cached for 1 hour via Next's `fetch({ next: { revalidate: 3600 } })`. Each route (`top`, `recently-played`, `currently-playing`, plus `login`/`callback` for one-time refresh-token setup) hits Spotify with that token and re-revalidates on its own cadence (e.g. 5 min for top, 30s polling client-side for currently-playing).
-- **Client** (`lib/spotify-hooks.ts`): SWR hooks (`useTopTracks`, `useTopArtists`, `useRecentlyPlayed`, `useCurrentlyPlaying`) call the local API routes. Never call `accounts.spotify.com` or `api.spotify.com` from the client — go through `/api/spotify/*` so credentials stay server-side.
+### Music page (Last.fm + Spotify)
 
-See the README for the one-time `/api/spotify/login` → `/api/spotify/callback` flow used to mint the refresh token.
+`/music` is a **Last.fm** dashboard rendered server-side. `lib/lastfm.ts` wraps the Last.fm API (`LASTFM_API_KEY`/`LASTFM_USERNAME`) with per-call `revalidate` windows and **fails soft** — every function returns `null`/empty on error so a Last.fm outage degrades sections instead of erroring the page. `app/music/page.tsx` streams each section through its own `Suspense` boundary (skeletons in `components/music/music-skeletons.tsx`); the time-range switches are the shared `QueryToggle` (`components/query-toggle.tsx`), which reflects selection into URL search params.
+
+Spotify is kept for two things only:
+- **Now playing**: `lib/spotify-hooks.ts` (`useCurrentlyPlaying`, SWR, 30s polling) → `app/api/spotify/currently-playing`. Never call Spotify hosts from the client — go through `/api/spotify/*` so credentials stay server-side.
+- **Artist art enrichment**: `lib/spotify.ts` `searchArtistImage` (via `lib/album-art.ts`) fills in images Last.fm doesn't provide. It fails soft to `undefined` — art is decorative and must never take a section down.
+
+`lib/spotify.ts` exchanges the long-lived `SPOTIFY_REFRESH_TOKEN` for an access token, cached via `fetch({ next: { revalidate: 3300 } })`. The one-time `/api/spotify/login` → `/api/spotify/callback` flow (see README) mints the refresh token; both routes **404 in production** and verify OAuth `state` via an httpOnly cookie — they're local-setup only.
+
+### Games page (Steam)
+
+`/games` mirrors the music-page pattern: `lib/steam.ts` wraps the Steam Web API (`STEAM_API_KEY`/`STEAM_ID`, vanity names resolved via ResolveVanityURL) through a single fail-soft `steamFetch`, and `app/games/page.tsx` streams sections through `Suspense` (skeletons in `components/games/games-skeletons.tsx`). `lib/games-data.ts` holds the curated `COMPLETIONIST_SHOWCASE` appids and `STEAM_TOTALS`. The page deliberately omits live presence (online/in-game state). Shared formatters (`fmtNum`, `fmtHours`, `fmtRelative`, …) live in `lib/format.ts`; art thumbnails with gradient fallbacks share `components/art-image.tsx` (wrapped by `components/games/game-art.tsx` and `components/music/music-art.tsx`).
 
 ### Contact form
 
@@ -93,7 +101,8 @@ The root `metadata` in `app/layout.tsx` defines the `title.template`, OpenGraph 
 
 Required env vars (see `.env.example`):
 - `RESEND_API_KEY` — contact form delivery.
-- `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI`, `SPOTIFY_REFRESH_TOKEN` — Spotify integration.
-- `NEXT_PUBLIC_SHOW_PRICING` — feature flag for the pricing section.
+- `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI`, `SPOTIFY_REFRESH_TOKEN` — now-playing + artist art.
+- `LASTFM_API_KEY`, `LASTFM_USERNAME` — music page data.
+- `STEAM_API_KEY`, `STEAM_ID` — games page data (SteamID64 or vanity name).
 
-`next.config.ts` allowlists `i.scdn.co` for Spotify album art via `images.remotePatterns`. Add new external image hosts there before using them with `next/image`.
+`next.config.ts` allowlists external image hosts via `images.remotePatterns` (`i.scdn.co` for Spotify art, `lastfm.freetls.fastly.net` for Last.fm, `**.steamstatic.com`/`media.steampowered.com` for Steam). Add new hosts there before using them with `next/image`.

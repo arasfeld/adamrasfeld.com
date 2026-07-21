@@ -1,5 +1,5 @@
-import { fmtNum } from '@/components/music/format';
 import { MusicArt } from '@/components/music/music-art';
+import { fmtNum } from '@/lib/format';
 import type { LastfmArtist } from '@/types';
 
 export type ResolvedArtist = LastfmArtist & { resolvedImage?: string };

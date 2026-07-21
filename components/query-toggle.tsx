@@ -5,25 +5,32 @@ import { useTransition } from 'react';
 
 import { cn } from '@/lib/utils';
 
-const OPTIONS: { key: 'total' | 'recent'; label: string }[] = [
-  { key: 'total', label: 'all time' },
-  { key: 'recent', label: '2 weeks' },
-];
+interface QueryToggleProps<K extends string> {
+  /** Search param this toggle writes (e.g. 'sort', 'tracks'). */
+  param: string;
+  options: readonly { key: K; label: string }[];
+  value: K;
+  className?: string;
+}
 
-export function SortToggle({
+/**
+ * A small segmented toggle that reflects its selection into a URL search
+ * param via router.replace, so server components re-render with the new
+ * value. Used for the games sort and music time-range switches.
+ */
+export function QueryToggle<K extends string>({
+  param,
+  options,
   value,
   className,
-}: {
-  value: 'total' | 'recent';
-  className?: string;
-}) {
+}: QueryToggleProps<K>) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const onSelect = (next: 'total' | 'recent') => {
+  const onSelect = (next: K) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('sort', next);
+    params.set(param, next);
     startTransition(() => {
       router.replace(`?${params.toString()}`, { scroll: false });
     });
@@ -34,12 +41,13 @@ export function SortToggle({
       className={cn('flex gap-1', isPending && 'opacity-60', className)}
       aria-busy={isPending}
     >
-      {OPTIONS.map(option => {
+      {options.map(option => {
         const active = value === option.key;
         return (
           <button
             key={option.key}
             type="button"
+            aria-pressed={active}
             onClick={() => onSelect(option.key)}
             className={cn(
               'rounded-sm border px-2.5 py-1 font-mono text-[10px] transition-colors',

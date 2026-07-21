@@ -1,6 +1,5 @@
-import { fmtMonthYear } from '@/components/games/format';
-
 import { GameBanner } from '@/components/games/game-art';
+import { fmtMonthYear } from '@/lib/format';
 import type { ShowcaseGame } from '@/types';
 
 export function ShowcaseCard({ game }: { game: ShowcaseGame }) {

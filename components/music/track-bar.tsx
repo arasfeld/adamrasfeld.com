@@ -1,5 +1,5 @@
-import { fmtNum } from '@/components/music/format';
 import { MusicArt } from '@/components/music/music-art';
+import { fmtNum } from '@/lib/format';
 import type { LastfmTrack } from '@/types';
 
 /** A single ranked row in the Top Tracks playcount bar chart. */

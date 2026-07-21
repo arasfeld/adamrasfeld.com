@@ -1,4 +1,4 @@
-import { fmtHours } from '@/components/games/format';
+import { fmtHours } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { SteamGame } from '@/types';
 

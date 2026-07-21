@@ -1,15 +1,17 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
+import {
+  CaseStudyBackLink,
+  FeatureList,
+  StackTable,
+} from '@/components/portfolio/case-study';
 import { MapGameArchDiagram } from '@/components/portfolio/map-game-arch-diagram';
 import { Button } from '@/components/ui/button';
 import {
-  Comment,
   DisplayHeading,
   MonoTag,
   SectionLabel,
 } from '@/components/ui/typography';
-import { cn } from '@/lib/utils';
 
 const STACK_ROWS: { layer: string; tech: string }[] = [
   { layer: 'Frontend', tech: 'Next.js 16 App Router · React 19 · TypeScript' },
@@ -39,16 +41,7 @@ const META_CHIPS = ['Web', 'Six regions', 'Pure SVG', 'Work in progress'];
 export function MapGameDetail() {
   return (
     <div className="mx-auto w-full max-w-4xl px-6 py-20 md:px-12">
-      <div className="ar-fade-up mb-9 flex items-center gap-2">
-        <Link
-          href="/portfolio"
-          className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          ← portfolio
-        </Link>
-        <span className="text-border">·</span>
-        <Comment className="!text-[11px]">case study</Comment>
-      </div>
+      <CaseStudyBackLink />
 
       <div className="ar-fade-up mb-16 flex flex-wrap items-start gap-12 [animation-delay:0.15s]">
         <div className="min-w-[280px] flex-1">
@@ -152,25 +145,7 @@ export function MapGameDetail() {
           color="accent"
           headingClassName="text-base md:text-lg"
         />
-        <div className="overflow-hidden border border-border">
-          {STACK_ROWS.map((row, i) => (
-            <div
-              key={row.layer}
-              className={cn(
-                'grid grid-cols-[110px_1fr] gap-6 px-4 py-3',
-                i < STACK_ROWS.length - 1 && 'border-border border-b',
-                i % 2 === 1 && 'bg-card/60'
-              )}
-            >
-              <div className="pt-px font-mono text-[10px] text-muted-foreground">
-                {row.layer}
-              </div>
-              <div className="font-mono text-[11px] text-foreground">
-                {row.tech}
-              </div>
-            </div>
-          ))}
-        </div>
+        <StackTable rows={STACK_ROWS} />
       </div>
 
       <div className="ar-fade-up [animation-delay:0.5s]">
@@ -180,24 +155,7 @@ export function MapGameDetail() {
           color="accent"
           headingClassName="text-base md:text-lg"
         />
-        <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2">
-          {FEATURES.map(feature => (
-            <div
-              key={feature}
-              className="flex items-start gap-3 border-border border-b py-3"
-            >
-              <span
-                aria-hidden="true"
-                className="mt-px flex-shrink-0 font-mono text-primary text-xs"
-              >
-                ✓
-              </span>
-              <span className="font-mono text-[11px] text-muted-foreground leading-relaxed">
-                {feature}
-              </span>
-            </div>
-          ))}
-        </div>
+        <FeatureList items={FEATURES} color="accent" />
       </div>
     </div>
   );

@@ -79,12 +79,13 @@ export function ProjectCard({ project, priority }: ProjectCardProps) {
                     )}
                   />
                   {project.image.dark && (
+                    // No `priority` — the hidden theme variant must not be
+                    // preloaded; lazy display:none images never load at all.
                     <Image
                       src={project.image.dark}
                       alt={`${project.title} screenshot`}
                       fill
                       sizes="80px"
-                      priority={priority}
                       className="hidden object-cover dark:block"
                     />
                   )}
@@ -110,12 +111,12 @@ export function ProjectCard({ project, priority }: ProjectCardProps) {
                     )}
                   />
                   {project.image.dark && (
+                    // No `priority` — see above.
                     <Image
                       src={project.image.dark}
                       alt={`${project.title} screenshot`}
                       fill
                       sizes="(min-width: 1024px) 240px, (min-width: 640px) 240px, 220px"
-                      priority={priority}
                       className="hidden object-cover dark:block"
                     />
                   )}

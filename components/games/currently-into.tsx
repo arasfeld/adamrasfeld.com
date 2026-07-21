@@ -1,5 +1,5 @@
-import { fmtHours } from '@/components/games/format';
 import { GameArt, GameBanner } from '@/components/games/game-art';
+import { fmtHours } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { SteamGame } from '@/types';
 

@@ -7,13 +7,25 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Contact form validation schema
 const contactSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.email('Invalid email address'),
-  subject: z.string().min(1, 'Subject is required'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
+  firstName: z.string().min(1, 'First name is required').max(100),
+  lastName: z.string().min(1, 'Last name is required').max(100),
+  email: z.email('Invalid email address').max(254),
+  subject: z.string().min(1, 'Subject is required').max(200),
+  message: z
+    .string()
+    .min(10, 'Message must be at least 10 characters')
+    .max(5000),
   website: z.string().optional(), // Honeypot field
 });
+
+// Escape user input before interpolating into the notification email HTML.
+const escapeHtml = (str: string) =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
 // Helper to detect long sequences of characters without spaces (often a sign of bot spam)
 const hasLongContinuousStrings = (str: string) => {
@@ -127,19 +139,18 @@ export async function POST(request: NextRequest) {
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #555;">Contact Information</h3>
-            <p><strong>Name:</strong> ${validatedData.firstName} ${
+            <p><strong>Name:</strong> ${escapeHtml(validatedData.firstName)} ${escapeHtml(
               validatedData.lastName
-            }</p>
-            <p><strong>Email:</strong> ${validatedData.email}</p>
-            <p><strong>Subject:</strong> ${validatedData.subject}</p>
+            )}</p>
+            <p><strong>Email:</strong> ${escapeHtml(validatedData.email)}</p>
+            <p><strong>Subject:</strong> ${escapeHtml(validatedData.subject)}</p>
           </div>
           
           <div style="background-color: #fff; padding: 20px; border: 1px solid #e9ecef; border-radius: 8px;">
             <h3 style="margin-top: 0; color: #555;">Message</h3>
-            <p style="line-height: 1.6; color: #333;">${validatedData.message.replace(
-              /\n/g,
-              '<br>'
-            )}</p>
+            <p style="line-height: 1.6; color: #333;">${escapeHtml(
+              validatedData.message
+            ).replace(/\n/g, '<br>')}</p>
           </div>
           
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #666; font-size: 14px;">

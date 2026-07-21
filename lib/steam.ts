@@ -28,11 +28,15 @@ async function steamFetch(
   const config = steamConfig();
   if (!config) return null;
   const query = new URLSearchParams({ key: config.key, ...params });
-  const res = await fetch(`${STEAM_API}${path}?${query}`, {
-    next: { revalidate },
-  });
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const res = await fetch(`${STEAM_API}${path}?${query}`, {
+      next: { revalidate },
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 /**

@@ -1,6 +1,6 @@
 /**
- * Mono-styled placeholders for the games page while Steam data loads.
- * Mirrors components/spotify-skeletons.tsx — hairline borders, neutral blocks.
+ * Mono-styled placeholders for the games page while Steam data loads —
+ * hairline borders, neutral blocks.
  */
 import { Skeleton } from '@/components/ui/skeleton';
 

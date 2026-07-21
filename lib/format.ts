@@ -1,16 +1,16 @@
-/** Shared formatters for the games page. */
+/** Shared pure formatters for the music and games pages. */
+
+/** Compact large counts (1847 → "1.8k", 47043 → "47k"). */
+export function fmtNum(n: number): string {
+  if (n >= 1000) return `${Math.round(n / 100) / 10}k`;
+  return n.toLocaleString();
+}
 
 /** Steam playtimes come in minutes; render as compact hours. */
 export function fmtHours(minutes: number): string {
   const hours = minutes / 60;
   if (hours >= 100) return `${Math.round(hours).toLocaleString()}h`;
   return `${Math.round(hours * 10) / 10}h`;
-}
-
-/** Compact large counts (1847 → "1.8k"). */
-export function fmtNum(n: number): string {
-  if (n >= 1000) return `${Math.round(n / 100) / 10}k`;
-  return n.toLocaleString();
 }
 
 /** Unix seconds → "Mar 2024". */
@@ -20,6 +20,12 @@ export function fmtMonthYear(unixSeconds?: number): string {
     month: 'short',
     year: 'numeric',
   });
+}
+
+/** Unix seconds → 4-digit year, or "—". */
+export function fmtYear(unixSeconds?: number): string {
+  if (!unixSeconds) return '—';
+  return String(new Date(unixSeconds * 1000).getFullYear());
 }
 
 /** Unix seconds → coarse relative label ("2d ago", "3w ago"). */

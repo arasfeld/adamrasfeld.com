@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
 
 import {
   ArtistBadge,
   type ResolvedArtist,
 } from '@/components/music/artist-badge';
-import { fmtNum, fmtYear } from '@/components/music/format';
 import {
   ArtistBadgesSkeleton,
   OnRepeatSkeleton,
@@ -18,14 +17,15 @@ import { OnRepeat } from '@/components/music/on-repeat';
 import { RecentCard } from '@/components/music/recent-card';
 import { SoundProfile } from '@/components/music/sound-profile';
 import { type MusicStat, StatsStrip } from '@/components/music/stats-strip';
-import { TimeRangeSelector } from '@/components/music/time-range-selector';
 import { TrackBar } from '@/components/music/track-bar';
+import { QueryToggle } from '@/components/query-toggle';
 import {
   Comment,
   DisplayHeading,
   SectionLabel,
 } from '@/components/ui/typography';
 import { resolveArtistImage } from '@/lib/album-art';
+import { fmtNum, fmtYear } from '@/lib/format';
 import {
   getGenreBreakdown,
   getRecentTracks,
@@ -55,10 +55,19 @@ export const metadata: Metadata = {
   },
 };
 
+const RANGE_OPTIONS: { key: MusicRange; label: string }[] = [
+  { key: 'short', label: '4 wks' },
+  { key: 'medium', label: '6 mos' },
+  { key: 'long', label: 'all time' },
+];
+
 function parseRange(value: string | string[] | undefined): MusicRange {
   if (value === 'short' || value === 'medium' || value === 'long') return value;
   return 'long';
 }
+
+// Deduped across StatsSection and SoundProfileSection within a render.
+const getOverallGenres = cache(() => getGenreBreakdown('overall'));
 
 function Empty({ children }: { children: React.ReactNode }) {
   return (
@@ -71,7 +80,7 @@ async function StatsSection() {
     getUserInfo(),
     getTopArtists('overall', 1),
     getWeeklyScrobbles(),
-    getGenreBreakdown('overall'),
+    getOverallGenres(),
   ]);
   if (!info) return null;
 
@@ -167,7 +176,7 @@ async function TopTracksSection({ range }: { range: MusicRange }) {
 }
 
 async function SoundProfileSection() {
-  const genres = await getGenreBreakdown('overall');
+  const genres = await getOverallGenres();
   return <SoundProfile genres={genres} />;
 }
 
@@ -249,8 +258,9 @@ export default async function Music({ searchParams }: PageProps) {
               headingClassName="text-base md:text-lg"
               className="mb-0"
             />
-            <TimeRangeSelector
+            <QueryToggle
               param="artists"
+              options={RANGE_OPTIONS}
               value={artistsRange}
               className="pb-0.5"
             />
@@ -275,8 +285,9 @@ export default async function Music({ searchParams }: PageProps) {
               headingClassName="text-base md:text-lg"
               className="mb-0"
             />
-            <TimeRangeSelector
+            <QueryToggle
               param="tracks"
+              options={RANGE_OPTIONS}
               value={tracksRange}
               className="pb-0.5"
             />

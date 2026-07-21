@@ -8,6 +8,7 @@ import {
   DisplayHeading,
   MonoTag,
   SectionLabel,
+  syntaxColorClass,
 } from '@/components/ui/typography';
 import {
   ABOUT,
@@ -17,16 +18,8 @@ import {
 } from '@/lib/about-data';
 import { cn } from '@/lib/utils';
 
-const SYNTAX_TEXT_CLASS: Record<string, string> = {
-  yellow: 'text-syntax-yellow',
-  accent: 'text-primary',
-  red: 'text-syntax-red',
-  green: 'text-syntax-green',
-  purple: 'text-syntax-purple',
-};
-
 export default function Home() {
-  const meta = [ABOUT.location, '11+ yrs experience', 'open to opportunities'];
+  const meta = [ABOUT.location, '11+ yrs experience', 'open to freelance'];
 
   return (
     <div className="min-h-screen">
@@ -125,7 +118,7 @@ export default function Home() {
                   <div
                     className={cn(
                       'mb-3 font-bold font-mono text-[9px] uppercase tracking-[0.18em]',
-                      SYNTAX_TEXT_CLASS[colorKey]
+                      syntaxColorClass[colorKey]
                     )}
                   >
                     {group.name}

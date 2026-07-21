@@ -176,7 +176,7 @@ export function TypographySmall({
 
 // ─── Code-editor primitives ─────────────────────────────────────────────────
 
-type SyntaxColor =
+export type SyntaxColor =
   | 'green'
   | 'red'
   | 'yellow'
@@ -186,7 +186,7 @@ type SyntaxColor =
   | 'accent'
   | 'muted';
 
-const syntaxColorClass: Record<SyntaxColor, string> = {
+export const syntaxColorClass: Record<SyntaxColor, string> = {
   green: 'text-syntax-green',
   red: 'text-syntax-red',
   yellow: 'text-syntax-yellow',

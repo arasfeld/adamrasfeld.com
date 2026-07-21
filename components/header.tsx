@@ -22,6 +22,9 @@ export function Header() {
 
         <Link
           href="/"
+          // Below `sm` the wordmark is hidden and the logo SVG is aria-hidden,
+          // so the link needs an explicit accessible name.
+          aria-label="Home"
           className="group absolute left-1/2 flex -translate-x-1/2 items-center gap-2 md:static md:translate-x-0 md:gap-3"
         >
           <span className="text-primary">

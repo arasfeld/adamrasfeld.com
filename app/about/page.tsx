@@ -6,6 +6,7 @@ import {
   DisplayHeading,
   MonoTag,
   SectionLabel,
+  syntaxColorClass,
 } from '@/components/ui/typography';
 import {
   ABOUT,
@@ -36,14 +37,6 @@ export const metadata: Metadata = {
     description:
       'Get to know Adam Rasfeld — a software engineer in Cincinnati, Ohio, and what he gets up to outside the editor.',
   },
-};
-
-const SYNTAX_TEXT_CLASS: Record<string, string> = {
-  yellow: 'text-syntax-yellow',
-  accent: 'text-primary',
-  red: 'text-syntax-red',
-  green: 'text-syntax-green',
-  purple: 'text-syntax-purple',
 };
 
 const BIO_PARAGRAPHS: string[] = [
@@ -210,7 +203,7 @@ export default function About() {
                     <div
                       className={cn(
                         'mb-1 font-mono text-[9px] uppercase tracking-[0.18em]',
-                        SYNTAX_TEXT_CLASS[colorKey]
+                        syntaxColorClass[colorKey]
                       )}
                     >
                       {group.name}
